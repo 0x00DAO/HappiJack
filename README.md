@@ -1,4 +1,5 @@
 # HappiJack :dizzy:
+
 HappiJack is a blockchain-based guessing game in which players guess an 8-digit number and store it in a smart contract on the blockchain. At the end of each game cycle, the smart contract automatically calculates the lucky number and distributes the bonus pool to the player who is closest to the lucky number.
 
 ## How to Play
@@ -12,6 +13,7 @@ HappiJack is a blockchain-based guessing game in which players guess an 8-digit 
 ## Features
 
 HappiJack has the following features:
+
 - Blockchain-based: The game is built on the Ethereum blockchain, which ensures transparency and security.
 - Fair and random: The lucky number is generated randomly and transparently, ensuring a fair game for all players.
 - Easy to play: Players can join the game with just a few clicks and a small amount of HappiJack tokens.
@@ -19,4 +21,4 @@ HappiJack has the following features:
 
 ## Conclusion
 
-HappiJack is an exciting and rewarding blockchain-based guessing game that is easy to play, fair, and secure. With lucrative rewards and transparent gameplay, it provides a thrilling and engaging experience for players. Join HappiJack today and start playing!
+HappiJack is an exciting and rewarding blockchain-based guessing game that is easy to play, fair, and secure. With lucrative rewards and transparent gamePlay, it provides a thrilling and engaging experience for players. Join HappiJack today and start playing!
