@@ -39,4 +39,13 @@ contract GameStore is Initializable, ComponentWithEntity {
         uint256 entityId = getEntityId(tableId, key);
         set(entityId, data);
     }
+
+    function _getField(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 schemaIndex
+    ) internal view returns (bytes memory) {
+        uint256 entityId = getEntityId(tableId, key);
+        return getRawValue(entityId);
+    }
 }

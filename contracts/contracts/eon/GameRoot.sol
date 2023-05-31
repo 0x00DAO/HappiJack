@@ -9,7 +9,7 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 import "../core/contract-upgradeable/VersionUpgradeable.sol";
 import {IRoot} from "./interface/IRoot.sol";
-import {IStoreWrite} from "./interface/IStore.sol";
+import {IStore} from "./interface/IStore.sol";
 
 import {GameStore} from "./GameStore.sol";
 
@@ -23,7 +23,7 @@ contract GameRoot is
     VersionUpgradeable,
     GameStore,
     IRoot,
-    IStoreWrite
+    IStore
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -96,5 +96,13 @@ contract GameRoot is
         bytes memory data
     ) public {
         _setField(tableId, key, schemaIndex, data);
+    }
+
+    function getField(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 schemaIndex
+    ) public view returns (bytes memory) {
+        return _getField(tableId, key, schemaIndex);
     }
 }

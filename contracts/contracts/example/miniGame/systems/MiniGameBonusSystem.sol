@@ -70,9 +70,10 @@ contract MiniGameBonusSystem is
             root.getSystemAddress(MiniGameBonusEntityID)
         );
 
-        uint256 bonus = bonusEntity.getValue(addressToEntity(from));
-        bonusEntity.set(addressToEntity(from), bonus + amount);
+        // uint256 bonus = bonusEntity.getValue(addressToEntity(from));
+        // bonusEntity.set(addressToEntity(from), bonus + amount);
 
+        uint256 bonus = getBonusByAdddress(from);
         MiniGameBonusTable.set(from, bonus + amount);
     }
 
@@ -86,9 +87,10 @@ contract MiniGameBonusSystem is
     }
 
     function getBonusByAdddress(address from) internal view returns (uint256) {
-        MiniGameBonusEntity bonusEntity = MiniGameBonusEntity(
-            root.getSystemAddress(MiniGameBonusEntityID)
-        );
-        return bonusEntity.getValue(addressToEntity(from));
+        // MiniGameBonusEntity bonusEntity = MiniGameBonusEntity(
+        //     root.getSystemAddress(MiniGameBonusEntityID)
+        // );
+        return MiniGameBonusTable.get(from);
+        // return bonusEntity.getValue(addressToEntity(from));
     }
 }
