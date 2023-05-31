@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { deployUtil } from '../../../../scripts/utils/deploy.util';
 
-describe('MiniGameBonusSystem', function () {
+describe.only('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
   let miniGameBonusSystem: Contract;
 
@@ -20,6 +20,12 @@ describe('MiniGameBonusSystem', function () {
     miniGameBonusSystem = await upgrades.deployProxy(MiniGameBonusSystem, [
       gameRootContract.address,
     ]);
+
+    //grant role
+
+    await gameRootContract['registerSystem(address)'](
+      miniGameBonusSystem.address
+    );
 
     const [owner] = await ethers.getSigners();
     deployUtil.gameSystemGrantInternalRole(miniGameBonusSystem, [

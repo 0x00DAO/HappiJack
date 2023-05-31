@@ -12,6 +12,9 @@ import {IRoot} from "./interface/IRoot.sol";
 import {IStore} from "./interface/IStore.sol";
 
 import {GameStore} from "./GameStore.sol";
+import {BaseComponent} from "./BaseComponent.sol";
+
+import {LibComponentType} from "./LibComponentType.sol";
 
 uint256 constant ID = uint256(keccak256("game.root.id"));
 
@@ -71,9 +74,23 @@ contract GameRoot is
     mapping(uint256 => address) internal systems;
 
     function registerSystem(
+        address systemAddress
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(systemAddress != address(0), "System address is zero");
+        BaseComponent component = BaseComponent(systemAddress);
+        require(
+            component.componentType() == LibComponentType.ComponentType.System,
+            "Not a system"
+        );
+        uint256 systemId = component.id();
+        registerSystem(systemId, systemAddress);
+    }
+
+    function registerSystem(
         uint256 systemId,
         address systemAddress
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(systemAddress != address(0), "System address is zero");
         require(systems[systemId] == address(0), "System already registered");
         systems[systemId] = systemAddress;
     }
