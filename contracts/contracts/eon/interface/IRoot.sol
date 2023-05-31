@@ -2,7 +2,7 @@
 pragma solidity ^0.8.9;
 
 interface IRoot {
-    function registerSystem(address systemAddress) external;
+    function registerSystemWithAddress(address systemAddress) external;
 
     function registerSystem(uint256 systemId, address systemAddress) external;
 

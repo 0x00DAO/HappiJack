@@ -58,13 +58,17 @@ contract MiniGameBonusSystem is
     /// custom logic here
 
     function winBonusExternal(address from, uint256 amount) external {
-        winBonus(from, amount);
+        _winBonus(from, amount);
     }
 
     function winBonus(
         address from,
         uint256 amount
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        _winBonus(from, amount);
+    }
+
+    function _winBonus(address from, uint256 amount) internal {
         uint256 bonus = getBonusByAdddress(from);
         MiniGameBonusTable.set(from, bonus + amount);
     }

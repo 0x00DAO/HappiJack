@@ -74,7 +74,7 @@ contract GameRoot is
     mapping(uint256 => address) internal systems;
     mapping(address => uint256) internal systemIds;
 
-    function registerSystem(
+    function registerSystemWithAddress(
         address systemAddress
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systemAddress != address(0), "System address is zero");

@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { deployUtil } from '../../../../scripts/utils/deploy.util';
 
-describe.only('MiniGameBonusSystem', function () {
+describe('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
   let miniGameBonusSystem: Contract;
 
@@ -22,15 +22,14 @@ describe.only('MiniGameBonusSystem', function () {
     ]);
 
     //grant role
-
-    await gameRootContract['registerSystem(address)'](
+    await gameRootContract.registerSystemWithAddress(
       miniGameBonusSystem.address
     );
 
-    const [owner] = await ethers.getSigners();
-    deployUtil.gameSystemGrantInternalRole(miniGameBonusSystem, [
-      owner.address,
-    ]);
+    // const [owner] = await ethers.getSigners();
+    // deployUtil.gameSystemGrantInternalRole(miniGameBonusSystem, [
+    // owner.address,
+    // ]);
 
     await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
       miniGameBonusSystem.address,
