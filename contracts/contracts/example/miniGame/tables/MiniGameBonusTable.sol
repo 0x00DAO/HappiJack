@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 import {IStore} from "../../../eon/interface/IStore.sol";
 import {System} from "../../../eon/System.sol";
+import {StoreDelegate} from "../../../eon/StoreDelegate.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(abi.encodePacked("tableId", "MiniGameBonusTable"))
@@ -15,7 +16,7 @@ library MiniGameBonusTable {
         bytes32[] memory _keyTuple = new bytes32[](2);
         _keyTuple[0] = bytes32(uint256(uint160((owner))));
 
-        IStore(address(System(address(this)).getRoot())).setField(
+        StoreDelegate.Store().setField(
             _tableId,
             _keyTuple,
             0,
@@ -28,8 +29,11 @@ library MiniGameBonusTable {
         bytes32[] memory _keyTuple = new bytes32[](2);
         _keyTuple[0] = bytes32(uint256(uint160((owner))));
 
-        bytes memory _blob = IStore(address(System(address(this)).getRoot()))
-            .getField(_tableId, _keyTuple, 0);
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            0
+        );
 
         if (_blob.length == 0) return 0;
         return abi.decode(_blob, (uint256));

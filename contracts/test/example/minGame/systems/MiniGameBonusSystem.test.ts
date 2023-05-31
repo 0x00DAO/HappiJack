@@ -26,8 +26,6 @@ describe('MiniGameBonusSystem', function () {
       owner.address,
     ]);
 
-    //deploy entity
-
     await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
       miniGameBonusSystem.address,
     ]);
