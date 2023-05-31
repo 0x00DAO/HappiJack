@@ -6,12 +6,13 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import {System} from "../../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import {MiniGameBonusEntity, ID as MiniGameBonusEntityID} from "../tables/MiniGameBonusEntity.sol";
 import {addressToEntity, entityToAddress} from "../../../eon/utils.sol";
 
-import {System} from "../../../eon/System.sol";
+import {MiniGameBonusTable} from "../tables/MiniGameBonusTable.sol";
 
 uint256 constant ID = uint256(keccak256("game.systems.MiniGameBonusSystem"));
 
@@ -71,6 +72,8 @@ contract MiniGameBonusSystem is
 
         uint256 bonus = bonusEntity.getValue(addressToEntity(from));
         bonusEntity.set(addressToEntity(from), bonus + amount);
+
+        MiniGameBonusTable.set(from, bonus + amount);
     }
 
     function getBonus() public view returns (uint256) {
