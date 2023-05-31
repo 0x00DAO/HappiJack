@@ -21,6 +21,10 @@ describe('MiniGameBonusSystem', function () {
       gameRootContract.address,
     ]);
 
+    await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
+      miniGameBonusSystem.address,
+    ]);
+
     //grant role
     await gameRootContract.registerSystemWithAddress(
       miniGameBonusSystem.address
@@ -30,10 +34,6 @@ describe('MiniGameBonusSystem', function () {
     // deployUtil.gameSystemGrantInternalRole(miniGameBonusSystem, [
     // owner.address,
     // ]);
-
-    await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
-      miniGameBonusSystem.address,
-    ]);
   });
   it('should be deployed', async function () {
     expect(miniGameBonusSystem.address).to.not.equal(null);
