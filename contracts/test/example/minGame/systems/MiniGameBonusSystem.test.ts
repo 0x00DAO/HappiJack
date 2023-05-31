@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { deployUtil } from '../../../../scripts/utils/deploy.util';
 
-describe.only('MiniGameBonusSystem', function () {
+describe('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
   let miniGameBonusEntity: Contract;
   let miniGameBonusSystem: Contract;
@@ -49,6 +49,11 @@ describe.only('MiniGameBonusSystem', function () {
   describe('winBonus', function () {
     it('success: should be able to win bonus', async function () {
       const [owner, addr1] = await ethers.getSigners();
+      const amount = ethers.utils.parseEther('1');
+      await miniGameBonusSystem.winBonusExternal(addr1.address, amount);
+
+      const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
+      expect(getBonus).to.equal(amount);
     });
   });
 });
