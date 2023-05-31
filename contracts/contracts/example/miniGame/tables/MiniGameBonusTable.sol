@@ -13,7 +13,7 @@ bytes32 constant MiniGameBonusTableId = _tableId;
 library MiniGameBonusTable {
     /** Set amount */
     function set(address owner, uint256 amount) internal {
-        bytes32[] memory _keyTuple = new bytes32[](2);
+        bytes32[] memory _keyTuple = new bytes32[](1);
         _keyTuple[0] = bytes32(uint256(uint160((owner))));
 
         StoreDelegate.Store().setField(
@@ -26,7 +26,7 @@ library MiniGameBonusTable {
 
     /** Get amount */
     function get(address owner) internal view returns (uint256 amount) {
-        bytes32[] memory _keyTuple = new bytes32[](2);
+        bytes32[] memory _keyTuple = new bytes32[](1);
         _keyTuple[0] = bytes32(uint256(uint160((owner))));
 
         bytes memory _blob = StoreDelegate.Store().getField(

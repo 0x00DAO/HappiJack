@@ -70,7 +70,10 @@ contract GameRoot is
 
     mapping(uint256 => address) internal systems;
 
-    function registerSystem(uint256 systemId, address systemAddress) public {
+    function registerSystem(
+        uint256 systemId,
+        address systemAddress
+    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systems[systemId] == address(0), "System already registered");
         systems[systemId] = systemAddress;
     }

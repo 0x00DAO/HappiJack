@@ -20,18 +20,7 @@ contract System is Initializable, ContextUpgradeable, BaseComponent {
         __System_init_unchained();
     }
 
-    function __System_init_unchained() internal onlyInitializing {
-        if (address(root) != address(0)) {
-            root.registerSystem(id, address(this));
-        }
-    }
-
-    function registerToRoot(address root_) internal {
-        if (root_ == address(0)) {
-            root = IRoot(root_);
-        }
-        root.registerSystem(id, address(this));
-    }
+    function __System_init_unchained() internal onlyInitializing {}
 
     function getSystemAddress(
         uint256 systemId
