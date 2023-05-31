@@ -72,6 +72,7 @@ contract GameRoot is
     }
 
     mapping(uint256 => address) internal systems;
+    mapping(address => uint256) internal systemIds;
 
     function registerSystem(
         address systemAddress
@@ -92,21 +93,30 @@ contract GameRoot is
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systemAddress != address(0), "System address is zero");
         require(systems[systemId] == address(0), "System already registered");
+
         systems[systemId] = systemAddress;
+        systemIds[systemAddress] = systemId;
     }
 
     function getSystemAddress(
         uint256 systemId
     ) external view returns (address) {
-        require(systems[systemId] != address(0), "System not registered");
         return systems[systemId];
+    }
+
+    function isSystemAddress(
+        address systemAddress
+    ) external view returns (bool) {
+        return systemIds[systemAddress] != 0;
     }
 
     function deleteSystem(
         uint256 systemId
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systems[systemId] != address(0), "System not registered");
+        address systemAddress = systems[systemId];
         delete systems[systemId];
+        delete systemIds[systemAddress];
     }
 
     function setField(
