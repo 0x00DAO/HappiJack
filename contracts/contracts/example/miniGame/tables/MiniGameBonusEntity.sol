@@ -5,18 +5,20 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
-import "../contract-upgradeable/VersionUpgradeable.sol";
-import {IRoot} from "./interface/IRoot.sol";
+import {IRoot} from "../../../eon/interface/IRoot.sol";
+import {Component} from "../../../eon/Component.sol";
+import {ComponentWithEntity} from "../../../eon/ComponentWithEntity.sol";
 
-contract GameRoot is
+uint256 constant ID = uint256(keccak256("game.entities.MiniGameBonusEntity"));
+
+contract MiniGameBonusEntity is
     Initializable,
     PausableUpgradeable,
     AccessControlUpgradeable,
     UUPSUpgradeable,
-    VersionUpgradeable,
-    IRoot
+    Component,
+    ComponentWithEntity
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -26,10 +28,11 @@ contract GameRoot is
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    function initialize(address root_) public initializer {
         __Pausable_init();
         __AccessControl_init();
         __UUPSUpgradeable_init();
+        __Component_init(ID, root_);
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
@@ -50,26 +53,14 @@ contract GameRoot is
 
     /// custom logic here
 
-    function _version() internal pure override returns (uint256) {
-        return 1;
+    function set(uint256 entity, uint256 value) public virtual {
+        set(entity, abi.encode(value));
     }
 
-    mapping(uint256 => address) internal systems;
-
-    function registerSystem(uint256 systemId, address systemAddress) public {
-        require(systems[systemId] == address(0), "System already registered");
-        systems[systemId] = systemAddress;
-    }
-
-    function getSystemAddress(uint256 systemId) public view returns (address) {
-        require(systems[systemId] != address(0), "System not registered");
-        return systems[systemId];
-    }
-
-    function deleteSystem(
-        uint256 systemId
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(systems[systemId] != address(0), "System not registered");
-        delete systems[systemId];
+    function getValue(uint256 entity) public view virtual returns (uint256) {
+        if (!has(entity)) {
+            return 0;
+        }
+        return abi.decode(getRawValue(entity), (uint256));
     }
 }
