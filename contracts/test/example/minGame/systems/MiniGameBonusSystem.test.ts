@@ -21,14 +21,15 @@ describe('MiniGameBonusSystem', function () {
       gameRootContract.address,
     ]);
 
-    await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
-      miniGameBonusSystem.address,
-    ]);
-
-    //grant role
+    //register system
     await gameRootContract.registerSystemWithAddress(
       miniGameBonusSystem.address
     );
+
+    //grant role to write
+    await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
+      miniGameBonusSystem.address,
+    ]);
 
     // const [owner] = await ethers.getSigners();
     // deployUtil.gameSystemGrantInternalRole(miniGameBonusSystem, [
