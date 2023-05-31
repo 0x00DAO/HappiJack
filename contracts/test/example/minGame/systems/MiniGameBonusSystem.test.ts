@@ -5,7 +5,6 @@ import { deployUtil } from '../../../../scripts/utils/deploy.util';
 
 describe('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
-  let miniGameBonusEntity: Contract;
   let miniGameBonusSystem: Contract;
 
   beforeEach(async function () {
@@ -29,18 +28,6 @@ describe('MiniGameBonusSystem', function () {
 
     //deploy entity
 
-    const MiniGameBonusEntity = await ethers.getContractFactory(
-      'MiniGameBonusEntity'
-    );
-    miniGameBonusEntity = await upgrades.deployProxy(MiniGameBonusEntity, [
-      gameRootContract.address,
-    ]);
-    await miniGameBonusEntity.deployed();
-
-    //grant write permission to entity
-    await deployUtil.gameEntityGrantWriteRole(miniGameBonusEntity, [
-      miniGameBonusSystem.address,
-    ]);
     await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
       miniGameBonusSystem.address,
     ]);
