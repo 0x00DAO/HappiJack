@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {LibComponentType} from "./LibComponentType.sol";
 
@@ -31,6 +30,10 @@ abstract contract BaseComponent is Initializable, ContextUpgradeable {
         id = id_;
         componentType = componentType_;
         root = IRoot(root_);
+    }
+
+    function _root() internal view returns (IRoot) {
+        return root;
     }
 
     /**

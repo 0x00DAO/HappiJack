@@ -56,19 +56,21 @@ contract GameRoot is
 
     mapping(uint256 => address) internal systems;
 
-    function registerSystem(uint256 systemId, address systemAddress) public {
+    function registerSystem(uint256 systemId, address systemAddress) external {
         require(systems[systemId] == address(0), "System already registered");
         systems[systemId] = systemAddress;
     }
 
-    function getSystemAddress(uint256 systemId) public view returns (address) {
+    function getSystemAddress(
+        uint256 systemId
+    ) external view returns (address) {
         require(systems[systemId] != address(0), "System not registered");
         return systems[systemId];
     }
 
     function deleteSystem(
         uint256 systemId
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systems[systemId] != address(0), "System not registered");
         delete systems[systemId];
     }
