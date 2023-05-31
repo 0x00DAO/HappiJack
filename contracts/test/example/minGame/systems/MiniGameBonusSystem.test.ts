@@ -41,6 +41,9 @@ describe('MiniGameBonusSystem', function () {
     await deployUtil.gameEntityGrantWriteRole(miniGameBonusEntity, [
       miniGameBonusSystem.address,
     ]);
+    await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
+      miniGameBonusSystem.address,
+    ]);
   });
   it('should be deployed', async function () {
     expect(miniGameBonusSystem.address).to.not.equal(null);

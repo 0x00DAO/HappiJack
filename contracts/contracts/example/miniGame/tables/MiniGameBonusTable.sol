@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+import {IStoreWrite} from "../../../eon/interface/IStore.sol";
+import {System} from "../../../eon/System.sol";
+
 bytes32 constant _tableId = bytes32(
     keccak256(abi.encodePacked("tableId", "MiniGameBonusTable"))
 );
@@ -12,6 +15,12 @@ library MiniGameBonusTable {
         bytes32[] memory _keyTuple = new bytes32[](2);
         _keyTuple[0] = bytes32(uint256(uint160((owner))));
 
+        IStoreWrite(address(System(address(this)).getRoot())).setField(
+            _tableId,
+            _keyTuple,
+            0,
+            abi.encodePacked((amount))
+        );
         // StoreSwitch.setField(
         //     _tableId,
         //     _keyTuple,

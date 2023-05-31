@@ -32,7 +32,7 @@ abstract contract BaseComponent is Initializable, ContextUpgradeable {
         root = IRoot(root_);
     }
 
-    function _root() internal view returns (IRoot) {
+    function getRoot() public view returns (IRoot) {
         return root;
     }
 
