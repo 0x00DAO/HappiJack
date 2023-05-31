@@ -9,6 +9,9 @@ import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 import "../core/contract-upgradeable/VersionUpgradeable.sol";
 import {IRoot} from "./interface/IRoot.sol";
+import {GameStore} from "./GameStore.sol";
+
+uint256 constant ID = uint256(keccak256("game.root.id"));
 
 contract GameRoot is
     Initializable,
@@ -16,6 +19,7 @@ contract GameRoot is
     AccessControlUpgradeable,
     UUPSUpgradeable,
     VersionUpgradeable,
+    GameStore,
     IRoot
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -34,6 +38,8 @@ contract GameRoot is
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(UPGRADER_ROLE, msg.sender);
+
+        __initailize();
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
@@ -50,13 +56,18 @@ contract GameRoot is
 
     /// custom logic here
 
+    function __initailize() internal {
+        __Component_init(ID, address(0));
+        root = this;
+    }
+
     function _version() internal pure override returns (uint256) {
         return 1;
     }
 
     mapping(uint256 => address) internal systems;
 
-    function registerSystem(uint256 systemId, address systemAddress) external {
+    function registerSystem(uint256 systemId, address systemAddress) public {
         require(systems[systemId] == address(0), "System already registered");
         systems[systemId] = systemAddress;
     }
@@ -73,5 +84,14 @@ contract GameRoot is
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systems[systemId] != address(0), "System not registered");
         delete systems[systemId];
+    }
+
+    function setField(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 schemaIndex,
+        bytes memory data
+    ) public {
+        _setField(tableId, key, schemaIndex, data);
     }
 }
