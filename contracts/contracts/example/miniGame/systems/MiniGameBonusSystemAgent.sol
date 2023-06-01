@@ -54,7 +54,9 @@ contract MiniGameBonusSystemAgent is
     /// custom logic here
 
     function winBonus(address from, uint256 amount) external {
-        MiniGameBonusSystem(getRoot().getSystemAddress(MiniGameBonusSystemID))
-            .winBonus(from, amount);
+        MiniGameBonusSystem(getSystemAddress(MiniGameBonusSystemID)).winBonus(
+            from,
+            amount
+        );
     }
 }

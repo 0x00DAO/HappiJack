@@ -67,7 +67,7 @@ contract GameRoot is
     function __initailize() internal {}
 
     function _version() internal pure override returns (uint256) {
-        return 1;
+        return 2;
     }
 
     /// system management
