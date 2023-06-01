@@ -5,7 +5,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-import {LibComponentType} from "./LibComponentType.sol";
+import {ComponentType} from "./ComponentType.sol";
 import {BaseComponent} from "./BaseComponent.sol";
 import {SystemAccessControl} from "./SystemAccessControl.sol";
 
@@ -21,7 +21,7 @@ contract System is
         uint256 id_,
         address root_
     ) internal onlyInitializing {
-        __BaseComponent_init(id_, root_, LibComponentType.ComponentType.System);
+        __BaseComponent_init(id_, root_, ComponentType.System);
         __SystemAccessControl_init();
         __System_init_unchained();
     }

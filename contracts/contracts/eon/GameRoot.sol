@@ -12,7 +12,7 @@ import {GameStore} from "./GameStore.sol";
 import {BaseComponent} from "./BaseComponent.sol";
 import {IComponent} from "./interface/IComponent.sol";
 
-import {LibComponentType} from "./LibComponentType.sol";
+import {ComponentType} from "./ComponentType.sol";
 
 import {GameRootSystemsTable} from "./tables/GameRootSystemsTable.sol";
 import {GameRootSystemsIndexTable} from "./tables/GameRootSystemsIndexTable.sol";

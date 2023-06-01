@@ -7,7 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import {IRoot} from "./interface/IRoot.sol";
 import {BaseComponent} from "./BaseComponent.sol";
-import {LibComponentType} from "./LibComponentType.sol";
+import {ComponentType} from "./ComponentType.sol";
 
 uint256 constant ID = uint256(keccak256("game.gamestore.GameStore"));
 uint256 constant SLOT = uint256(keccak256("game.gamestore.slot"));
@@ -35,7 +35,7 @@ contract GameStore is
         address root_
     ) internal onlyInitializing {
         __AccessControl_init();
-        __BaseComponent_init(id_, root_, LibComponentType.ComponentType.System);
+        __BaseComponent_init(id_, root_, ComponentType.System);
         __GameStore_init_unchained(id_, root_);
     }
 

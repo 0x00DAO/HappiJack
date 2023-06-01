@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import {LibComponentType} from "./LibComponentType.sol";
+import {ComponentType} from "./ComponentType.sol";
 import {IComponent} from "./interface/IComponent.sol";
 
 import {IRoot} from "./interface/IRoot.sol";
@@ -14,15 +14,15 @@ abstract contract BaseComponent is
     IComponent
 {
     uint256 public id;
-    LibComponentType.ComponentType public componentType;
+    ComponentType public componentType;
     IRoot internal root;
 
-    // using LibComponentType for LibComponentType.ComponentType;
+    // using LibComponentType for ComponentType;
 
     function __BaseComponent_init(
         uint256 id_,
         address root_,
-        LibComponentType.ComponentType componentType_
+        ComponentType componentType_
     ) internal onlyInitializing {
         __BaseComponent_init_unchained(id_, root_, componentType_);
     }
@@ -30,7 +30,7 @@ abstract contract BaseComponent is
     function __BaseComponent_init_unchained(
         uint256 id_,
         address root_,
-        LibComponentType.ComponentType componentType_
+        ComponentType componentType_
     ) internal onlyInitializing {
         id = id_;
         componentType = componentType_;
@@ -41,12 +41,7 @@ abstract contract BaseComponent is
         return id;
     }
 
-    function getComponentType()
-        public
-        view
-        virtual
-        returns (LibComponentType.ComponentType)
-    {
+    function getComponentType() public view virtual returns (ComponentType) {
         return componentType;
     }
 
