@@ -51,7 +51,7 @@ describe('MiniGameBonusSystem', function () {
     });
   });
 
-  describe.only('Access Control', function () {
+  describe('Access Control', function () {
     it('fail: should not be able to win bonus', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');
@@ -71,6 +71,7 @@ describe('MiniGameBonusSystem', function () {
         ethers.utils.id(owner.address),
         owner.address
       );
+
       const amount = ethers.utils.parseEther('1');
       await miniGameBonusSystem.winBonus(addr1.address, amount);
 

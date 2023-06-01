@@ -70,9 +70,9 @@ contract GameRoot is
         return 1;
     }
 
-    function registerSystemWithAddress(
-        address systemAddress
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    /// system management
+
+    function registerSystemWithAddress(address systemAddress) public {
         uint256 systemId = getSystemId(systemAddress);
         registerSystem(systemId, systemAddress);
     }

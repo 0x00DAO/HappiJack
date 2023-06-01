@@ -11,4 +11,6 @@ interface IRoot {
     function isSystemAddress(
         address systemAddress
     ) external view returns (bool);
+
+    function deleteSystem(uint256 systemId) external;
 }

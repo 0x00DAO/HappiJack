@@ -5,6 +5,8 @@ import {IStore} from "../interface/IStore.sol";
 import {System} from "..//System.sol";
 import {StoreDelegate} from "../StoreDelegate.sol";
 
+import {addressToEntity, entityToAddress} from "../utils.sol";
+
 bytes32 constant _tableId = bytes32(
     keccak256(abi.encodePacked("tableId", "eon", "GameRootSystemsTable"))
 );
@@ -27,7 +29,7 @@ library GameRootSystemsTable {
             _tableId,
             _keyTuple,
             0,
-            abi.encodePacked(systemAddress)
+            abi.encodePacked(addressToEntity(systemAddress))
         );
     }
 
@@ -44,7 +46,7 @@ library GameRootSystemsTable {
         );
 
         if (_blob.length == 0) return address(0);
-        return abi.decode(_blob, (address));
+        return entityToAddress(abi.decode(_blob, (uint256)));
     }
 
     /** Delete address */
