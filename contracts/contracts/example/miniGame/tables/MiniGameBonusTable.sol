@@ -11,6 +11,17 @@ bytes32 constant _tableId = bytes32(
 bytes32 constant MiniGameBonusTableId = _tableId;
 
 library MiniGameBonusTable {
+    /** Get the table's metadata */
+    function getMetadata()
+        internal
+        pure
+        returns (string memory, string[] memory)
+    {
+        string[] memory _fieldNames = new string[](1);
+        _fieldNames[0] = "amount"; // uint256
+        return ("MiniGameBonus", _fieldNames);
+    }
+
     function entityKeys(
         address owner
     ) internal pure returns (bytes32[] memory) {
@@ -49,7 +60,6 @@ library MiniGameBonusTable {
     /** Delete amount */
     function deleteRecord(address owner) internal {
         bytes32[] memory _keyTuple = entityKeys(owner);
-
         StoreDelegate.Store().deleteRecord(_tableId, _keyTuple, 1);
     }
 }
