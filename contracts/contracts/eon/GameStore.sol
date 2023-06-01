@@ -129,14 +129,8 @@ contract GameStore is
         set(entity, abi.encode(value));
     }
 
-    // function getValue(uint256 entity) public view virtual returns (uint256) {
-    //     if (!has(entity)) {
-    //         return 0;
-    //     }
-    //     return abi.decode(getRawValue(entity), (uint256));
-    // }
-
-    function getEntityId(
+    // as record operations are not supported in bare component, we use a slot to store the tableId
+    function getRecordId(
         bytes32 tableId,
         bytes32[] memory key,
         uint8 columnIndex
@@ -150,7 +144,7 @@ contract GameStore is
         uint8 columnIndex,
         bytes memory data
     ) internal {
-        uint256 entityId = getEntityId(tableId, key, columnIndex);
+        uint256 entityId = getRecordId(tableId, key, columnIndex);
         set(entityId, data);
     }
 
@@ -159,7 +153,7 @@ contract GameStore is
         bytes32[] memory key,
         uint8 columnIndex
     ) internal view returns (bytes memory) {
-        uint256 entityId = getEntityId(tableId, key, columnIndex);
+        uint256 entityId = getRecordId(tableId, key, columnIndex);
         return getRawValue(entityId);
     }
 
@@ -169,7 +163,7 @@ contract GameStore is
         uint8 columnCount
     ) internal {
         for (uint8 i = 0; i < columnCount; i++) {
-            uint256 entityId = getEntityId(tableId, key, i);
+            uint256 entityId = getRecordId(tableId, key, i);
             remove(entityId);
         }
     }

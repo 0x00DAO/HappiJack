@@ -2,21 +2,20 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 import "../core/contract-upgradeable/VersionUpgradeable.sol";
 import {IRoot} from "./interface/IRoot.sol";
 import {IStore} from "./interface/IStore.sol";
 
 import {GameStore} from "./GameStore.sol";
 import {BaseComponent} from "./BaseComponent.sol";
+import {IComponent} from "./interface/IComponent.sol";
 
 import {LibComponentType} from "./LibComponentType.sol";
 
-import {SYSTEM_INTERNAL_ROLE_} from "./SystemAccessControl.sol";
+import {GameRootSystemsTable} from "./tables/GameRootSystemsTable.sol";
+import {GameRootSystemsIndexTable} from "./tables/GameRootSystemsIndexTable.sol";
 
 uint256 constant ID = uint256(keccak256("game.root.id"));
 
@@ -46,6 +45,8 @@ contract GameRoot is
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(UPGRADER_ROLE, msg.sender);
 
+        _grantRole(COMPONENT_WRITE_ROLE, address(this));
+
         __initailize();
     }
 
@@ -63,9 +64,6 @@ contract GameRoot is
 
     /// custom logic here
 
-    mapping(uint256 => address) internal systems;
-    mapping(address => uint256) internal systemIds;
-
     function __initailize() internal {}
 
     function _version() internal pure override returns (uint256) {
@@ -75,13 +73,7 @@ contract GameRoot is
     function registerSystemWithAddress(
         address systemAddress
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(systemAddress != address(0), "System address is zero");
-        BaseComponent component = BaseComponent(systemAddress);
-        require(
-            component.componentType() == LibComponentType.ComponentType.System,
-            "Not a system"
-        );
-        uint256 systemId = component.id();
+        uint256 systemId = getSystemId(systemAddress);
         registerSystem(systemId, systemAddress);
     }
 
@@ -90,31 +82,49 @@ contract GameRoot is
         address systemAddress
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         require(systemAddress != address(0), "System address is zero");
-        require(systems[systemId] == address(0), "System already registered");
+        require(
+            GameRootSystemsTable.get(systemId) == address(0),
+            "System already registered"
+        );
 
-        systems[systemId] = systemAddress;
-        systemIds[systemAddress] = systemId;
+        GameRootSystemsTable.set(systemId, systemAddress);
+        GameRootSystemsIndexTable.set(systemAddress, systemId);
     }
 
     function getSystemAddress(
         uint256 systemId
     ) external view returns (address) {
-        return systems[systemId];
+        return GameRootSystemsTable.get(systemId);
+    }
+
+    function getSystemId(
+        address systemAddress
+    ) internal view returns (uint256) {
+        require(systemAddress != address(0), "System address is zero");
+        IComponent component = IComponent(systemAddress);
+        //check if systemAddress is a component
+        if (!component.isComponent()) return 0;
+
+        return component.getId();
     }
 
     function isSystemAddress(
         address systemAddress
     ) external view returns (bool) {
-        return systemIds[systemAddress] != 0;
+        if (systemAddress == address(0)) return false;
+        uint256 systemId = GameRootSystemsIndexTable.get(systemAddress);
+        if (systemId == 0) return false;
+        return GameRootSystemsTable.get(systemId) == systemAddress;
     }
 
     function deleteSystem(
         uint256 systemId
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(systems[systemId] != address(0), "System not registered");
-        address systemAddress = systems[systemId];
-        delete systems[systemId];
-        delete systemIds[systemAddress];
+        address systemAddress = GameRootSystemsTable.get(systemId);
+        require(systemAddress != address(0), "System not registered");
+
+        GameRootSystemsTable.deleteRecord(systemId);
+        GameRootSystemsIndexTable.deleteRecord(systemAddress);
     }
 
     function setField(

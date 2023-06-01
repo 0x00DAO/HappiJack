@@ -51,10 +51,11 @@ describe('MiniGameBonusSystem', function () {
     });
   });
 
-  describe('Access Control', function () {
+  describe.only('Access Control', function () {
     it('fail: should not be able to win bonus', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');
+
       await expect(
         miniGameBonusSystem.winBonus(addr1.address, amount)
       ).to.be.revertedWith(
@@ -75,6 +76,20 @@ describe('MiniGameBonusSystem', function () {
 
       const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
       expect(getBonus).to.equal(amount);
+    });
+
+    it('fail: should be able to win bonus', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+
+      //register owner as system
+
+      const amount = ethers.utils.parseEther('1');
+
+      await expect(
+        miniGameBonusSystem.winBonusExternalSkipRoleCheck(addr1.address, amount)
+      ).to.be.revertedWith(
+        'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7'
+      );
     });
   });
 

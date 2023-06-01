@@ -58,6 +58,13 @@ contract MiniGameBonusSystem is
         _winBonus(from, amount);
     }
 
+    function winBonusExternalSkipRoleCheck(
+        address from,
+        uint256 amount
+    ) external {
+        winBonus(from, amount);
+    }
+
     function winBonus(
         address from,
         uint256 amount

@@ -4,10 +4,15 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {LibComponentType} from "./LibComponentType.sol";
+import {IComponent} from "./interface/IComponent.sol";
 
 import {IRoot} from "./interface/IRoot.sol";
 
-abstract contract BaseComponent is Initializable, ContextUpgradeable {
+abstract contract BaseComponent is
+    Initializable,
+    ContextUpgradeable,
+    IComponent
+{
     uint256 public id;
     LibComponentType.ComponentType public componentType;
     IRoot internal root;
@@ -32,8 +37,25 @@ abstract contract BaseComponent is Initializable, ContextUpgradeable {
         root = IRoot(root_);
     }
 
-    function getRoot() public view returns (IRoot) {
+    function getId() public view virtual returns (uint256) {
+        return id;
+    }
+
+    function getComponentType()
+        public
+        view
+        virtual
+        returns (LibComponentType.ComponentType)
+    {
+        return componentType;
+    }
+
+    function getRoot() public view virtual returns (IRoot) {
         return root;
+    }
+
+    function isComponent() public pure virtual returns (bool) {
+        return true;
     }
 
     /**
