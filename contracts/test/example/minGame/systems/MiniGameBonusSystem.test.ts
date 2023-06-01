@@ -6,6 +6,7 @@ import { deployUtil } from '../../../../scripts/utils/deploy.util';
 describe('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
   let miniGameBonusSystem: Contract;
+  let miniGameBonusSystemAgent: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -25,6 +26,21 @@ describe('MiniGameBonusSystem', function () {
     await deployUtil.gameRegisterSystem(
       gameRootContract,
       miniGameBonusSystem.address
+    );
+
+    //deploy Agent
+    const MiniGameBonusSystemAgent = await ethers.getContractFactory(
+      'MiniGameBonusSystemAgent'
+    );
+    miniGameBonusSystemAgent = await upgrades.deployProxy(
+      MiniGameBonusSystemAgent,
+      [gameRootContract.address]
+    );
+
+    //register agent
+    await deployUtil.gameRegisterSystem(
+      gameRootContract,
+      miniGameBonusSystemAgent.address
     );
   });
   it('should be deployed', async function () {
@@ -108,6 +124,17 @@ describe('MiniGameBonusSystem', function () {
       ).to.be.revertedWith(
         'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0xa839ac79d0c3dc042356f5145cc46d683e75a99618755bb05e5e2d9ba0fba12b'
       );
+    });
+  });
+
+  describe('MiniGameBonusSystemAgent Access Control', function () {
+    it('success: should be able to bonus', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const amount = ethers.utils.parseEther('1');
+      await miniGameBonusSystemAgent.winBonus(addr1.address, amount);
+
+      const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
+      expect(getBonus).to.equal(amount);
     });
   });
 });
