@@ -7,7 +7,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import {IRoot} from "./interface/IRoot.sol";
 import {BaseComponent} from "./BaseComponent.sol";
-import {ComponentWithEntity} from "./ComponentWithEntity.sol";
 import {LibComponentType} from "./LibComponentType.sol";
 
 uint256 constant ID = uint256(keccak256("game.gamestore.GameStore"));
