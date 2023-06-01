@@ -7,4 +7,8 @@ interface IRoot {
     function registerSystem(uint256 systemId, address systemAddress) external;
 
     function getSystemAddress(uint256 systemId) external view returns (address);
+
+    function isSystemAddress(
+        address systemAddress
+    ) external view returns (bool);
 }

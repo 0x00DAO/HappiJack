@@ -3,15 +3,20 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+
 import {LibComponentType} from "./LibComponentType.sol";
 import {BaseComponent} from "./BaseComponent.sol";
+import {SystemAccessControl} from "./SystemAccessControl.sol";
 
 import {IRoot} from "./interface/IRoot.sol";
 
-contract System is Initializable, ContextUpgradeable, BaseComponent {
-    bytes32 public constant SYSTEM_INTERNAL_ROLE =
-        keccak256("SYSTEM_INTERNAL_ROLE");
-
+contract System is
+    Initializable,
+    ContextUpgradeable,
+    BaseComponent,
+    SystemAccessControl
+{
     function __System_init(
         uint256 id_,
         address root_
