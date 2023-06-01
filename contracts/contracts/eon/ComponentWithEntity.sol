@@ -2,48 +2,17 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {LibComponentType} from "./LibComponentType.sol";
 import {Component} from "./Component.sol";
 
 import {IRoot} from "./interface/IRoot.sol";
 
-contract ComponentWithEntity is
-    Initializable,
-    ContextUpgradeable,
-    AccessControlUpgradeable,
-    Component
-{
+contract ComponentWithEntity is Initializable, ContextUpgradeable, Component {
     error ComponentWithEntity__NotImplemented();
 
     /** Mapping from entity id to value in this component */
     mapping(uint256 => bytes) internal entityToValue;
-
-    /**
-     * Set the given component value for the given entity.
-     * Registers the update in the World contract.
-     * Can only be called by addresses with write access to this component.
-     * @param entity Entity to set the value for.
-     * @param value Value to set for the given entity.
-     */
-
-    function set(
-        uint256 entity,
-        bytes memory value
-    ) public onlyRole(COMPONENT_WRITE_ROLE) {
-        _set(entity, value);
-    }
-
-    /**
-     * Remove the given entity from this component.
-     * Registers the update in the World contract.
-     * Can only be called by addresses with write access to this component.
-     * @param entity Entity to remove from this component.
-     */
-    function remove(uint256 entity) public onlyRole(COMPONENT_WRITE_ROLE) {
-        _remove(entity);
-    }
 
     /**
      * Check whether the given entity has a value in this component.

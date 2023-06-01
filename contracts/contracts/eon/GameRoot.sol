@@ -32,8 +32,6 @@ contract GameRoot is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
 
-    bytes32 public constant SYSTEM_INTERNAL_ROLE = SYSTEM_INTERNAL_ROLE_;
-
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
@@ -72,21 +70,6 @@ contract GameRoot is
 
     function _version() internal pure override returns (uint256) {
         return 1;
-    }
-
-    /**
-     * @dev Returns `true` if `account` has been granted `role`.
-     */
-    function hasRole(
-        bytes32 role,
-        address account
-    ) public view virtual override returns (bool) {
-        if (
-            role == SYSTEM_INTERNAL_ROLE && getRoot().isSystemAddress(account)
-        ) {
-            return true;
-        }
-        return AccessControlUpgradeable.hasRole(role, account);
     }
 
     function registerSystemWithAddress(
