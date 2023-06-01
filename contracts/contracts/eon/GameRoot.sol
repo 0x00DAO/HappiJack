@@ -23,7 +23,6 @@ uint256 constant ID = uint256(keccak256("game.root.id"));
 contract GameRoot is
     Initializable,
     PausableUpgradeable,
-    AccessControlUpgradeable,
     UUPSUpgradeable,
     VersionUpgradeable,
     GameStore,
@@ -42,7 +41,7 @@ contract GameRoot is
 
     function initialize() public initializer {
         __Pausable_init();
-        __AccessControl_init();
+        __GameStore_init(ID, address(this));
         __UUPSUpgradeable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -69,10 +68,7 @@ contract GameRoot is
     mapping(uint256 => address) internal systems;
     mapping(address => uint256) internal systemIds;
 
-    function __initailize() internal {
-        __Component_init(ID, address(0));
-        root = this;
-    }
+    function __initailize() internal {}
 
     function _version() internal pure override returns (uint256) {
         return 1;
@@ -143,7 +139,7 @@ contract GameRoot is
         bytes32[] memory key,
         uint8 schemaIndex,
         bytes memory data
-    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+    ) public {
         _setField(tableId, key, schemaIndex, data);
     }
 
