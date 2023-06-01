@@ -62,7 +62,7 @@ contract MiniGameBonusSystem is
         address from,
         uint256 amount
     ) external {
-        winBonus(from, amount);
+        this.winBonus(from, amount);
     }
 
     function winBonus(
