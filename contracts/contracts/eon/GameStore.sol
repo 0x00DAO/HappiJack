@@ -25,7 +25,7 @@ contract GameStore is
         keccak256("COMPONENT_READ_ROLE");
 
     /// custom logic here
-    error ComponentWithEntity__NotImplemented();
+    error GameStore__NotImplemented();
 
     /** Mapping from entity id to value in this component */
     mapping(uint256 => bytes) internal entityToValue;
@@ -90,14 +90,14 @@ contract GameStore is
 
     /** Not implemented in BareComponent */
     function getEntities() public view virtual returns (uint256[] memory) {
-        revert ComponentWithEntity__NotImplemented();
+        revert GameStore__NotImplemented();
     }
 
     /** Not implemented in BareComponent */
     function getEntitiesWithValue(
         bytes memory
     ) public view virtual returns (uint256[] memory) {
-        revert ComponentWithEntity__NotImplemented();
+        revert GameStore__NotImplemented();
     }
 
     /**
@@ -123,9 +123,6 @@ contract GameStore is
     function _remove(uint256 entity) internal virtual {
         // Remove the entity from the mapping
         delete entityToValue[entity];
-
-        // Emit global event
-        // IWorld(world).registerComponentValueRemoved(entity);
     }
 
     function set(uint256 entity, uint256 value) public virtual {
@@ -141,9 +138,10 @@ contract GameStore is
 
     function getEntityId(
         bytes32 tableId,
-        bytes32[] memory key
+        bytes32[] memory key,
+        uint8 schemaIndex
     ) public pure returns (uint256) {
-        return uint256(keccak256(abi.encode(SLOT, tableId, key)));
+        return uint256(keccak256(abi.encode(SLOT, tableId, key, schemaIndex)));
     }
 
     function _setField(
@@ -152,7 +150,7 @@ contract GameStore is
         uint8 schemaIndex,
         bytes memory data
     ) internal {
-        uint256 entityId = getEntityId(tableId, key);
+        uint256 entityId = getEntityId(tableId, key, schemaIndex);
         set(entityId, data);
     }
 
@@ -161,7 +159,7 @@ contract GameStore is
         bytes32[] memory key,
         uint8 schemaIndex
     ) internal view returns (bytes memory) {
-        uint256 entityId = getEntityId(tableId, key);
+        uint256 entityId = getEntityId(tableId, key, schemaIndex);
         return getRawValue(entityId);
     }
 }

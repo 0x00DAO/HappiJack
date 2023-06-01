@@ -77,4 +77,30 @@ describe('MiniGameBonusSystem', function () {
       expect(getBonus).to.equal(amount);
     });
   });
+
+  describe('GameRoot Access Control', function () {
+    it('fail: should not be able to setField', async function () {
+      //   function setField(
+      //     bytes32 tableId,
+      //     bytes32[] memory key,
+      //     uint8 schemaIndex,
+      //     bytes memory data
+      // ) public {
+      //     _setField(tableId, key, schemaIndex, data);
+      // }
+
+      const [owner, addr1] = await ethers.getSigners();
+      const amount = ethers.utils.parseEther('1');
+      await expect(
+        gameRootContract.setField(
+          ethers.utils.id(addr1.address),
+          [ethers.utils.id('bonus')],
+          0,
+          ethers.utils.defaultAbiCoder.encode(['uint256'], [amount])
+        )
+      ).to.be.revertedWith(
+        'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0xa839ac79d0c3dc042356f5145cc46d683e75a99618755bb05e5e2d9ba0fba12b'
+      );
+    });
+  });
 });
