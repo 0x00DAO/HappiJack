@@ -22,6 +22,7 @@ contract System is
         address root_
     ) internal onlyInitializing {
         __BaseComponent_init(id_, root_, LibComponentType.ComponentType.System);
+        __SystemAccessControl_init();
         __System_init_unchained();
     }
 

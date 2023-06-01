@@ -31,7 +31,6 @@ contract MiniGameBonusSystem is
 
     function initialize(address root_) public initializer {
         __Pausable_init();
-        __AccessControl_init();
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
         __System_init(ID, root_);

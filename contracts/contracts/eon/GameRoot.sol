@@ -16,6 +16,8 @@ import {BaseComponent} from "./BaseComponent.sol";
 
 import {LibComponentType} from "./LibComponentType.sol";
 
+import {SYSTEM_INTERNAL_ROLE_} from "./SystemAccessControl.sol";
+
 uint256 constant ID = uint256(keccak256("game.root.id"));
 
 contract GameRoot is
@@ -30,6 +32,8 @@ contract GameRoot is
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+
+    bytes32 public constant SYSTEM_INTERNAL_ROLE = SYSTEM_INTERNAL_ROLE_;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -62,6 +66,9 @@ contract GameRoot is
 
     /// custom logic here
 
+    mapping(uint256 => address) internal systems;
+    mapping(address => uint256) internal systemIds;
+
     function __initailize() internal {
         __Component_init(ID, address(0));
         root = this;
@@ -71,8 +78,20 @@ contract GameRoot is
         return 1;
     }
 
-    mapping(uint256 => address) internal systems;
-    mapping(address => uint256) internal systemIds;
+    /**
+     * @dev Returns `true` if `account` has been granted `role`.
+     */
+    function hasRole(
+        bytes32 role,
+        address account
+    ) public view virtual override returns (bool) {
+        if (
+            role == SYSTEM_INTERNAL_ROLE && getRoot().isSystemAddress(account)
+        ) {
+            return true;
+        }
+        return AccessControlUpgradeable.hasRole(role, account);
+    }
 
     function registerSystemWithAddress(
         address systemAddress
@@ -124,7 +143,7 @@ contract GameRoot is
         bytes32[] memory key,
         uint8 schemaIndex,
         bytes memory data
-    ) public {
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         _setField(tableId, key, schemaIndex, data);
     }
 
