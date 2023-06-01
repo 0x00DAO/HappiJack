@@ -160,6 +160,15 @@ async function deployRevokeRoles(
   }
 }
 
+async function gameRegisterSystem(gameRoot: Contract, systemAddress: string) {
+  await gameRoot
+    .registerSystemWithAddress(systemAddress)
+    .then((tx: ContractTransaction) => tx.wait());
+
+  //grant system to write
+  await gameEntityGrantWriteRole(gameRoot, [systemAddress]);
+}
+
 async function gameEntityGrantWriteRole(
   contract: Contract,
   grantAddress: string[]
@@ -191,4 +200,5 @@ export const deployUtil = {
   revokeRoles: deployRevokeRoles,
   gameEntityGrantWriteRole: gameEntityGrantWriteRole,
   gameSystemGrantInternalRole: gameSystemGrantInternalRole,
+  gameRegisterSystem: gameRegisterSystem,
 };

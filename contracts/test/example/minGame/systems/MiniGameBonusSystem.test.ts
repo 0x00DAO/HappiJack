@@ -22,19 +22,10 @@ describe('MiniGameBonusSystem', function () {
     ]);
 
     //register system
-    await gameRootContract.registerSystemWithAddress(
+    await deployUtil.gameRegisterSystem(
+      gameRootContract,
       miniGameBonusSystem.address
     );
-
-    //grant role to write
-    await deployUtil.gameEntityGrantWriteRole(gameRootContract, [
-      miniGameBonusSystem.address,
-    ]);
-
-    // const [owner] = await ethers.getSigners();
-    // deployUtil.gameSystemGrantInternalRole(miniGameBonusSystem, [
-    // owner.address,
-    // ]);
   });
   it('should be deployed', async function () {
     expect(miniGameBonusSystem.address).to.not.equal(null);
