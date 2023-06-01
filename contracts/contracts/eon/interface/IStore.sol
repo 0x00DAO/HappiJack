@@ -6,8 +6,15 @@ interface IStoreRead {
     function getField(
         bytes32 table,
         bytes32[] calldata key,
-        uint8 schemaIndex
+        uint8 columnIndex
     ) external view returns (bytes memory);
+
+    // Set full record (including full dynamic data)
+    function deleteRecord(
+        bytes32 table,
+        bytes32[] memory key,
+        uint8 columnCount
+    ) external;
 }
 
 interface IStoreWrite {
@@ -15,7 +22,7 @@ interface IStoreWrite {
     function setField(
         bytes32 table,
         bytes32[] calldata key,
-        uint8 schemaIndex,
+        uint8 columnIndex,
         bytes calldata data
     ) external;
 }

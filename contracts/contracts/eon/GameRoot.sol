@@ -133,4 +133,12 @@ contract GameRoot is
     ) public view returns (bytes memory) {
         return _getField(tableId, key, schemaIndex);
     }
+
+    function deleteRecord(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 columnCount
+    ) public {
+        _deleteRecord(tableId, key, columnCount);
+    }
 }

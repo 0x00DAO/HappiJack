@@ -129,37 +129,48 @@ contract GameStore is
         set(entity, abi.encode(value));
     }
 
-    function getValue(uint256 entity) public view virtual returns (uint256) {
-        if (!has(entity)) {
-            return 0;
-        }
-        return abi.decode(getRawValue(entity), (uint256));
-    }
+    // function getValue(uint256 entity) public view virtual returns (uint256) {
+    //     if (!has(entity)) {
+    //         return 0;
+    //     }
+    //     return abi.decode(getRawValue(entity), (uint256));
+    // }
 
     function getEntityId(
         bytes32 tableId,
         bytes32[] memory key,
-        uint8 schemaIndex
+        uint8 columnIndex
     ) public pure returns (uint256) {
-        return uint256(keccak256(abi.encode(SLOT, tableId, key, schemaIndex)));
+        return uint256(keccak256(abi.encode(SLOT, tableId, key, columnIndex)));
     }
 
     function _setField(
         bytes32 tableId,
         bytes32[] memory key,
-        uint8 schemaIndex,
+        uint8 columnIndex,
         bytes memory data
     ) internal {
-        uint256 entityId = getEntityId(tableId, key, schemaIndex);
+        uint256 entityId = getEntityId(tableId, key, columnIndex);
         set(entityId, data);
     }
 
     function _getField(
         bytes32 tableId,
         bytes32[] memory key,
-        uint8 schemaIndex
+        uint8 columnIndex
     ) internal view returns (bytes memory) {
-        uint256 entityId = getEntityId(tableId, key, schemaIndex);
+        uint256 entityId = getEntityId(tableId, key, columnIndex);
         return getRawValue(entityId);
+    }
+
+    function _deleteRecord(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 columnCount
+    ) internal {
+        for (uint8 i = 0; i < columnCount; i++) {
+            uint256 entityId = getEntityId(tableId, key, i);
+            remove(entityId);
+        }
     }
 }
