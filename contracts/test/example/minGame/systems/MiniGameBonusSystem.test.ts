@@ -140,4 +140,57 @@ describe('MiniGameBonusSystem', function () {
       expect(getBonus).to.equal(amount);
     });
   });
+
+  describe('Call from GameRoot', function () {
+    it('success: should be able to bonus(winBonusExternal)', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const amount = ethers.utils.parseEther('1');
+
+      const miniGameBonusSystemId = ethers.utils.id(
+        'game.systems.MiniGameBonusSystem'
+      );
+
+      const MiniGameBonusSystem = await ethers.getContractFactory(
+        'MiniGameBonusSystem'
+      );
+      const functionFragment =
+        MiniGameBonusSystem.interface.getFunction('winBonusExternal');
+
+      const encodeParams = MiniGameBonusSystem.interface.encodeFunctionData(
+        functionFragment,
+        [addr1.address, amount]
+      );
+
+      await gameRootContract.call(miniGameBonusSystemId, encodeParams);
+
+      const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
+      expect(getBonus).to.equal(amount);
+    });
+
+    it('fail: should be able to bonus', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const amount = ethers.utils.parseEther('1');
+
+      const miniGameBonusSystemId = ethers.utils.id(
+        'game.systems.MiniGameBonusSystem'
+      );
+
+      const MiniGameBonusSystem = await ethers.getContractFactory(
+        'MiniGameBonusSystem'
+      );
+      const functionFragment =
+        MiniGameBonusSystem.interface.getFunction('winBonus');
+
+      const encodeParams = MiniGameBonusSystem.interface.encodeFunctionData(
+        functionFragment,
+        [addr1.address, amount]
+      );
+
+      await expect(
+        gameRootContract.call(miniGameBonusSystemId, encodeParams)
+      ).to.be.revertedWith(
+        `AccessControl: account ${gameRootContract.address.toLowerCase()} is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7`
+      );
+    });
+  });
 });

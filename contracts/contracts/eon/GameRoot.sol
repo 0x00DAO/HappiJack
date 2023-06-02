@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "../core/contract-upgradeable/VersionUpgradeable.sol";
 import {IRoot} from "./interface/IRoot.sol";
 import {IStore} from "./interface/IStore.sol";
@@ -38,7 +39,7 @@ contract GameRoot is
 
     function initialize() public initializer {
         __Pausable_init();
-        __GameStore_init(ID, address(this));
+        __GameStore_init(ID, address(this), ComponentType.GameRoot);
         __UUPSUpgradeable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -150,5 +151,32 @@ contract GameRoot is
         uint8 columnCount
     ) public {
         _deleteRecord(tableId, key, columnCount);
+    }
+
+    /// @dev call system
+    function call(
+        uint256 systemId,
+        bytes calldata data
+    ) external payable override returns (bytes memory) {
+        address systemAddress = GameRootSystemsTable.get(systemId);
+        require(systemAddress != address(0), "System not registered");
+
+        bytes memory result;
+        // If the user sent any ETH along with the function call, forward it to the systemAddress
+        if (msg.value > 0) {
+            result = AddressUpgradeable.functionCallWithValue(
+                systemAddress,
+                data,
+                msg.value,
+                "call system failed with value"
+            );
+        } else {
+            result = AddressUpgradeable.functionCall(
+                systemAddress,
+                data,
+                "call system failed"
+            );
+        }
+        return result;
     }
 }

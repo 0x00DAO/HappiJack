@@ -32,10 +32,11 @@ contract GameStore is
 
     function __GameStore_init(
         uint256 id_,
-        address root_
+        address root_,
+        ComponentType componentType_
     ) internal onlyInitializing {
         __AccessControl_init();
-        __BaseComponent_init(id_, root_, ComponentType.System);
+        __BaseComponent_init(id_, root_, componentType_);
         __GameStore_init_unchained(id_, root_);
     }
 
