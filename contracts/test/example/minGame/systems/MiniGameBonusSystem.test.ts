@@ -53,6 +53,7 @@ describe('MiniGameBonusSystem', function () {
       const amount = ethers.utils.parseEther('1');
       await miniGameBonusSystem.winBonusExternal(addr1.address, amount);
 
+      miniGameBonusSystem.functions.winBonus(addr1.address, amount);
       const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
       expect(getBonus).to.equal(amount);
     });

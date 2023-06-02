@@ -60,7 +60,7 @@ const config: HardhatUserConfig = {
       'contracts/tests',
       'contracts/core',
       'contracts/providers',
-      'contracts/example',
+      // 'contracts/example',
     ],
   },
 };
