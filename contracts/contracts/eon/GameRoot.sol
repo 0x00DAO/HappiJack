@@ -154,29 +154,29 @@ contract GameRoot is
     }
 
     /// @dev call system
-    function call(
-        uint256 systemId,
-        bytes calldata data
-    ) external payable override returns (bytes memory) {
-        address systemAddress = GameRootSystemsTable.get(systemId);
-        require(systemAddress != address(0), "System not registered");
+    // function call(
+    //     uint256 systemId,
+    //     bytes calldata data
+    // ) external payable override returns (bytes memory) {
+    //     address systemAddress = GameRootSystemsTable.get(systemId);
+    //     require(systemAddress != address(0), "System not registered");
 
-        bytes memory result;
-        // If the user sent any ETH along with the function call, forward it to the systemAddress
-        if (msg.value > 0) {
-            result = AddressUpgradeable.functionCallWithValue(
-                systemAddress,
-                data,
-                msg.value,
-                "call system failed with value"
-            );
-        } else {
-            result = AddressUpgradeable.functionCall(
-                systemAddress,
-                data,
-                "call system failed"
-            );
-        }
-        return result;
-    }
+    //     bytes memory result;
+    //     // If the user sent any ETH along with the function call, forward it to the systemAddress
+    //     if (msg.value > 0) {
+    //         result = AddressUpgradeable.functionCallWithValue(
+    //             systemAddress,
+    //             data,
+    //             msg.value,
+    //             "call system failed with value"
+    //         );
+    //     } else {
+    //         result = AddressUpgradeable.functionCall(
+    //             systemAddress,
+    //             data,
+    //             "call system failed"
+    //         );
+    //     }
+    //     return result;
+    // }
 }

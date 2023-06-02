@@ -20,10 +20,10 @@ interface IRootCall {
      * Call the system at the given namespace and name.
      * If the system is not public, the caller must have access to the namespace or name.
      */
-    function call(
-        uint256 systemId,
-        bytes calldata data
-    ) external payable returns (bytes memory);
+    // function call(
+    //     uint256 systemId,
+    //     bytes calldata data
+    // ) external payable returns (bytes memory);
 }
 
 interface IRoot is IRootSystem, IRootCall {}

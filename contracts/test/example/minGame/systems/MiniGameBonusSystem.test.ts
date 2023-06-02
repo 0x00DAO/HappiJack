@@ -142,7 +142,7 @@ describe('MiniGameBonusSystem', function () {
   });
 
   describe('Call from GameRoot', function () {
-    it('success: should be able to bonus(winBonusExternal)', async function () {
+    it('success: should be able to bonus(winBonusExternal) with getSystemAddress', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');
 
@@ -150,47 +150,20 @@ describe('MiniGameBonusSystem', function () {
         'game.systems.MiniGameBonusSystem'
       );
 
-      const MiniGameBonusSystem = await ethers.getContractFactory(
-        'MiniGameBonusSystem'
+      const miniGameBonusAddress = await gameRootContract.getSystemAddress(
+        miniGameBonusSystemId
       );
-      const functionFragment =
-        MiniGameBonusSystem.interface.getFunction('winBonusExternal');
-
-      const encodeParams = MiniGameBonusSystem.interface.encodeFunctionData(
-        functionFragment,
-        [addr1.address, amount]
+      const miniGameBonusSystemDynamic = await ethers.getContractAt(
+        'MiniGameBonusSystem',
+        miniGameBonusAddress
       );
 
-      await gameRootContract.call(miniGameBonusSystemId, encodeParams);
+      await miniGameBonusSystemDynamic.winBonusExternal(addr1.address, amount);
+      const getBonus2 = await miniGameBonusSystemDynamic.bonusOf(addr1.address);
+      expect(getBonus2).to.equal(amount);
 
       const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
       expect(getBonus).to.equal(amount);
-    });
-
-    it('fail: should be able to bonus', async function () {
-      const [owner, addr1] = await ethers.getSigners();
-      const amount = ethers.utils.parseEther('1');
-
-      const miniGameBonusSystemId = ethers.utils.id(
-        'game.systems.MiniGameBonusSystem'
-      );
-
-      const MiniGameBonusSystem = await ethers.getContractFactory(
-        'MiniGameBonusSystem'
-      );
-      const functionFragment =
-        MiniGameBonusSystem.interface.getFunction('winBonus');
-
-      const encodeParams = MiniGameBonusSystem.interface.encodeFunctionData(
-        functionFragment,
-        [addr1.address, amount]
-      );
-
-      await expect(
-        gameRootContract.call(miniGameBonusSystemId, encodeParams)
-      ).to.be.revertedWith(
-        `AccessControl: account ${gameRootContract.address.toLowerCase()} is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7`
-      );
     });
   });
 });
