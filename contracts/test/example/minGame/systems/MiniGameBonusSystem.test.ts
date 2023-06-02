@@ -138,7 +138,7 @@ describe('MiniGameBonusSystem', function () {
     });
   });
 
-  describe('Call from GameRoot', function () {
+  describe.only('Call from GameRoot', function () {
     it('success: should be able to bonus(winBonusExternal) with getSystemAddress', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');
@@ -161,6 +161,29 @@ describe('MiniGameBonusSystem', function () {
 
       const getBonus = await miniGameBonusSystem.bonusOf(addr1.address);
       expect(getBonus).to.equal(amount);
+
+      //   bytes32 constant _tableId = bytes32(
+      //     keccak256(abi.encodePacked("tableId", "MiniGameBonusTable"))
+      // );
+
+      const _tableId = ethers.utils.id(`tableId` + `MiniGameBonusTable`);
+
+      // get Bonus from getField
+      //function getField(
+      //     bytes32 tableId,
+      //     bytes32[] memory key,
+      //     uint8 schemaIndex
+      // ) public view returns (bytes memory) {
+      //     return _getField(tableId, key, schemaIndex);
+      // }
+
+      const bonus = await gameRootContract
+        .getField(_tableId, [ethers.utils.hexZeroPad(addr1.address, 32)], 0)
+        .then((res: any) => {
+          return ethers.utils.defaultAbiCoder.decode(['uint256'], res)[0];
+        });
+
+      expect(bonus).to.equal(amount);
     });
   });
 });
