@@ -54,14 +54,17 @@ contract MiniGameBonusSystem is
 
     /// custom logic here
 
-    function winBonusExternal(address from, uint256 amount) external {
+    function winBonusExternal(
+        address from,
+        uint256 amount
+    ) external nonReentrant {
         _winBonus(from, amount);
     }
 
     function winBonusExternalSkipRoleCheck(
         address from,
         uint256 amount
-    ) external {
+    ) external nonReentrant {
         this.winBonus(from, amount);
     }
 
