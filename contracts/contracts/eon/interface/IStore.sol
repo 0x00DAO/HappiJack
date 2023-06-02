@@ -9,7 +9,7 @@ interface IStoreRead {
         uint8 columnIndex
     ) external view returns (bytes memory);
 
-    // Set full record (including full dynamic data)
+    // Delete record
     function deleteRecord(
         bytes32 table,
         bytes32[] memory key,
