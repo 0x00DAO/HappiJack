@@ -138,7 +138,7 @@ describe('MiniGameBonusSystem', function () {
     });
   });
 
-  describe.only('Call from GameRoot', function () {
+  describe('Call from GameRoot', function () {
     it('success: should be able to bonus(winBonusExternal) with getSystemAddress', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');
