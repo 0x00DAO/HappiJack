@@ -8,39 +8,36 @@ describe('MiniGameBonusSystem', function () {
   let miniGameBonusSystem: Contract;
   let miniGameBonusSystemAgent: Contract;
 
+  async function deploySystem(
+    gameRoot: Contract,
+    contractName: string
+  ): Promise<Contract> {
+    //deploy Agent
+    const SystemContract = await ethers.getContractFactory(contractName);
+    const systemContract = await upgrades.deployProxy(SystemContract, [
+      gameRoot.address,
+    ]);
+    //register system
+    await deployUtil.gameRegisterSystem(gameRoot, systemContract.address);
+    return systemContract;
+  }
+
   beforeEach(async function () {
     //deploy GameRoot
     const GameRoot = await ethers.getContractFactory('GameRoot');
     gameRootContract = await upgrades.deployProxy(GameRoot, []);
     await gameRootContract.deployed();
 
-    //deploy System
-    const MiniGameBonusSystem = await ethers.getContractFactory(
-      'MiniGameBonusSystem'
-    );
-    miniGameBonusSystem = await upgrades.deployProxy(MiniGameBonusSystem, [
-      gameRootContract.address,
-    ]);
-
-    //register system
-    await deployUtil.gameRegisterSystem(
+    //deploy MiniGameBonusSystem
+    miniGameBonusSystem = await deploySystem(
       gameRootContract,
-      miniGameBonusSystem.address
+      'MiniGameBonusSystem'
     );
 
     //deploy Agent
-    const MiniGameBonusSystemAgent = await ethers.getContractFactory(
-      'MiniGameBonusSystemAgent'
-    );
-    miniGameBonusSystemAgent = await upgrades.deployProxy(
-      MiniGameBonusSystemAgent,
-      [gameRootContract.address]
-    );
-
-    //register agent
-    await deployUtil.gameRegisterSystem(
+    miniGameBonusSystemAgent = await deploySystem(
       gameRootContract,
-      miniGameBonusSystemAgent.address
+      'MiniGameBonusSystemAgent'
     );
   });
   it('should be deployed', async function () {
