@@ -145,6 +145,14 @@ contract GameRoot is
         return _getField(tableId, key, schemaIndex);
     }
 
+    function getRecord(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 columnCount
+    ) public view returns (bytes[] memory) {
+        return _getRecord(tableId, key, columnCount);
+    }
+
     function deleteRecord(
         bytes32 tableId,
         bytes32[] memory key,

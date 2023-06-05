@@ -158,6 +158,18 @@ contract GameStore is
         return getRawValue(entityId);
     }
 
+    function _getRecord(
+        bytes32 tableId,
+        bytes32[] memory key,
+        uint8 columnCount
+    ) internal view returns (bytes[] memory) {
+        bytes[] memory result = new bytes[](columnCount);
+        for (uint8 i = 0; i < columnCount; i++) {
+            result[i] = _getField(tableId, key, i);
+        }
+        return result;
+    }
+
     function _deleteRecord(
         bytes32 tableId,
         bytes32[] memory key,

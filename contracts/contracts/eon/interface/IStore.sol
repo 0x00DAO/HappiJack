@@ -9,12 +9,12 @@ interface IStoreRead {
         uint8 columnIndex
     ) external view returns (bytes memory);
 
-    // Delete record
-    function deleteRecord(
+    // Get all data at schema index
+    function getRecord(
         bytes32 table,
-        bytes32[] memory key,
+        bytes32[] calldata key,
         uint8 columnCount
-    ) external;
+    ) external view returns (bytes[] memory);
 }
 
 interface IStoreWrite {
@@ -24,6 +24,13 @@ interface IStoreWrite {
         bytes32[] calldata key,
         uint8 columnIndex,
         bytes calldata data
+    ) external;
+
+    // Delete record
+    function deleteRecord(
+        bytes32 table,
+        bytes32[] calldata key,
+        uint8 columnCount
     ) external;
 }
 
