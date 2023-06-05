@@ -3,9 +3,9 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { eonTestUtil } from '../../../scripts/utils/eonTest.util';
 
-describe('HelloWorldSystem', function () {
+describe('LotteryGameSystem', function () {
   let gameRootContract: Contract;
-  let helloWorldSystem: Contract;
+  let lotteryGameSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -13,17 +13,13 @@ describe('HelloWorldSystem', function () {
     gameRootContract = await upgrades.deployProxy(GameRoot, []);
     await gameRootContract.deployed();
 
-    //deploy HelloWorldSystem
-    helloWorldSystem = await eonTestUtil.deploySystem(
+    //deploy
+    lotteryGameSystem = await eonTestUtil.deploySystem(
       gameRootContract,
-      'HelloWorldSystem'
+      'LotteryGameSystem'
     );
   });
   it('should be deployed', async function () {
-    expect(helloWorldSystem.address).to.not.equal(null);
-  });
-  it('should return hello world', async function () {
-    const helloWorld = await helloWorldSystem.sayHelloWord();
-    expect(helloWorld).to.equal('Hello World!');
+    expect(lotteryGameSystem.address).to.not.equal(null);
   });
 });
