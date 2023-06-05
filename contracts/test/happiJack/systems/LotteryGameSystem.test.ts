@@ -22,4 +22,6 @@ describe('LotteryGameSystem', function () {
   it('should be deployed', async function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
+
+  it('create a lottery', async function () {});
 });
