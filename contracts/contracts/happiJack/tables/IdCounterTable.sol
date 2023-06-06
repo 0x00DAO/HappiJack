@@ -55,6 +55,14 @@ library IdCounterTable {
         return abi.decode(_blob, (uint256));
     }
 
+    /// @dev Increase the counter and return the new value
+    function increase(uint256 id) internal returns (uint256 amount) {
+        uint256 _amount = get(id);
+        _amount += 1;
+        set(id, _amount);
+        return _amount;
+    }
+
     /** Delete record */
     function deleteRecord(uint256 id) internal {
         bytes32[] memory _keyTuple = entityKeys(id);

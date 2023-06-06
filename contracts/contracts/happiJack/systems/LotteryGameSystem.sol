@@ -60,32 +60,60 @@ contract LotteryGameSystem is
     event LotteryGameCreated(
         uint256 indexed lotteryGameId,
         address indexed owner,
+        uint256 startTime,
         uint256 endTime
     );
 
     function createLotteryGame(
         string memory ad_,
-        uint256 endTime_
+        uint256 startTime_,
+        uint256 during_
     ) external payable nonReentrant whenNotPaused returns (uint256) {
         require(
             AddressUpgradeable.isContract(_msgSender()) == false,
             "sender is contract"
         );
-        require(endTime_ > block.timestamp, "end time is in the past");
-        //get the lottery game id
+        uint256 endTime_ = startTime_ + during_;
 
+        require(during_ >= 12 hours, "during is too short");
+        require(endTime_ > block.timestamp, "end time is in the past");
+
+        //get the lottery game id
         uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME);
 
         //create the lottery game
         LotteryGameTable.setOwner(lotteryGameId, _msgSender());
         LotteryGameTable.setAd(lotteryGameId, ad_);
-        LotteryGameTable.setEndTime(lotteryGameId, endTime_);
+        LotteryGameTable.setStartTime(lotteryGameId, startTime_);
+        LotteryGameTable.setDuring(lotteryGameId, during_);
 
         //increment the id counter
-        IdCounterTable.set(ID_LOTTERY_GAME, lotteryGameId + 1);
+        IdCounterTable.increase(ID_LOTTERY_GAME);
 
-        emit LotteryGameCreated(lotteryGameId, _msgSender(), endTime_);
+        emit LotteryGameCreated(
+            lotteryGameId,
+            _msgSender(),
+            startTime_,
+            endTime_
+        );
 
         return lotteryGameId;
+    }
+
+    function getLotteryGame(
+        uint256 lotteryGameId_
+    )
+        external
+        view
+        returns (
+            address owner,
+            string memory ad,
+            uint256 startTime,
+            uint256 during
+        )
+    {
+        (owner, ad, startTime, during) = LotteryGameTable.getRecord(
+            lotteryGameId_
+        );
     }
 }

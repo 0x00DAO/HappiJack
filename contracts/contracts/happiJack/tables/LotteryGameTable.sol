@@ -9,7 +9,7 @@ import {addressToEntity, entityToAddress} from "../../eon/utils.sol";
 bytes32 constant _tableId = bytes32(
     keccak256(abi.encodePacked("tableId", "HappiJack", "LotteryGameTable"))
 );
-uint8 constant _Columns = 3;
+uint8 constant _Columns = 4;
 bytes32 constant LotteryGameTableId = _tableId;
 
 library LotteryGameTable {
@@ -22,7 +22,8 @@ library LotteryGameTable {
         string[] memory _fieldNames = new string[](_Columns);
         _fieldNames[0] = "owner"; // address
         _fieldNames[1] = "ad"; // string
-        _fieldNames[2] = "endTime"; // uint256
+        _fieldNames[2] = "startTime"; // uint256
+        _fieldNames[3] = "during"; // uint256
         return ("LotteryGameTable", _fieldNames);
     }
 
@@ -67,12 +68,7 @@ library LotteryGameTable {
     function setAd(uint256 lotteryGameId, string memory ad) internal {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
-        StoreDelegate.Store().setField(
-            _tableId,
-            _keyTuple,
-            1,
-            abi.encodePacked((ad))
-        );
+        StoreDelegate.Store().setField(_tableId, _keyTuple, 1, bytes((ad)));
     }
 
     /** Get  */
@@ -88,25 +84,25 @@ library LotteryGameTable {
         );
 
         if (_blob.length == 0) return "";
-        return abi.decode(_blob, (string));
+        return (string(_blob));
     }
 
     /** Set  */
-    function setEndTime(uint256 lotteryGameId, uint256 endTime) internal {
+    function setStartTime(uint256 lotteryGameId, uint256 startTime) internal {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         StoreDelegate.Store().setField(
             _tableId,
             _keyTuple,
             2,
-            abi.encodePacked((endTime))
+            abi.encodePacked((startTime))
         );
     }
 
     /** Get  */
-    function getEndTime(
+    function getStartTime(
         uint256 lotteryGameId
-    ) internal view returns (uint256 endTime) {
+    ) internal view returns (uint256 startTime) {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         bytes memory _blob = StoreDelegate.Store().getField(
@@ -119,9 +115,46 @@ library LotteryGameTable {
         return abi.decode(_blob, (uint256));
     }
 
-    function get(
+    /** Set  */
+    function setDuring(uint256 lotteryGameId, uint256 during) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        StoreDelegate.Store().setField(
+            _tableId,
+            _keyTuple,
+            3,
+            abi.encodePacked((during))
+        );
+    }
+
+    /** Get  */
+    function getDuring(
         uint256 lotteryGameId
-    ) internal view returns (address owner, string memory ad, uint256 endTime) {
+    ) internal view returns (uint256 during) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            3
+        );
+
+        if (_blob.length == 0) return 0;
+        return abi.decode(_blob, (uint256));
+    }
+
+    function getRecord(
+        uint256 lotteryGameId
+    )
+        internal
+        view
+        returns (
+            address owner,
+            string memory ad,
+            uint256 startTime,
+            uint256 during
+        )
+    {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         bytes[] memory _blobs = StoreDelegate.Store().getRecord(
@@ -130,11 +163,12 @@ library LotteryGameTable {
             _Columns
         );
 
-        if (_blobs[0].length == 0) return (address(0), "", 0);
+        if (_blobs[0].length == 0) return (address(0), "", 0, 0);
         return (
             entityToAddress(abi.decode(_blobs[0], (uint256))),
-            abi.decode(_blobs[1], (string)),
-            abi.decode(_blobs[2], (uint256))
+            string(_blobs[1]),
+            abi.decode(_blobs[2], (uint256)),
+            abi.decode(_blobs[3], (uint256))
         );
     }
 
