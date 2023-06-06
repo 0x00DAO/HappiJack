@@ -9,8 +9,10 @@ import {System} from "../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
+import {LotteryGameStatus} from "../tables/LotteryGameStatus.sol";
 import {IdCounterTable} from "../tables/IdCounterTable.sol";
 import {LotteryGameTable} from "../tables/LotteryGameTable.sol";
+import {LotteryGameConfigTable} from "../tables/LotteryGameConfigTable.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -73,22 +75,32 @@ contract LotteryGameSystem is
             AddressUpgradeable.isContract(_msgSender()) == false,
             "sender is contract"
         );
-        uint256 endTime_ = startTime_ + during_;
 
+        uint256 endTime_ = startTime_ + during_;
         require(during_ >= 12 hours, "during is too short");
         require(endTime_ > block.timestamp, "end time is in the past");
 
         //get the lottery game id
         uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME);
+        require(
+            LotteryGameTable.getOwner(lotteryGameId) == address(0),
+            "lottery game id is not empty"
+        );
+        //increment the id counter
+        IdCounterTable.increase(ID_LOTTERY_GAME);
 
         //create the lottery game
         LotteryGameTable.setOwner(lotteryGameId, _msgSender());
-        LotteryGameTable.setAd(lotteryGameId, ad_);
-        LotteryGameTable.setStartTime(lotteryGameId, startTime_);
-        LotteryGameTable.setDuring(lotteryGameId, during_);
+        LotteryGameTable.setStatus(
+            lotteryGameId,
+            uint256(LotteryGameStatus.Active)
+        );
 
-        //increment the id counter
-        IdCounterTable.increase(ID_LOTTERY_GAME);
+        //set the lottery game info
+        LotteryGameConfigTable.setOwner(lotteryGameId, _msgSender());
+        LotteryGameConfigTable.setAd(lotteryGameId, ad_);
+        LotteryGameConfigTable.setStartTime(lotteryGameId, startTime_);
+        LotteryGameConfigTable.setDuring(lotteryGameId, during_);
 
         emit LotteryGameCreated(
             lotteryGameId,
@@ -102,18 +114,8 @@ contract LotteryGameSystem is
 
     function getLotteryGame(
         uint256 lotteryGameId_
-    )
-        external
-        view
-        returns (
-            address owner,
-            string memory ad,
-            uint256 startTime,
-            uint256 during
-        )
-    {
-        (owner, ad, startTime, during) = LotteryGameTable.getRecord(
-            lotteryGameId_
-        );
+    ) public view returns (address owner, uint256 status) {
+        owner = LotteryGameTable.getOwner(lotteryGameId_);
+        status = LotteryGameTable.getStatus(lotteryGameId_);
     }
 }

@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { eonTestUtil } from '../../../scripts/utils/eonTest.util';
 
-describe('LotteryGameSystem', function () {
+describe.only('LotteryGameSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
 
@@ -23,7 +23,7 @@ describe('LotteryGameSystem', function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
 
-  describe('createLotteryGame', function () {
+  describe.only('createLotteryGame', function () {
     it('success', async function () {
       const [owner] = await ethers.getSigners();
 
@@ -40,21 +40,21 @@ describe('LotteryGameSystem', function () {
         .to.emit(lotteryGameSystem, 'LotteryGameCreated')
         .withArgs(0, owner.address, startTime, startTime + during);
 
-      // get lottery game
-
-      const LotteryGameTableId = ethers.utils.id(
-        'tableId' + 'HappiJack' + 'LotteryGameTable'
-      );
-
       const lotteryGameData = await lotteryGameSystem.getLotteryGame(0);
       // console.log('lotteryGame', lotteryGameData);
       // console.log('owner', owner.address);
       expect(lotteryGameData.owner).to.equal(owner.address);
+      expect(lotteryGameData.status).to.equal(1);
 
-      // get lottery game from getRecord
-      const lotteryGameDataFromGetRecord = await gameRootContract
+      // get lottery game
+
+      // get lottery game config
+      const LotteryGameConfigTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameConfigTable'
+      );
+      const LotteryGameConfig = await gameRootContract
         .getRecord(
-          LotteryGameTableId,
+          LotteryGameConfigTableId,
           [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
           4
         )
@@ -73,7 +73,7 @@ describe('LotteryGameSystem', function () {
           };
         });
 
-      expect(lotteryGameDataFromGetRecord.owner).to.equal(owner.address);
+      expect(LotteryGameConfig.owner).to.equal(owner.address);
     });
   });
 });
