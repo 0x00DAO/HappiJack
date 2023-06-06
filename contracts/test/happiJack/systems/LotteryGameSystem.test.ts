@@ -23,7 +23,7 @@ describe.only('LotteryGameSystem', function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
 
-  describe.only('createLotteryGame', function () {
+  describe('createLotteryGame', function () {
     it('success', async function () {
       const [owner] = await ethers.getSigners();
 
@@ -69,14 +69,14 @@ describe.only('LotteryGameSystem', function () {
               ['uint256'],
               res[2]
             )[0],
-            endTime: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[3]
-            )[0],
+            during: ethers.utils.defaultAbiCoder.decode(['uint256'], res[3])[0],
           };
         });
 
       expect(LotteryGameConfig.owner).to.equal(owner.address);
+      expect(LotteryGameConfig.ad).to.equal(`It's a lottery game`);
+      expect(LotteryGameConfig.startTime).to.equal(startTime);
+      expect(LotteryGameConfig.during).to.equal(during);
     });
   });
 });

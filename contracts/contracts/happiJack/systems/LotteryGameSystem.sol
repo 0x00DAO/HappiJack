@@ -10,10 +10,8 @@ import {System} from "../../eon/System.sol";
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
 import {LotteryGameStatus} from "../tables/LotteryGameStatus.sol";
-import {IdCounterTable} from "../tables/IdCounterTable.sol";
-import {LotteryGameTable} from "../tables/LotteryGameTable.sol";
-import {LotteryGameConfigTable} from "../tables/LotteryGameConfigTable.sol";
-import {LotteryGameConfigFeeTable} from "../tables/Tables.sol";
+
+import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable} from "../tables/Tables.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
