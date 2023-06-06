@@ -77,6 +77,32 @@ describe.only('LotteryGameSystem', function () {
       expect(LotteryGameConfig.ad).to.equal(`It's a lottery game`);
       expect(LotteryGameConfig.startTime).to.equal(startTime);
       expect(LotteryGameConfig.during).to.equal(during);
+
+      // get lottery game config fee
+      const LotteryGameConfigFeeTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameConfigFeeTable'
+      );
+      const LotteryGameConfigFee = await gameRootContract
+        .getRecord(
+          LotteryGameConfigFeeTableId,
+          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          2
+        )
+        .then((res: any) => {
+          return {
+            ownerFeeRate: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            developFeeRate: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[1]
+            )[0],
+          };
+        });
+
+      expect(LotteryGameConfigFee.ownerFeeRate).to.equal(ownerFeeRate);
+      expect(LotteryGameConfigFee.developFeeRate).to.equal(10);
     });
   });
 });
