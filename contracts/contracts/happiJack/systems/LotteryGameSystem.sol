@@ -76,9 +76,9 @@ contract LotteryGameSystem is
             "sender is contract"
         );
 
-        uint256 endTime_ = startTime_ + during_;
-        require(during_ >= 12 hours, "during is too short");
-        require(endTime_ > block.timestamp, "end time is in the past");
+        // uint256 endTime_ = startTime_ + during_;
+        // require(during_ >= 12 hours, "during is too short");
+        // require(endTime_ > block.timestamp, "end time is in the past");
 
         //get the lottery game id
         uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME);
@@ -97,19 +97,34 @@ contract LotteryGameSystem is
         );
 
         //set the lottery game info
-        LotteryGameConfigTable.setOwner(lotteryGameId, _msgSender());
-        LotteryGameConfigTable.setAd(lotteryGameId, ad_);
-        LotteryGameConfigTable.setStartTime(lotteryGameId, startTime_);
-        LotteryGameConfigTable.setDuring(lotteryGameId, during_);
+        configGame(lotteryGameId, _msgSender(), ad_, startTime_, during_);
 
         emit LotteryGameCreated(
             lotteryGameId,
             _msgSender(),
             startTime_,
-            endTime_
+            startTime_ + during_
         );
 
         return lotteryGameId;
+    }
+
+    function configGame(
+        uint256 lotteryGameId_,
+        address owner_,
+        string memory ad_,
+        uint256 startTime_,
+        uint256 during_
+    ) internal {
+        uint256 endTime_ = startTime_ + during_;
+        require(during_ >= 12 hours, "during is too short");
+        require(endTime_ > block.timestamp, "end time is in the past");
+
+        //set the lottery game info
+        LotteryGameConfigTable.setOwner(lotteryGameId_, owner_);
+        LotteryGameConfigTable.setAd(lotteryGameId_, ad_);
+        LotteryGameConfigTable.setStartTime(lotteryGameId_, startTime_);
+        LotteryGameConfigTable.setDuring(lotteryGameId_, during_);
     }
 
     function getLotteryGame(
