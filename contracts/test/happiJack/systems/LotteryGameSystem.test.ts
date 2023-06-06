@@ -29,16 +29,19 @@ describe.only('LotteryGameSystem', function () {
 
       const startTime = Math.floor(Date.now() / 1000); // current time
       const during = 60 * 60 * 24 * 1; // 1 days
+      const endTime = startTime + during;
+      const ownerFeeRate = 10;
       // create a lottery game
       await expect(
         lotteryGameSystem.createLotteryGame(
           `It's a lottery game`,
           startTime,
-          during
+          during,
+          ownerFeeRate
         )
       )
         .to.emit(lotteryGameSystem, 'LotteryGameCreated')
-        .withArgs(0, owner.address, startTime, startTime + during);
+        .withArgs(0, owner.address, startTime, endTime);
 
       const lotteryGameData = await lotteryGameSystem.getLotteryGame(0);
       // console.log('lotteryGame', lotteryGameData);

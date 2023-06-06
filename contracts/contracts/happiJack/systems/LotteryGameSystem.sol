@@ -13,6 +13,7 @@ import {LotteryGameStatus} from "../tables/LotteryGameStatus.sol";
 import {IdCounterTable} from "../tables/IdCounterTable.sol";
 import {LotteryGameTable} from "../tables/LotteryGameTable.sol";
 import {LotteryGameConfigTable} from "../tables/LotteryGameConfigTable.sol";
+import {LotteryGameConfigFeeTable} from "../tables/Tables.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -69,7 +70,8 @@ contract LotteryGameSystem is
     function createLotteryGame(
         string memory ad_,
         uint256 startTime_,
-        uint256 during_
+        uint256 during_,
+        uint256 ownerFeeRate_
     ) external payable nonReentrant whenNotPaused returns (uint256) {
         require(
             AddressUpgradeable.isContract(_msgSender()) == false,
@@ -82,6 +84,7 @@ contract LotteryGameSystem is
 
         //get the lottery game id
         uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME);
+        address owner = _msgSender();
         require(
             LotteryGameTable.getOwner(lotteryGameId) == address(0),
             "lottery game id is not empty"
@@ -90,18 +93,20 @@ contract LotteryGameSystem is
         IdCounterTable.increase(ID_LOTTERY_GAME);
 
         //create the lottery game
-        LotteryGameTable.setOwner(lotteryGameId, _msgSender());
+        LotteryGameTable.setOwner(lotteryGameId, owner);
         LotteryGameTable.setStatus(
             lotteryGameId,
             uint256(LotteryGameStatus.Active)
         );
 
         //set the lottery game info
-        configGame(lotteryGameId, _msgSender(), ad_, startTime_, during_);
+        configGame(lotteryGameId, owner, ad_, startTime_, during_);
+        //set the lottery game fee info
+        configGameFee(lotteryGameId, ownerFeeRate_, 10);
 
         emit LotteryGameCreated(
             lotteryGameId,
-            _msgSender(),
+            owner,
             startTime_,
             startTime_ + during_
         );
@@ -125,6 +130,25 @@ contract LotteryGameSystem is
         LotteryGameConfigTable.setAd(lotteryGameId_, ad_);
         LotteryGameConfigTable.setStartTime(lotteryGameId_, startTime_);
         LotteryGameConfigTable.setDuring(lotteryGameId_, during_);
+    }
+
+    function configGameFee(
+        uint256 lotteryGameId_,
+        uint256 ownerFeeRate_,
+        uint256 developFeeRate_
+    ) internal {
+        require(ownerFeeRate_ <= 30, "owner fee rate is too high");
+        require(developFeeRate_ <= 10, "develop fee rate is too high");
+
+        //set the lottery game fee info
+        LotteryGameConfigFeeTable.setOwnerFeeRate(
+            lotteryGameId_,
+            ownerFeeRate_
+        );
+        LotteryGameConfigFeeTable.setDevelopFeeRate(
+            lotteryGameId_,
+            developFeeRate_
+        );
     }
 
     function getLotteryGame(
