@@ -15,6 +15,11 @@ interface IStoreRead {
         bytes32[] calldata key,
         uint8 columnCount
     ) external view returns (bytes[] memory);
+
+    function hasRecord(
+        bytes32 table,
+        bytes32[] calldata key
+    ) external view returns (bool);
 }
 
 interface IStoreWrite {

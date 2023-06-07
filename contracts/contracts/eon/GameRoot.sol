@@ -145,6 +145,13 @@ contract GameRoot is
         return _getField(tableId, key, schemaIndex);
     }
 
+    function hasRecord(
+        bytes32 tableId,
+        bytes32[] memory key
+    ) public view returns (bool) {
+        return _hasRecord(tableId, key);
+    }
+
     function getRecord(
         bytes32 tableId,
         bytes32[] memory key,

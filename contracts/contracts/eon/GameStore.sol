@@ -158,6 +158,14 @@ contract GameStore is
         return getRawValue(entityId);
     }
 
+    function _hasRecord(
+        bytes32 tableId,
+        bytes32[] memory key
+    ) internal view returns (bool) {
+        uint256 entityId = getRecordId(tableId, key, 0);
+        return has(entityId);
+    }
+
     function _getRecord(
         bytes32 tableId,
         bytes32[] memory key,

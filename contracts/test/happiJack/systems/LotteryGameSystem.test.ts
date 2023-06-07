@@ -243,6 +243,25 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameTicketTableId = ethers.utils.id(
         'tableId' + 'HappiJack' + 'LotteryGameTicketTable'
       );
+
+      //check has record
+      await gameRootContract
+        .hasRecord(LotteryGameTicketTableId, [
+          ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32),
+        ])
+        .then((res: any) => {
+          expect(res).to.equal(true);
+          return res;
+        });
+      await gameRootContract
+        .hasRecord(LotteryGameTicketTableId, [
+          ethers.utils.hexZeroPad(lotteryGameId.add(1).toHexString(), 32),
+        ])
+        .then((res: any) => {
+          expect(res).to.equal(false);
+          return res;
+        });
+
       const LotteryGameTicket = await gameRootContract
         .getRecord(
           LotteryGameTicketTableId,
