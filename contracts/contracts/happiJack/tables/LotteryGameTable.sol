@@ -91,6 +91,12 @@ library LotteryGameTable {
         return abi.decode(_blob, (uint256));
     }
 
+    /** Has record */
+    function hasRecord(uint256 id) internal view returns (bool) {
+        bytes32[] memory _keyTuple = entityKeys(id);
+        return StoreDelegate.Store().hasRecord(_tableId, _keyTuple);
+    }
+
     /** Get record */
     function getRecord(
         uint256 id

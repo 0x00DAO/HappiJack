@@ -64,7 +64,7 @@ contract LotteryGameBonusPoolSystem is
     ) public payable onlyRole(SYSTEM_INTERNAL_ROLE) {
         //check if lottery game exists
         require(
-            LotteryGameTable.getOwner(lotteryGameId_) != address(0),
+            LotteryGameTable.hasRecord(lotteryGameId_),
             "LotteryGameBonusPoolSystem: Lottery game does not exist"
         );
 
