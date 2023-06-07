@@ -83,7 +83,7 @@ contract LotteryGameSystem is
         // require(endTime_ > block.timestamp, "end time is in the past");
 
         //get the lottery game id
-        uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME);
+        uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME, 10000000);
         address owner = _msgSender();
         require(
             LotteryGameTable.getOwner(lotteryGameId) == address(0),

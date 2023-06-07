@@ -46,6 +46,7 @@ describe.only('LotteryGameSystem', function () {
       const initialAmount = ethers.utils.parseEther('0.005');
       // const ownerFeeRate = 10;
       // create a lottery game
+      let lotteryGameId = ethers.BigNumber.from(0);
       await expect(
         lotteryGameSystem.createLotteryGame(
           `It's a lottery game`,
@@ -57,9 +58,19 @@ describe.only('LotteryGameSystem', function () {
         )
       )
         .to.emit(lotteryGameSystem, 'LotteryGameCreated')
-        .withArgs(0, owner.address, startTime, endTime);
+        .withArgs(
+          (x: any) => {
+            lotteryGameId = x;
+            return true;
+          },
+          owner.address,
+          startTime,
+          endTime
+        );
 
-      const lotteryGameData = await lotteryGameSystem.getLotteryGame(0);
+      const lotteryGameData = await lotteryGameSystem.getLotteryGame(
+        lotteryGameId
+      );
       // console.log('lotteryGame', lotteryGameData);
       // console.log('owner', owner.address);
       expect(lotteryGameData.owner).to.equal(owner.address);
@@ -74,7 +85,7 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameConfig = await gameRootContract
         .getRecord(
           LotteryGameConfigTableId,
-          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
           4
         )
         .then((res: any) => {
@@ -101,7 +112,7 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameConfigFee = await gameRootContract
         .getRecord(
           LotteryGameConfigFeeTableId,
-          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
           2
         )
         .then((res: any) => {
@@ -127,7 +138,7 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameConfigBonusPool = await gameRootContract
         .getRecord(
           LotteryGameConfigBonusPoolTableId,
-          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
           3
         )
         .then((res: any) => {
@@ -160,7 +171,7 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameConfigTicket = await gameRootContract
         .getRecord(
           LotteryGameConfigTicketTableId,
-          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
           4
         )
         .then((res: any) => {
@@ -199,7 +210,7 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameBonusPool = await gameRootContract
         .getRecord(
           LotteryGameBonusPoolTableId,
-          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
           4
         )
         .then((res: any) => {
@@ -235,7 +246,7 @@ describe.only('LotteryGameSystem', function () {
       const LotteryGameTicket = await gameRootContract
         .getRecord(
           LotteryGameTicketTableId,
-          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
           1
         )
         .then((res: any) => {

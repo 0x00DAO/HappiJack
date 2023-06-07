@@ -43,6 +43,13 @@ library IdCounterTable {
 
     /** Get  */
     function get(uint256 id) internal view returns (uint256 amount) {
+        amount = get(id, 0);
+    }
+
+    function get(
+        uint256 id,
+        uint256 defaultValue
+    ) internal view returns (uint256 amount) {
         bytes32[] memory _keyTuple = entityKeys(id);
 
         bytes memory _blob = StoreDelegate.Store().getField(
@@ -51,7 +58,7 @@ library IdCounterTable {
             0
         );
 
-        if (_blob.length == 0) return 0;
+        if (_blob.length == 0) return defaultValue;
         return abi.decode(_blob, (uint256));
     }
 
