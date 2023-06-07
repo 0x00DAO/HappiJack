@@ -11,7 +11,7 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
-import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable, LotteryGameConfigBonusPoolTable} from "../tables/Tables.sol";
+import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable, LotteryGameConfigBonusPoolTable, LotteryGameConfigTicketTable} from "../tables/Tables.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -107,6 +107,14 @@ contract LotteryGameSystem is
             address(0),
             0.005 ether
         );
+        //set the lottery game ticket info
+        configGameTicket(
+            lotteryGameId,
+            TokenType.ETH,
+            address(0),
+            0.0005 ether,
+            300
+        );
 
         emit LotteryGameCreated(
             lotteryGameId,
@@ -184,6 +192,46 @@ contract LotteryGameSystem is
         LotteryGameConfigBonusPoolTable.setInitialAmount(
             lotteryGameId_,
             initialAmount_
+        );
+    }
+
+    function configGameTicket(
+        uint256 lotteryGameId_,
+        TokenType tokenType_,
+        address tokenAddress_,
+        uint256 ticketPrice_,
+        uint256 ticketMaxCount_
+    ) internal {
+        require(
+            tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
+            "token type is not supported"
+        );
+        require(ticketPrice_ > 0, "initial amount is zero");
+        if (tokenType_ == TokenType.ERC20) {
+            require(tokenAddress_ != address(0), "token address is zero");
+        } else if (tokenType_ == TokenType.ETH) {
+            require(tokenAddress_ == address(0), "token address is not zero");
+        }
+
+        require(ticketMaxCount_ > 0, "ticket max amount is zero");
+        require(ticketMaxCount_ <= 300, "ticket max amount is too high");
+
+        //set the lottery game ticket info
+        LotteryGameConfigTicketTable.setTokenType(
+            lotteryGameId_,
+            uint256(tokenType_)
+        );
+        LotteryGameConfigTicketTable.setTokenAddress(
+            lotteryGameId_,
+            tokenAddress_
+        );
+        LotteryGameConfigTicketTable.setTicketPrice(
+            lotteryGameId_,
+            ticketPrice_
+        );
+        LotteryGameConfigTicketTable.setTicketMaxCount(
+            lotteryGameId_,
+            ticketMaxCount_
         );
     }
 

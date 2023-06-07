@@ -137,6 +137,45 @@ describe.only('LotteryGameSystem', function () {
       expect(LotteryGameConfigBonusPool.initialAmount).to.equal(
         ethers.utils.parseEther('0.005')
       );
+
+      // get lottery game config ticket
+      const LotteryGameConfigTicketTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameConfigTicketTable'
+      );
+      const LotteryGameConfigTicket = await gameRootContract
+        .getRecord(
+          LotteryGameConfigTicketTableId,
+          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          4
+        )
+        .then((res: any) => {
+          return {
+            tokenType: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            tokenAddress: ethers.utils.defaultAbiCoder.decode(
+              ['address'],
+              res[1]
+            )[0],
+            ticketPrice: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[2]
+            )[0],
+            ticketMaxCount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[3]
+            )[0],
+          };
+        });
+      expect(LotteryGameConfigTicket.tokenType).to.equal(0);
+      expect(LotteryGameConfigTicket.tokenAddress).to.equal(
+        ethers.constants.AddressZero
+      );
+      expect(LotteryGameConfigTicket.ticketPrice).to.equal(
+        ethers.utils.parseEther('0.0005')
+      );
+      expect(LotteryGameConfigTicket.ticketMaxCount).to.equal(300);
     });
   });
 });
