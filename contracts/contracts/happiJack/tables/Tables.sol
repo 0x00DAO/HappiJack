@@ -7,3 +7,4 @@ import {LotteryGameConfigTable, LotteryGameConfigTableId} from "./LotteryGameCon
 import {LotteryGameConfigFeeTable, LotteryGameConfigFeeTableId} from "./LotteryGameConfigFeeTable.sol";
 import {LotteryGameConfigBonusPoolTable, LotteryGameConfigBonusPoolTableId} from "./LotteryGameConfigBonusPoolTable.sol";
 import {LotteryGameConfigTicketTable, LotteryGameConfigTicketTableId} from "./LotteryGameConfigTicketTable.sol";
+import {LotteryGameBonusPoolTable, LotteryGameBonusPoolTableId} from "./LotteryGameBonusPoolTable.sol";

@@ -13,6 +13,8 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable, LotteryGameConfigBonusPoolTable, LotteryGameConfigTicketTable} from "../tables/Tables.sol";
 
+import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
+
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
 contract LotteryGameSystem is
@@ -96,6 +98,8 @@ contract LotteryGameSystem is
             uint256(LotteryGameStatus.Active)
         );
 
+        uint256 initialAmount = 0.005 ether;
+
         //set the lottery game info
         configGame(lotteryGameId, owner, ad_, startTime_, during_);
         //set the lottery game fee info
@@ -105,8 +109,18 @@ contract LotteryGameSystem is
             lotteryGameId,
             TokenType.ETH,
             address(0),
-            0.005 ether
+            initialAmount
         );
+        //create the lottery game pool
+        LotteryGameBonusPoolSystem(
+            getSystemAddress(LotteryGameBonusPoolSystemID)
+        ).createLotteryGamePool{value: msg.value}(
+            lotteryGameId,
+            TokenType.ETH,
+            address(0),
+            initialAmount
+        );
+
         //set the lottery game ticket info
         configGameTicket(
             lotteryGameId,

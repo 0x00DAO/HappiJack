@@ -6,6 +6,7 @@ import { eonTestUtil } from '../../../scripts/utils/eonTest.util';
 describe.only('LotteryGameSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
+  let lotteryGameBonusPoolSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -18,25 +19,35 @@ describe.only('LotteryGameSystem', function () {
       gameRootContract,
       'LotteryGameSystem'
     );
+
+    lotteryGameBonusPoolSystem = await eonTestUtil.deploySystem(
+      gameRootContract,
+      'LotteryGameBonusPoolSystem'
+    );
   });
   it('should be deployed', async function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
 
-  describe.only('createLotteryGame', function () {
+  describe('createLotteryGame', function () {
     it('success', async function () {
       const [owner] = await ethers.getSigners();
 
       const startTime = Math.floor(Date.now() / 1000); // current time
       const during = 60 * 60 * 24 * 1; // 1 days
       const endTime = startTime + during;
+
+      const initialAmount = ethers.utils.parseEther('0.005');
       // const ownerFeeRate = 10;
       // create a lottery game
       await expect(
         lotteryGameSystem.createLotteryGame(
           `It's a lottery game`,
           startTime,
-          during
+          during,
+          {
+            value: initialAmount,
+          }
         )
       )
         .to.emit(lotteryGameSystem, 'LotteryGameCreated')
@@ -134,9 +145,7 @@ describe.only('LotteryGameSystem', function () {
       expect(LotteryGameConfigBonusPool.tokenAddress).to.equal(
         ethers.constants.AddressZero
       );
-      expect(LotteryGameConfigBonusPool.initialAmount).to.equal(
-        ethers.utils.parseEther('0.005')
-      );
+      expect(LotteryGameConfigBonusPool.initialAmount).to.equal(initialAmount);
 
       // get lottery game config ticket
       const LotteryGameConfigTicketTableId = ethers.utils.id(
@@ -176,6 +185,42 @@ describe.only('LotteryGameSystem', function () {
         ethers.utils.parseEther('0.0005')
       );
       expect(LotteryGameConfigTicket.ticketMaxCount).to.equal(300);
+
+      // get lottery game bonus pool
+      const LotteryGameBonusPoolTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
+      );
+      const LotteryGameBonusPool = await gameRootContract
+        .getRecord(
+          LotteryGameBonusPoolTableId,
+          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          4
+        )
+        .then((res: any) => {
+          return {
+            TotalAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            BonusAmount: ethers.utils.defaultAbiCoder.decode(
+              ['address'],
+              res[1]
+            )[0],
+            OwnerFeeAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[2]
+            )[0],
+            DevelopFeeAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[3]
+            )[0],
+          };
+        });
+
+      expect(LotteryGameBonusPool.TotalAmount).to.equal(initialAmount);
+      expect(LotteryGameBonusPool.BonusAmount).to.equal(initialAmount);
+      expect(LotteryGameBonusPool.OwnerFeeAmount).to.equal(0);
+      expect(LotteryGameBonusPool.DevelopFeeAmount).to.equal(0);
     });
   });
 });
