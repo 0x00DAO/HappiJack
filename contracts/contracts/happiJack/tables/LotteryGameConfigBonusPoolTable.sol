@@ -8,13 +8,17 @@ import {addressToEntity, entityToAddress} from "../../eon/utils.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(
-        abi.encodePacked("tableId", "HappiJack", "LotteryGameConfigFeeTable")
+        abi.encodePacked(
+            "tableId",
+            "HappiJack",
+            "LotteryGameConfigBonusPoolTable"
+        )
     )
 );
-uint8 constant _Columns = 2;
-bytes32 constant LotteryGameConfigFeeTableId = _tableId;
+uint8 constant _Columns = 3;
+bytes32 constant LotteryGameConfigBonusPoolTableId = _tableId;
 
-library LotteryGameConfigFeeTable {
+library LotteryGameConfigBonusPoolTable {
     /** Get the table's metadata */
     function getMetadata()
         internal
@@ -22,9 +26,10 @@ library LotteryGameConfigFeeTable {
         returns (string memory, string[] memory)
     {
         string[] memory _fieldNames = new string[](_Columns);
-        _fieldNames[0] = "ownerFeeRate"; // uint256
-        _fieldNames[1] = "developFeeRate"; // uint256
-        return ("LotteryGameConfigFeeTable", _fieldNames);
+        _fieldNames[0] = "TokenType"; // uint256 0 - ETH, 1 - ERC20
+        _fieldNames[1] = "TokenAddress"; // address
+        _fieldNames[2] = "InitialAmount"; // uint256
+        return ("LotteryGameConfigBonusPoolTable", _fieldNames);
     }
 
     function entityKeys(
@@ -37,24 +42,21 @@ library LotteryGameConfigFeeTable {
     }
 
     /** Set  */
-    function setOwnerFeeRate(
-        uint256 lotteryGameId,
-        uint256 ownerFeeRate
-    ) internal {
+    function setTokenType(uint256 lotteryGameId, uint256 tokenType) internal {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         StoreDelegate.Store().setField(
             _tableId,
             _keyTuple,
             0,
-            abi.encodePacked((ownerFeeRate))
+            abi.encodePacked((tokenType))
         );
     }
 
     /** Get  */
-    function getOwnerFeeRate(
+    function getTokenType(
         uint256 lotteryGameId
-    ) internal view returns (uint256 ownerFeeRate) {
+    ) internal view returns (uint256 tokenType) {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         bytes memory _blob = StoreDelegate.Store().getField(
@@ -62,13 +64,13 @@ library LotteryGameConfigFeeTable {
             _keyTuple,
             0
         );
-        ownerFeeRate = abi.decode(_blob, (uint256));
+        tokenType = abi.decode(_blob, (uint256));
     }
 
     /** Set  */
-    function setDevelopFeeRate(
+    function setTokenAddress(
         uint256 lotteryGameId,
-        uint256 developFeeRate
+        address tokenAddress
     ) internal {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
@@ -76,14 +78,14 @@ library LotteryGameConfigFeeTable {
             _tableId,
             _keyTuple,
             1,
-            abi.encodePacked((developFeeRate))
+            abi.encodePacked((addressToEntity(tokenAddress)))
         );
     }
 
     /** Get  */
-    function getDevelopFeeRate(
+    function getTokenAddress(
         uint256 lotteryGameId
-    ) internal view returns (uint256 developFeeRate) {
+    ) internal view returns (address tokenAddress) {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         bytes memory _blob = StoreDelegate.Store().getField(
@@ -91,22 +93,56 @@ library LotteryGameConfigFeeTable {
             _keyTuple,
             1
         );
-        developFeeRate = abi.decode(_blob, (uint256));
+        tokenAddress = entityToAddress(abi.decode(_blob, (uint256)));
+    }
+
+    /** Set  */
+    function setInitialAmount(
+        uint256 lotteryGameId,
+        uint256 initialAmount
+    ) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        StoreDelegate.Store().setField(
+            _tableId,
+            _keyTuple,
+            2,
+            abi.encodePacked((initialAmount))
+        );
+    }
+
+    /** Get  */
+    function getInitialAmount(
+        uint256 lotteryGameId
+    ) internal view returns (uint256 initialAmount) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            2
+        );
+        initialAmount = abi.decode(_blob, (uint256));
     }
 
     /** Get record */
     function getRecord(
         uint256 id
-    ) internal view returns (uint256 ownerFeeRate, uint256 developFeeRate) {
+    )
+        internal
+        view
+        returns (uint256 tokenType, address tokenAddress, uint256 initialAmount)
+    {
         bytes32[] memory _keyTuple = entityKeys(id);
-        bytes[] memory _blobs = StoreDelegate.Store().getRecord(
+
+        bytes[] memory _blob = StoreDelegate.Store().getRecord(
             _tableId,
             _keyTuple,
             _Columns
         );
-
-        ownerFeeRate = abi.decode(_blobs[0], (uint256));
-        developFeeRate = abi.decode(_blobs[1], (uint256));
+        tokenType = abi.decode(_blob[0], (uint256));
+        tokenAddress = entityToAddress(abi.decode(_blob[1], (uint256)));
+        initialAmount = abi.decode(_blob[2], (uint256));
     }
 
     /** Delete record */

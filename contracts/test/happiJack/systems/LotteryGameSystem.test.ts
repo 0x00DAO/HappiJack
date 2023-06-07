@@ -23,7 +23,7 @@ describe.only('LotteryGameSystem', function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
 
-  describe('createLotteryGame', function () {
+  describe.only('createLotteryGame', function () {
     it('success', async function () {
       const [owner] = await ethers.getSigners();
 
@@ -103,6 +103,41 @@ describe.only('LotteryGameSystem', function () {
 
       expect(LotteryGameConfigFee.ownerFeeRate).to.equal(ownerFeeRate);
       expect(LotteryGameConfigFee.developFeeRate).to.equal(10);
+
+      // get lottery game config bonus pool
+      const LotteryGameConfigBonusPoolTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameConfigBonusPoolTable'
+      );
+      const LotteryGameConfigBonusPool = await gameRootContract
+        .getRecord(
+          LotteryGameConfigBonusPoolTableId,
+          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          3
+        )
+        .then((res: any) => {
+          return {
+            tokenType: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            tokenAddress: ethers.utils.defaultAbiCoder.decode(
+              ['address'],
+              res[1]
+            )[0],
+            initialAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[2]
+            )[0],
+          };
+        });
+
+      expect(LotteryGameConfigBonusPool.tokenType).to.equal(0);
+      expect(LotteryGameConfigBonusPool.tokenAddress).to.equal(
+        ethers.constants.AddressZero
+      );
+      expect(LotteryGameConfigBonusPool.initialAmount).to.equal(
+        ethers.utils.parseEther('0.005')
+      );
     });
   });
 });

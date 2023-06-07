@@ -7,3 +7,8 @@ enum LotteryGameStatus {
     Ended, // 2 - Ended (got winner)
     Canceled // 3 - Canceled
 }
+
+enum TokenType {
+    ETH, // 0 - ETH
+    ERC20 // 1 - ERC20
+}

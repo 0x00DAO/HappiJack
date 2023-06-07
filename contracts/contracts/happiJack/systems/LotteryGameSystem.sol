@@ -9,9 +9,9 @@ import {System} from "../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
-import {LotteryGameStatus} from "../tables/LotteryGameStatus.sol";
+import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
-import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable} from "../tables/Tables.sol";
+import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable, LotteryGameConfigBonusPoolTable} from "../tables/Tables.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -101,6 +101,13 @@ contract LotteryGameSystem is
         configGame(lotteryGameId, owner, ad_, startTime_, during_);
         //set the lottery game fee info
         configGameFee(lotteryGameId, ownerFeeRate_, 10);
+        //set the lottery game bonus pool info
+        configGameBonusPool(
+            lotteryGameId,
+            TokenType.ETH,
+            address(0),
+            0.005 ether
+        );
 
         emit LotteryGameCreated(
             lotteryGameId,
@@ -146,6 +153,38 @@ contract LotteryGameSystem is
         LotteryGameConfigFeeTable.setDevelopFeeRate(
             lotteryGameId_,
             developFeeRate_
+        );
+    }
+
+    function configGameBonusPool(
+        uint256 lotteryGameId_,
+        TokenType tokenType_,
+        address tokenAddress_,
+        uint256 initialAmount_
+    ) internal {
+        require(
+            tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
+            "token type is not supported"
+        );
+        require(initialAmount_ > 0, "initial amount is zero");
+        if (tokenType_ == TokenType.ERC20) {
+            require(tokenAddress_ != address(0), "token address is zero");
+        } else if (tokenType_ == TokenType.ETH) {
+            require(tokenAddress_ == address(0), "token address is not zero");
+        }
+
+        //set the lottery game bonus pool info
+        LotteryGameConfigBonusPoolTable.setTokenType(
+            lotteryGameId_,
+            uint256(tokenType_)
+        );
+        LotteryGameConfigBonusPoolTable.setTokenAddress(
+            lotteryGameId_,
+            tokenAddress_
+        );
+        LotteryGameConfigBonusPoolTable.setInitialAmount(
+            lotteryGameId_,
+            initialAmount_
         );
     }
 
