@@ -30,14 +30,13 @@ describe.only('LotteryGameSystem', function () {
       const startTime = Math.floor(Date.now() / 1000); // current time
       const during = 60 * 60 * 24 * 1; // 1 days
       const endTime = startTime + during;
-      const ownerFeeRate = 10;
+      // const ownerFeeRate = 10;
       // create a lottery game
       await expect(
         lotteryGameSystem.createLotteryGame(
           `It's a lottery game`,
           startTime,
-          during,
-          ownerFeeRate
+          during
         )
       )
         .to.emit(lotteryGameSystem, 'LotteryGameCreated')
@@ -101,7 +100,7 @@ describe.only('LotteryGameSystem', function () {
           };
         });
 
-      expect(LotteryGameConfigFee.ownerFeeRate).to.equal(ownerFeeRate);
+      expect(LotteryGameConfigFee.ownerFeeRate).to.equal(10);
       expect(LotteryGameConfigFee.developFeeRate).to.equal(10);
 
       // get lottery game config bonus pool

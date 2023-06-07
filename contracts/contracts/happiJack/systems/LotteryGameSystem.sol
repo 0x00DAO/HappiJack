@@ -68,8 +68,7 @@ contract LotteryGameSystem is
     function createLotteryGame(
         string memory ad_,
         uint256 startTime_,
-        uint256 during_,
-        uint256 ownerFeeRate_
+        uint256 during_
     ) external payable nonReentrant whenNotPaused returns (uint256) {
         require(
             AddressUpgradeable.isContract(_msgSender()) == false,
@@ -100,7 +99,7 @@ contract LotteryGameSystem is
         //set the lottery game info
         configGame(lotteryGameId, owner, ad_, startTime_, during_);
         //set the lottery game fee info
-        configGameFee(lotteryGameId, ownerFeeRate_, 10);
+        configGameFee(lotteryGameId, 10, 10);
         //set the lottery game bonus pool info
         configGameBonusPool(
             lotteryGameId,
