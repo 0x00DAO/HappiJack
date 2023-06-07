@@ -7,6 +7,7 @@ describe.only('LotteryGameSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameBonusPoolSystem: Contract;
+  let LotteryGameTicketSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -23,6 +24,11 @@ describe.only('LotteryGameSystem', function () {
     lotteryGameBonusPoolSystem = await eonTestUtil.deploySystem(
       gameRootContract,
       'LotteryGameBonusPoolSystem'
+    );
+
+    LotteryGameTicketSystem = await eonTestUtil.deploySystem(
+      gameRootContract,
+      'LotteryGameTicketSystem'
     );
   });
   it('should be deployed', async function () {
@@ -221,6 +227,27 @@ describe.only('LotteryGameSystem', function () {
       expect(LotteryGameBonusPool.BonusAmount).to.equal(initialAmount);
       expect(LotteryGameBonusPool.OwnerFeeAmount).to.equal(0);
       expect(LotteryGameBonusPool.DevelopFeeAmount).to.equal(0);
+
+      // get lottery game ticket
+      const LotteryGameTicketTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameTicketTable'
+      );
+      const LotteryGameTicket = await gameRootContract
+        .getRecord(
+          LotteryGameTicketTableId,
+          [ethers.utils.hexZeroPad(ethers.BigNumber.from(0).toHexString(), 32)],
+          1
+        )
+        .then((res: any) => {
+          return {
+            TicketSoldCount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+          };
+        });
+
+      expect(LotteryGameTicket.TicketSoldCount).to.equal(0);
     });
   });
 });

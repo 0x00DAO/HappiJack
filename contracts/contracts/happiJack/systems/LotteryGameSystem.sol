@@ -11,9 +11,10 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
-import {IdCounterTable, LotteryGameTable, LotteryGameConfigFeeTable, LotteryGameConfigTable, LotteryGameConfigBonusPoolTable, LotteryGameConfigTicketTable} from "../tables/Tables.sol";
+import "../tables/Tables.sol";
 
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
+import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -111,6 +112,16 @@ contract LotteryGameSystem is
             address(0),
             initialAmount
         );
+
+        //set the lottery game ticket info
+        configGameTicket(
+            lotteryGameId,
+            TokenType.ETH,
+            address(0),
+            0.0005 ether,
+            300
+        );
+
         //create the lottery game pool
         LotteryGameBonusPoolSystem(
             getSystemAddress(LotteryGameBonusPoolSystemID)
@@ -121,14 +132,9 @@ contract LotteryGameSystem is
             initialAmount
         );
 
-        //set the lottery game ticket info
-        configGameTicket(
-            lotteryGameId,
-            TokenType.ETH,
-            address(0),
-            0.0005 ether,
-            300
-        );
+        //create the lottery game ticket
+        LotteryGameTicketSystem(getSystemAddress(LotteryGameTicketSystemID))
+            .createLotteryGameTicket(lotteryGameId);
 
         emit LotteryGameCreated(
             lotteryGameId,

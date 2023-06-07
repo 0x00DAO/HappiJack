@@ -8,3 +8,4 @@ import {LotteryGameConfigFeeTable, LotteryGameConfigFeeTableId} from "./LotteryG
 import {LotteryGameConfigBonusPoolTable, LotteryGameConfigBonusPoolTableId} from "./LotteryGameConfigBonusPoolTable.sol";
 import {LotteryGameConfigTicketTable, LotteryGameConfigTicketTableId} from "./LotteryGameConfigTicketTable.sol";
 import {LotteryGameBonusPoolTable, LotteryGameBonusPoolTableId} from "./LotteryGameBonusPoolTable.sol";
+import {LotteryGameTicketTable, LotteryGameTicketTableId} from "./LotteryGameTicketTable.sol";
