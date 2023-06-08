@@ -56,7 +56,7 @@ contract LotteryGameLuckyNumberSystem is
 
     /// custom logic here
 
-    function createLotteryGameLuckyNum(
+    function createLotteryGameLuckyNumber(
         uint256 lotteryGameId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         //check if lottery game exists

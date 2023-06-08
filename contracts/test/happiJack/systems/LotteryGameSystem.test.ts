@@ -8,6 +8,7 @@ describe.only('LotteryGameSystem', function () {
   let lotteryGameSystem: Contract;
   let lotteryGameBonusPoolSystem: Contract;
   let LotteryGameTicketSystem: Contract;
+  let lotteryGameLuckyNumberSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -29,6 +30,11 @@ describe.only('LotteryGameSystem', function () {
     LotteryGameTicketSystem = await eonTestUtil.deploySystem(
       gameRootContract,
       'LotteryGameTicketSystem'
+    );
+
+    lotteryGameLuckyNumberSystem = await eonTestUtil.deploySystem(
+      gameRootContract,
+      'LotteryGameLuckyNumberSystem'
     );
   });
   it('should be deployed', async function () {
@@ -278,6 +284,43 @@ describe.only('LotteryGameSystem', function () {
         });
 
       expect(LotteryGameTicket.TicketSoldCount).to.equal(0);
+
+      // get lottery game lucky number
+      const LotteryGameLuckyNumTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameLuckyNumTable'
+      );
+
+      //check has record
+      await gameRootContract
+        .hasRecord(LotteryGameLuckyNumTableId, [
+          ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32),
+        ])
+        .then((res: any) => {
+          expect(res).to.equal(true);
+          return res;
+        });
+
+      const LotteryGameLuckyNumber = await gameRootContract
+        .getRecord(
+          LotteryGameLuckyNumTableId,
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
+          2
+        )
+        .then((res: any) => {
+          return {
+            CurrentNumber: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            SumLotteryTicketLuckyNumber: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[1]
+            )[0],
+          };
+        });
+
+      expect(LotteryGameLuckyNumber.CurrentNumber).to.equal(0);
+      expect(LotteryGameLuckyNumber.SumLotteryTicketLuckyNumber).to.equal(0);
     });
   });
 });

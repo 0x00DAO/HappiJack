@@ -15,6 +15,7 @@ import "../tables/Tables.sol";
 
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
+import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -135,6 +136,11 @@ contract LotteryGameSystem is
         //create the lottery game ticket
         LotteryGameTicketSystem(getSystemAddress(LotteryGameTicketSystemID))
             .createLotteryGameTicket(lotteryGameId);
+
+        //create the lottery lucky number
+        LotteryGameLuckyNumberSystem(
+            getSystemAddress(LotteryGameLuckyNumberSystemID)
+        ).createLotteryGameLuckyNumber(lotteryGameId);
 
         emit LotteryGameCreated(
             lotteryGameId,
