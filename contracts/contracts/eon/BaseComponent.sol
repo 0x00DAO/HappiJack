@@ -13,8 +13,8 @@ abstract contract BaseComponent is
     ContextUpgradeable,
     IComponent
 {
-    uint256 public id;
-    ComponentType public componentType;
+    uint256 internal id;
+    ComponentType internal componentType;
     IRoot internal root;
 
     // using LibComponentType for ComponentType;

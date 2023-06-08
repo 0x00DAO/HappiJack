@@ -12,6 +12,8 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 
+import {LotteryGameTicketNFTSystem, ID as LotteryGameTicketNFTSystemID} from "./LotteryGameTicketNFTSystem.sol";
+
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameTicketSystem")
 );
@@ -97,11 +99,17 @@ contract LotteryGameTicketSystem is
             "LotteryGameBonusPoolSystem: Lottery game does not exist"
         );
 
+        uint256 initialLotteryId_ = 1;
         uint256 lotteryGameTicketId_ = IdCounterTable.get(
             ID_LOTTERY_GAME_TICKET,
-            1
+            initialLotteryId_
         );
-        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET);
+        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET, initialLotteryId_);
+
+        //create lottery game ticket nft
+        LotteryGameTicketNFTSystem(
+            getSystemAddress(LotteryGameTicketNFTSystemID)
+        ).mintTicket(owner_, lotteryGameTicketId_);
 
         LotteryTicketTable.setLotteryGameId(
             lotteryGameTicketId_,

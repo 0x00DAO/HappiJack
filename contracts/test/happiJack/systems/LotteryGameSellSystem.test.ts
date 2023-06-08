@@ -4,7 +4,7 @@ import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 
-describe('LotteryGameSellSystem', function () {
+describe.only('LotteryGameSellSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
@@ -69,13 +69,14 @@ describe('LotteryGameSellSystem', function () {
     return lotteryGameId;
   }
 
-  describe.only('buyTicket', function () {
+  describe('buyTicket', function () {
     it('success', async function () {
       // create a lottery game
       const lotteryGameId = await createLotteryGame();
 
       // buy ticket
       const [owner] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.005');
       const ticketPrice = ethers.utils.parseEther('0.0005');
       const luckyNumber = 99988877;
       let ticketId = ethers.BigNumber.from(0);
@@ -134,9 +135,92 @@ describe('LotteryGameSellSystem', function () {
       expect(ticketData.luckyNumber).to.equal(luckyNumber);
       expect(ticketData.winStatus).to.equal(0);
 
+      //check ticket nft
+      const lotteryGameTicketNFTSystem = await eonTestUtil.getSystem(
+        gameRootContract,
+        'LotteryGameTicketNFTSystem',
+        gameDeploy.systemIdPrefix
+      );
+
+      // lotteryGameTicketNFTSystem is ERC721
+      const ticketNFTId = await lotteryGameTicketNFTSystem.tokenOfOwnerByIndex(
+        owner.address,
+        0
+      );
+      expect(ticketNFTId).to.equal(ticketId);
+
       // check ticket sold amount
+      const lotteryGameTicketTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameTicketTable'
+      );
+      const lotteryGameTicketData = await gameRootContract
+        .getRecord(
+          lotteryGameTicketTableId,
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
+          1
+        )
+        .then((res: any) => {
+          return {
+            TicketSoldCount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+          };
+        });
+      expect(lotteryGameTicketData.TicketSoldCount).to.equal(1);
 
       // check bonus pool
+      const lotteryGameBonusPoolTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
+      );
+      const lotteryGameBonusPoolData = await gameRootContract
+
+        .getRecord(
+          lotteryGameBonusPoolTableId,
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
+          4
+        )
+        .then((res: any) => {
+          return {
+            TotalAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            BonusAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[1]
+            )[0],
+            OwnerFeeAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[2]
+            )[0],
+            DevelopFeeAmount: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[3]
+            )[0],
+          };
+        });
+
+      // console.log(lotteryGameBonusPoolData);
+      expect(lotteryGameBonusPoolData.TotalAmount).to.equal(
+        ticketPrice.add(initialAmount)
+      );
+      expect(lotteryGameBonusPoolData.TotalAmount).to.equal(
+        lotteryGameBonusPoolData.OwnerFeeAmount.add(
+          lotteryGameBonusPoolData.DevelopFeeAmount
+        ).add(lotteryGameBonusPoolData.BonusAmount)
+      );
+      expect(lotteryGameBonusPoolData.OwnerFeeAmount).to.equal(
+        ticketPrice.mul(10).div(100)
+      );
+      expect(lotteryGameBonusPoolData.DevelopFeeAmount).to.equal(
+        ticketPrice.mul(10).div(100)
+      );
+      expect(lotteryGameBonusPoolData.BonusAmount).to.equal(
+        lotteryGameBonusPoolData.TotalAmount.sub(
+          ticketPrice.mul(10).div(100)
+        ).sub(ticketPrice.mul(10).div(100))
+      );
     });
   });
 });

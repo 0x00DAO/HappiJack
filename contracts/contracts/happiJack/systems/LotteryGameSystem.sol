@@ -91,7 +91,7 @@ contract LotteryGameSystem is
             "lottery game id is not empty"
         );
         //increment the id counter
-        IdCounterTable.increase(ID_LOTTERY_GAME);
+        IdCounterTable.increase(ID_LOTTERY_GAME, 10000000);
 
         //create the lottery game
         LotteryGameTable.setOwner(lotteryGameId, owner);

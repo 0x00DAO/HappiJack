@@ -20,7 +20,7 @@ library LotteryTicketTable {
         returns (string memory, string[] memory)
     {
         string[] memory _fieldNames = new string[](_Columns);
-        _fieldNames[0] = "LotteryGameId"; // uint256
+        _fieldNames[0] = "lotteryGameId"; // uint256
         _fieldNames[1] = "owner"; // address
         _fieldNames[2] = "luckyNumber"; // uint256
         _fieldNames[3] = "buyTime"; // uint256

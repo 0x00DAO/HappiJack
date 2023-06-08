@@ -64,7 +64,14 @@ library IdCounterTable {
 
     /// @dev Increase the counter and return the new value
     function increase(uint256 id) internal returns (uint256 amount) {
-        uint256 _amount = get(id);
+        return increase(id, 0);
+    }
+
+    function increase(
+        uint256 id,
+        uint256 defaultValue
+    ) internal returns (uint256 amount) {
+        uint256 _amount = get(defaultValue);
         _amount += 1;
         set(id, _amount);
         return _amount;

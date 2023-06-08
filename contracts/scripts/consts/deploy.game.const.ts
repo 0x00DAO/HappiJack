@@ -6,5 +6,6 @@ export const gameDeploy = {
     'LotteryGameTicketSystem',
     'LotteryGameLuckyNumberSystem',
     'LotteryGameSellSystem',
+    'LotteryGameTicketNFTSystem',
   ],
 };
