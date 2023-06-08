@@ -1,6 +1,6 @@
 import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
-import { deployUtil } from './deploy.util';
+import { deployUtil } from '../utils/deploy.util';
 
 async function deploySystem(
   gameRoot: Contract,
@@ -16,6 +16,19 @@ async function deploySystem(
   return systemContract;
 }
 
+async function getSystem(
+  gameRoot: Contract,
+  contractName: string,
+  contractIdPrefix: string = 'game.systems'
+): Promise<Contract> {
+  const ContractId = ethers.utils.id(`${contractIdPrefix}.${contractName}`);
+  return ethers.getContractAt(
+    contractName,
+    await gameRoot.getSystemAddress(ContractId)
+  );
+}
+
 export const eonTestUtil = {
   deploySystem: deploySystem,
+  getSystem: getSystem,
 };

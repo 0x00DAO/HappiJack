@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
-import { eonTestUtil } from '../../../scripts/utils/eonTest.util';
+import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 
 describe('LotteryGameSystem', function () {
   let gameRootContract: Contract;
