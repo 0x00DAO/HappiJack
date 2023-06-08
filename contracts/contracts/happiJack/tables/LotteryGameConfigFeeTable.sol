@@ -109,6 +109,12 @@ library LotteryGameConfigFeeTable {
         developFeeRate = abi.decode(_blobs[1], (uint256));
     }
 
+    /** Has record */
+    function hasRecord(uint256 lotteryGameId) internal view returns (bool) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+        return StoreDelegate.Store().hasRecord(_tableId, _keyTuple);
+    }
+
     /** Delete record */
     function deleteRecord(uint256 id) internal {
         bytes32[] memory _keyTuple = entityKeys(id);

@@ -8,13 +8,13 @@ import {addressToEntity, entityToAddress} from "../../eon/utils.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(
-        abi.encodePacked("tableId", "HappiJack", "LotteryGameTicketTable")
+        abi.encodePacked("tableId", "HappiJack", "LotteryGameLuckyNumTable")
     )
 );
-uint8 constant _Columns = 1;
-bytes32 constant LotteryGameTicketTableId = _tableId;
+uint8 constant _Columns = 2;
+bytes32 constant LotteryGameLuckyNumTableId = _tableId;
 
-library LotteryGameTicketTable {
+library LotteryGameLuckyNumTable {
     /** Get the table's metadata */
     function getMetadata()
         internal
@@ -22,9 +22,10 @@ library LotteryGameTicketTable {
         returns (string memory, string[] memory)
     {
         string[] memory _fieldNames = new string[](_Columns);
-        _fieldNames[0] = "TicketSoldCount"; // uint256
+        _fieldNames[0] = "CurrentNumber"; // uint256
+        _fieldNames[1] = "SumLotteryTicketLuckyNumber"; // uint256
 
-        return ("LotteryGameTicketTable", _fieldNames);
+        return ("LotteryGameLuckyNumTable", _fieldNames);
     }
 
     function entityKeys(
@@ -43,9 +44,9 @@ library LotteryGameTicketTable {
     }
 
     /** Set  */
-    function setTicketSoldCount(
+    function setCurrentNumber(
         uint256 lotteryGameId,
-        uint256 ticketSoldCount
+        uint256 currentNumber
     ) internal {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
@@ -53,14 +54,14 @@ library LotteryGameTicketTable {
             _tableId,
             _keyTuple,
             0,
-            abi.encodePacked((ticketSoldCount))
+            abi.encode(currentNumber)
         );
     }
 
     /** Get  */
-    function getTicketSoldCount(
+    function getCurrentNumber(
         uint256 lotteryGameId
-    ) internal view returns (uint256 ticketSoldCount) {
+    ) internal view returns (uint256) {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
 
         bytes memory _blob = StoreDelegate.Store().getField(
@@ -68,26 +69,57 @@ library LotteryGameTicketTable {
             _keyTuple,
             0
         );
-        if (_blob.length == 0) {
-            return 0;
-        }
+        if (_blob.length == 0) return 0;
+        return abi.decode(_blob, (uint256));
+    }
 
-        ticketSoldCount = abi.decode(_blob, (uint256));
+    /** Set  */
+    function setSumLotteryTicketLuckyNumber(
+        uint256 lotteryGameId,
+        uint256 sumLotteryTicketLuckyNumber
+    ) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        StoreDelegate.Store().setField(
+            _tableId,
+            _keyTuple,
+            1,
+            abi.encode(sumLotteryTicketLuckyNumber)
+        );
+    }
+
+    /** Get  */
+    function getSumLotteryTicketLuckyNumber(
+        uint256 lotteryGameId
+    ) internal view returns (uint256) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            1
+        );
+        if (_blob.length == 0) return 0;
+        return abi.decode(_blob, (uint256));
     }
 
     /** Get record */
     function getRecord(
         uint256 id
-    ) internal view returns (uint256 ownerFeeRate, uint256 developFeeRate) {
+    )
+        internal
+        view
+        returns (uint256 currentNumber, uint256 sumLotteryTicketLuckyNumber)
+    {
         bytes32[] memory _keyTuple = entityKeys(id);
         bytes[] memory _blobs = StoreDelegate.Store().getRecord(
             _tableId,
             _keyTuple,
             _Columns
         );
-
-        ownerFeeRate = abi.decode(_blobs[0], (uint256));
-        developFeeRate = abi.decode(_blobs[1], (uint256));
+        if (_blobs.length == 0) return (0, 0);
+        currentNumber = abi.decode(_blobs[0], (uint256));
+        sumLotteryTicketLuckyNumber = abi.decode(_blobs[1], (uint256));
     }
 
     /** Delete record */

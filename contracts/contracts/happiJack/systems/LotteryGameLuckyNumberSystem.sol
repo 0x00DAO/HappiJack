@@ -13,10 +13,10 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 
 uint256 constant ID = uint256(
-    keccak256("happiJack.systems.LotteryGameTicketSystem")
+    keccak256("happiJack.systems.LotteryGameLuckyNumberSystem")
 );
 
-contract LotteryGameTicketSystem is
+contract LotteryGameLuckyNumberSystem is
     Initializable,
     PausableUpgradeable,
     UUPSUpgradeable,
@@ -56,21 +56,25 @@ contract LotteryGameTicketSystem is
 
     /// custom logic here
 
-    function createLotteryGameTicket(
+    function createLotteryGameLuckyNum(
         uint256 lotteryGameId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         //check if lottery game exists
         require(
-            LotteryGameTable.getOwner(lotteryGameId_) != address(0),
-            "LotteryGameBonusPoolSystem: Lottery game does not exist"
+            LotteryGameTable.hasRecord(lotteryGameId_),
+            "LotteryGameLuckyNumberSystem: Lottery game does not exist"
         );
 
-        //check if lottery game ticket does not exist
         require(
-            LotteryGameTicketTable.hasRecord(lotteryGameId_) == false,
-            "LotteryGameBonusPoolSystem: Lottery game ticket already exists"
+            LotteryGameLuckyNumTable.hasRecord(lotteryGameId_) == false,
+            "LotteryGameLuckyNumberSystem: Lottery game lucky number already exists"
         );
 
-        LotteryGameTicketTable.setTicketSoldCount(lotteryGameId_, 0);
+        //create lottery game lucky number
+        LotteryGameLuckyNumTable.setCurrentNumber(lotteryGameId_, 0);
+        LotteryGameLuckyNumTable.setSumLotteryTicketLuckyNumber(
+            lotteryGameId_,
+            0
+        );
     }
 }

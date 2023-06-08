@@ -70,7 +70,7 @@ contract LotteryGameBonusPoolSystem is
 
         //check if lottery game pool exists
         require(
-            LotteryGameBonusPoolTable.getTotalAmount(lotteryGameId_) == 0,
+            LotteryGameBonusPoolTable.hasRecord(lotteryGameId_) == false,
             "LotteryGameBonusPoolSystem: Lottery game pool already exists"
         );
 
