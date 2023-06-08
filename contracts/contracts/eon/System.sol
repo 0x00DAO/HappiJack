@@ -31,7 +31,7 @@ contract System is
     function getSystemAddress(
         uint256 systemId
     ) internal view returns (address) {
-        return root.getSystemAddress(systemId);
+        return _getRoot().getSystemAddress(systemId);
     }
 
     /**

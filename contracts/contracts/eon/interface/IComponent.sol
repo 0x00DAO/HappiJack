@@ -1,10 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {IRoot} from "./IRoot.sol";
-
 interface IComponent {
-    function getRoot() external view returns (IRoot);
+    function getRoot() external view returns (address);
 
     function getId() external view returns (uint256);
 

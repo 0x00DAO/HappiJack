@@ -45,7 +45,11 @@ abstract contract BaseComponent is
         return componentType;
     }
 
-    function getRoot() public view virtual returns (IRoot) {
+    function getRoot() public view virtual returns (address) {
+        return address(_getRoot());
+    }
+
+    function _getRoot() internal view virtual returns (IRoot) {
         return root;
     }
 

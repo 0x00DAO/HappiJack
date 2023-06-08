@@ -31,7 +31,7 @@ contract SystemAccessControl is
         address account
     ) public view virtual override returns (bool) {
         if (
-            role == SYSTEM_INTERNAL_ROLE && getRoot().isSystemAddress(account)
+            role == SYSTEM_INTERNAL_ROLE && _getRoot().isSystemAddress(account)
         ) {
             return true;
         }
