@@ -9,12 +9,7 @@ import {BaseComponent} from "./BaseComponent.sol";
 
 bytes32 constant SYSTEM_INTERNAL_ROLE_ = keccak256("SYSTEM_INTERNAL_ROLE");
 
-contract SystemAccessControl is
-    Initializable,
-    ContextUpgradeable,
-    BaseComponent,
-    AccessControlUpgradeable
-{
+contract SystemAccessControl is BaseComponent, AccessControlUpgradeable {
     bytes32 public constant SYSTEM_INTERNAL_ROLE = SYSTEM_INTERNAL_ROLE_;
 
     function __SystemAccessControl_init() internal onlyInitializing {

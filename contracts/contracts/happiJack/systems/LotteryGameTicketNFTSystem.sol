@@ -8,7 +8,8 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-import {System} from "../../eon/System.sol";
+import {SystemAccessControl} from "../../eon/SystemAccessControl.sol";
+import {ComponentType} from "../../eon/ComponentType.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameTicketNFTSystem")
@@ -19,7 +20,7 @@ contract LotteryGameTicketNFTSystem is
     ERC721Upgradeable,
     ERC721EnumerableUpgradeable,
     PausableUpgradeable,
-    System,
+    SystemAccessControl,
     UUPSUpgradeable
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
@@ -35,7 +36,9 @@ contract LotteryGameTicketNFTSystem is
         __ERC721_init("HappiJackTicket", "HJT");
         __ERC721Enumerable_init();
         __Pausable_init();
-        __System_init(ID, root_);
+        // __System_init(ID, root_);
+        __BaseComponent_init(ID, root_, ComponentType.System);
+        __SystemAccessControl_init();
         __UUPSUpgradeable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
