@@ -56,12 +56,23 @@ contract LotteryGameTicketSystem is
 
     /// custom logic here
 
-    function createLotteryGameTicket(
+    event LotteryTicketCreated(
+        uint256 indexed lotteryGameId,
+        uint256 indexed lotteryGameTicketId,
+        address indexed owner,
+        uint256 luckyNumber,
+        uint256 buyTime
+    );
+
+    uint256 public constant ID_LOTTERY_GAME_TICKET =
+        uint256(keccak256("happiJack.id.lotteryGameTicket"));
+
+    function createLotteryGameTicketSystem(
         uint256 lotteryGameId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         //check if lottery game exists
         require(
-            LotteryGameTable.getOwner(lotteryGameId_) != address(0),
+            LotteryGameTable.hasRecord(lotteryGameId_) == true,
             "LotteryGameBonusPoolSystem: Lottery game does not exist"
         );
 
@@ -72,5 +83,50 @@ contract LotteryGameTicketSystem is
         );
 
         LotteryGameTicketTable.setTicketSoldCount(lotteryGameId_, 0);
+    }
+
+    function createLotteryTicket(
+        uint256 lotteryGameId_,
+        address owner_,
+        uint256 luckyNumber_,
+        uint256 buyTime_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) returns (uint256) {
+        //check if lottery game exists
+        require(
+            LotteryGameTable.hasRecord(lotteryGameId_) == true,
+            "LotteryGameBonusPoolSystem: Lottery game does not exist"
+        );
+
+        uint256 lotteryGameTicketId_ = IdCounterTable.get(
+            ID_LOTTERY_GAME_TICKET,
+            1
+        );
+        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET);
+
+        LotteryTicketTable.setLotteryGameId(
+            lotteryGameTicketId_,
+            lotteryGameId_
+        );
+        LotteryTicketTable.setOwner(lotteryGameTicketId_, owner_);
+        LotteryTicketTable.setLuckyNumber(lotteryGameTicketId_, luckyNumber_);
+        LotteryTicketTable.setBuyTime(lotteryGameTicketId_, buyTime_);
+        LotteryTicketTable.setWinStatus(lotteryGameTicketId_, 0);
+
+        //increase ticket sold count
+        LotteryGameTicketTable.setTicketSoldCount(
+            lotteryGameId_,
+            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId_) + 1
+        );
+
+        //emit event
+        emit LotteryTicketCreated(
+            lotteryGameTicketId_,
+            lotteryGameId_,
+            owner_,
+            luckyNumber_,
+            buyTime_
+        );
+
+        return lotteryGameTicketId_;
     }
 }

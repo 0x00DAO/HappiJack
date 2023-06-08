@@ -61,212 +61,96 @@ contract LotteryGameSellSystem is
 
     /// custom logic here
 
-    uint256 public constant ID_LOTTERY_GAME =
-        uint256(keccak256("happiJack.id.LotteryGame"));
-
-    event LotteryGameCreated(
+    event LotteryTicketBuy(
         uint256 indexed lotteryGameId,
         address indexed owner,
-        uint256 startTime,
-        uint256 endTime
+        uint256 indexed lotteryTicketId,
+        uint256 luckyNumber
     );
 
-    function createLotteryGame(
-        string memory ad_,
-        uint256 startTime_,
-        uint256 during_
+    function buyLotteryTicketETH(
+        uint256 lotteryGameId,
+        uint256 luckyNumber
     ) external payable nonReentrant whenNotPaused returns (uint256) {
+        // check if lotteryGameId is valid
         require(
-            AddressUpgradeable.isContract(_msgSender()) == false,
-            "sender is contract"
+            LotteryGameTable.hasRecord(lotteryGameId),
+            "LotteryGameSellSystem: lotteryGameId does not exist"
         );
 
-        // uint256 endTime_ = startTime_ + during_;
-        // require(during_ >= 12 hours, "during is too short");
-        // require(endTime_ > block.timestamp, "end time is in the past");
-
-        //get the lottery game id
-        uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME, 10000000);
-        address owner = _msgSender();
+        // check if lotteryGameId is active
         require(
-            LotteryGameTable.getOwner(lotteryGameId) == address(0),
-            "lottery game id is not empty"
-        );
-        //increment the id counter
-        IdCounterTable.increase(ID_LOTTERY_GAME);
-
-        //create the lottery game
-        LotteryGameTable.setOwner(lotteryGameId, owner);
-        LotteryGameTable.setStatus(
-            lotteryGameId,
-            uint256(LotteryGameStatus.Active)
+            LotteryGameTable.getStatus(lotteryGameId) ==
+                uint256(LotteryGameStatus.Active),
+            "LotteryGameSellSystem: lotteryGameId is not active"
         );
 
-        uint256 initialAmount = 0.005 ether;
-
-        //set the lottery game info
-        configGame(lotteryGameId, owner, ad_, startTime_, during_);
-        //set the lottery game fee info
-        configGameFee(lotteryGameId, 10, 10);
-        //set the lottery game bonus pool info
-        configGameBonusPool(
-            lotteryGameId,
-            TokenType.ETH,
-            address(0),
-            initialAmount
+        // check lotteryGame time is valid
+        require(
+            LotteryGameConfigTable.getStartTime(lotteryGameId) <=
+                block.timestamp &&
+                block.timestamp <=
+                LotteryGameConfigTable.getStartTime(lotteryGameId) +
+                    LotteryGameConfigTable.getDuring(lotteryGameId),
+            "LotteryGameSellSystem: lotteryGameId is not open for sale"
         );
 
-        //set the lottery game ticket info
-        configGameTicket(
-            lotteryGameId,
-            TokenType.ETH,
-            address(0),
-            0.0005 ether,
-            300
+        // check if luckyNumber is valid
+        require(
+            luckyNumber > 0 && luckyNumber <= 99999999,
+            "LotteryGameSellSystem: luckyNumber is not valid"
         );
 
-        //create the lottery game pool
+        // check if reached max ticket
+        require(
+            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId) <
+                LotteryGameConfigTicketTable.getTicketMaxCount(lotteryGameId),
+            "LotteryGameSellSystem: reached max ticket"
+        );
+
+        // check if price type is ETH
+        require(
+            LotteryGameConfigTicketTable.getTokenType(lotteryGameId) ==
+                uint256(TokenType.ETH),
+            "LotteryGameSellSystem: price type is not ETH"
+        );
+        require(
+            msg.value > 0 &&
+                msg.value ==
+                LotteryGameConfigTicketTable.getTicketPrice(lotteryGameId),
+            "LotteryGameSellSystem: price is not valid"
+        );
+
+        // check only one ticket per address
+        // require(
+        //     LotteryGameTicketTable.getTicketCountByOwner(
+        //         lotteryGameId,
+        //         msg.sender
+        //     ) == 0,
+        //     "LotteryGameSellSystem: only one ticket per address"
+        // );
+
+        // create ticket
+        uint256 ticketId = LotteryGameTicketSystem(
+            getSystemAddress(LotteryGameTicketSystemID)
+        ).createLotteryTicket(
+                lotteryGameId,
+                _msgSender(),
+                luckyNumber,
+                block.timestamp
+            );
+
+        // send ETH to bonus pool
         LotteryGameBonusPoolSystem(
             getSystemAddress(LotteryGameBonusPoolSystemID)
-        ).createLotteryGamePool{value: msg.value}(
+        ).addBonusPoolTicketETH{value: msg.value}(lotteryGameId, ticketId);
+
+        // emit event
+        emit LotteryTicketBuy(
             lotteryGameId,
-            TokenType.ETH,
-            address(0),
-            initialAmount
+            _msgSender(),
+            ticketId,
+            luckyNumber
         );
-
-        //create the lottery game ticket
-        LotteryGameTicketSystem(getSystemAddress(LotteryGameTicketSystemID))
-            .createLotteryGameTicket(lotteryGameId);
-
-        //create the lottery lucky number
-        LotteryGameLuckyNumberSystem(
-            getSystemAddress(LotteryGameLuckyNumberSystemID)
-        ).createLotteryGameLuckyNumber(lotteryGameId);
-
-        emit LotteryGameCreated(
-            lotteryGameId,
-            owner,
-            startTime_,
-            startTime_ + during_
-        );
-
-        return lotteryGameId;
-    }
-
-    function configGame(
-        uint256 lotteryGameId_,
-        address owner_,
-        string memory ad_,
-        uint256 startTime_,
-        uint256 during_
-    ) internal {
-        uint256 endTime_ = startTime_ + during_;
-        require(during_ >= 12 hours, "during is too short");
-        require(endTime_ > block.timestamp, "end time is in the past");
-
-        //set the lottery game info
-        LotteryGameConfigTable.setOwner(lotteryGameId_, owner_);
-        LotteryGameConfigTable.setAd(lotteryGameId_, ad_);
-        LotteryGameConfigTable.setStartTime(lotteryGameId_, startTime_);
-        LotteryGameConfigTable.setDuring(lotteryGameId_, during_);
-    }
-
-    function configGameFee(
-        uint256 lotteryGameId_,
-        uint256 ownerFeeRate_,
-        uint256 developFeeRate_
-    ) internal {
-        require(ownerFeeRate_ <= 30, "owner fee rate is too high");
-        require(developFeeRate_ <= 10, "develop fee rate is too high");
-
-        //set the lottery game fee info
-        LotteryGameConfigFeeTable.setOwnerFeeRate(
-            lotteryGameId_,
-            ownerFeeRate_
-        );
-        LotteryGameConfigFeeTable.setDevelopFeeRate(
-            lotteryGameId_,
-            developFeeRate_
-        );
-    }
-
-    function configGameBonusPool(
-        uint256 lotteryGameId_,
-        TokenType tokenType_,
-        address tokenAddress_,
-        uint256 initialAmount_
-    ) internal {
-        require(
-            tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
-            "token type is not supported"
-        );
-        require(initialAmount_ > 0, "initial amount is zero");
-        if (tokenType_ == TokenType.ERC20) {
-            require(tokenAddress_ != address(0), "token address is zero");
-        } else if (tokenType_ == TokenType.ETH) {
-            require(tokenAddress_ == address(0), "token address is not zero");
-        }
-
-        //set the lottery game bonus pool info
-        LotteryGameConfigBonusPoolTable.setTokenType(
-            lotteryGameId_,
-            uint256(tokenType_)
-        );
-        LotteryGameConfigBonusPoolTable.setTokenAddress(
-            lotteryGameId_,
-            tokenAddress_
-        );
-        LotteryGameConfigBonusPoolTable.setInitialAmount(
-            lotteryGameId_,
-            initialAmount_
-        );
-    }
-
-    function configGameTicket(
-        uint256 lotteryGameId_,
-        TokenType tokenType_,
-        address tokenAddress_,
-        uint256 ticketPrice_,
-        uint256 ticketMaxCount_
-    ) internal {
-        require(
-            tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
-            "token type is not supported"
-        );
-        require(ticketPrice_ > 0, "initial amount is zero");
-        if (tokenType_ == TokenType.ERC20) {
-            require(tokenAddress_ != address(0), "token address is zero");
-        } else if (tokenType_ == TokenType.ETH) {
-            require(tokenAddress_ == address(0), "token address is not zero");
-        }
-
-        require(ticketMaxCount_ > 0, "ticket max amount is zero");
-        require(ticketMaxCount_ <= 300, "ticket max amount is too high");
-
-        //set the lottery game ticket info
-        LotteryGameConfigTicketTable.setTokenType(
-            lotteryGameId_,
-            uint256(tokenType_)
-        );
-        LotteryGameConfigTicketTable.setTokenAddress(
-            lotteryGameId_,
-            tokenAddress_
-        );
-        LotteryGameConfigTicketTable.setTicketPrice(
-            lotteryGameId_,
-            ticketPrice_
-        );
-        LotteryGameConfigTicketTable.setTicketMaxCount(
-            lotteryGameId_,
-            ticketMaxCount_
-        );
-    }
-
-    function getLotteryGame(
-        uint256 lotteryGameId_
-    ) public view returns (address owner, uint256 status) {
-        owner = LotteryGameTable.getOwner(lotteryGameId_);
-        status = LotteryGameTable.getStatus(lotteryGameId_);
     }
 }

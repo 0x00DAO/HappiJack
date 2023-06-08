@@ -135,7 +135,7 @@ contract LotteryGameSystem is
 
         //create the lottery game ticket
         LotteryGameTicketSystem(getSystemAddress(LotteryGameTicketSystemID))
-            .createLotteryGameTicket(lotteryGameId);
+            .createLotteryGameTicketSystem(lotteryGameId);
 
         //create the lottery lucky number
         LotteryGameLuckyNumberSystem(
@@ -195,10 +195,7 @@ contract LotteryGameSystem is
         address tokenAddress_,
         uint256 initialAmount_
     ) internal {
-        require(
-            tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
-            "token type is not supported"
-        );
+        require(tokenType_ == TokenType.ETH, "token type is not supported");
         require(initialAmount_ > 0, "initial amount is zero");
         if (tokenType_ == TokenType.ERC20) {
             require(tokenAddress_ != address(0), "token address is zero");

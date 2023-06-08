@@ -119,4 +119,69 @@ contract LotteryGameBonusPoolSystem is
         LotteryGameBonusPoolTable.setOwnerFeeAmount(lotteryGameId_, 0);
         LotteryGameBonusPoolTable.setDevelopFeeAmount(lotteryGameId_, 0);
     }
+
+    function addBonusPoolTicketETH(
+        uint256 lotteryGameId_,
+        uint256 ticketId_
+    ) public payable onlyRole(SYSTEM_INTERNAL_ROLE) {
+        //check if lottery game exists
+        require(
+            LotteryGameTable.hasRecord(lotteryGameId_),
+            "LotteryGameBonusPoolSystem: Lottery game does not exist"
+        );
+
+        //check if lottery game pool exists
+        require(
+            LotteryGameBonusPoolTable.hasRecord(lotteryGameId_),
+            "LotteryGameBonusPoolSystem: Lottery game pool does not exist"
+        );
+
+        uint256 depositAmount = msg.value;
+
+        require(
+            LotteryGameConfigTicketTable.getTokenType(lotteryGameId_) ==
+                uint256(TokenType.ETH),
+            "LotteryGameBonusPoolSystem: Invalid token type"
+        );
+        //check depositAmount is valid
+        require(
+            depositAmount > 0 &&
+                depositAmount >=
+                LotteryGameConfigTicketTable.getTicketPrice(lotteryGameId_),
+            "LotteryGameBonusPoolSystem: Invalid deposit amount"
+        );
+
+        //add Total Amount
+        LotteryGameBonusPoolTable.setTotalAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getTotalAmount(lotteryGameId_) +
+                depositAmount
+        );
+
+        //add Develop Fee Amount
+        uint256 developFeeAmount = (depositAmount *
+            LotteryGameConfigFeeTable.getDevelopFeeRate(lotteryGameId_)) / 100;
+        LotteryGameBonusPoolTable.setDevelopFeeAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getDevelopFeeAmount(lotteryGameId_) +
+                developFeeAmount
+        );
+
+        //add Owner Fee Amount
+        uint256 ownerFeeAmount = (depositAmount *
+            LotteryGameConfigFeeTable.getOwnerFeeRate(lotteryGameId_)) / 100;
+        LotteryGameBonusPoolTable.setOwnerFeeAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getOwnerFeeAmount(lotteryGameId_) +
+                ownerFeeAmount
+        );
+
+        //add Bonus Amount
+        uint256 bonusAmount = depositAmount - developFeeAmount - ownerFeeAmount;
+        LotteryGameBonusPoolTable.setBonusAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getBonusAmount(lotteryGameId_) +
+                bonusAmount
+        );
+    }
 }

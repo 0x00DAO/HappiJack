@@ -62,6 +62,9 @@ library LotteryGameConfigFeeTable {
             _keyTuple,
             0
         );
+        if (_blob.length == 0) {
+            return 0;
+        }
         ownerFeeRate = abi.decode(_blob, (uint256));
     }
 
@@ -91,6 +94,9 @@ library LotteryGameConfigFeeTable {
             _keyTuple,
             1
         );
+        if (_blob.length == 0) {
+            return 0;
+        }
         developFeeRate = abi.decode(_blob, (uint256));
     }
 
