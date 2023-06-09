@@ -4,7 +4,7 @@ import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 
-describe('LotteryGameSellSystem', function () {
+describe.only('LotteryGameSellSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
@@ -78,7 +78,7 @@ describe('LotteryGameSellSystem', function () {
       const [owner] = await ethers.getSigners();
       const initialAmount = ethers.utils.parseEther('0.005');
       const ticketPrice = ethers.utils.parseEther('0.0005');
-      const luckyNumber = 99988877;
+      const luckyNumber = 999888;
       let ticketId = ethers.BigNumber.from(0);
 
       await expect(

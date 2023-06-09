@@ -97,7 +97,7 @@ contract LotteryGameSellSystem is
 
         // check if luckyNumber is valid
         require(
-            luckyNumber > 0 && luckyNumber <= 99999999,
+            luckyNumber > 0 && luckyNumber <= 999999,
             "LotteryGameSellSystem: luckyNumber is not valid"
         );
 

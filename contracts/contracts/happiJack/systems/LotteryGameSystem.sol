@@ -100,7 +100,8 @@ contract LotteryGameSystem is
             uint256(LotteryGameStatus.Active)
         );
 
-        uint256 initialAmount = 0.005 ether;
+        uint256 initialPoolAmount = 0.005 ether;
+        uint256 initialTicketPrice = 0.0005 ether;
 
         //set the lottery game info
         configGame(lotteryGameId, owner, ad_, startTime_, during_);
@@ -111,7 +112,7 @@ contract LotteryGameSystem is
             lotteryGameId,
             TokenType.ETH,
             address(0),
-            initialAmount
+            initialPoolAmount
         );
 
         //set the lottery game ticket info
@@ -119,7 +120,7 @@ contract LotteryGameSystem is
             lotteryGameId,
             TokenType.ETH,
             address(0),
-            0.0005 ether,
+            initialTicketPrice,
             300
         );
 
@@ -130,7 +131,7 @@ contract LotteryGameSystem is
             lotteryGameId,
             TokenType.ETH,
             address(0),
-            initialAmount
+            initialPoolAmount
         );
 
         //create the lottery game ticket

@@ -99,6 +99,11 @@ contract LotteryGameTicketSystem is
             "LotteryGameBonusPoolSystem: Lottery game does not exist"
         );
 
+        require(
+            luckyNumber_ > 0 && luckyNumber_ < 999999,
+            "LotteryGameTicketSystem: Invalid lucky number"
+        );
+
         uint256 initialLotteryId_ = 1;
         uint256 lotteryGameTicketId_ = IdCounterTable.get(
             ID_LOTTERY_GAME_TICKET,
