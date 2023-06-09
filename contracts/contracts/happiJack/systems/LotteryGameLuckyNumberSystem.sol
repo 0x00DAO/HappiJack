@@ -78,10 +78,10 @@ contract LotteryGameLuckyNumberSystem is
         );
     }
 
-    function addLotteryGameLuckyNumber(
+    function addLotteryGameLuckyNumberByTicket(
         uint256 lotteryGameId_,
-        uint256 luckyNumber_,
-        address ticketOwner_
+        address ticketOwner_,
+        uint256 ticketLuckyNumber_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         //check if lottery game exists
         require(
@@ -96,24 +96,24 @@ contract LotteryGameLuckyNumberSystem is
 
         //check if lucky number is valid
         require(
-            luckyNumber_ > 0 && luckyNumber_ <= 999999,
+            ticketLuckyNumber_ > 0 && ticketLuckyNumber_ <= 999999,
             "LotteryGameLuckyNumberSystem: Lucky number is invalid"
         );
 
-        //add lucky number
+        //next sum lucky number
+        uint256 currentSumLotteryTicketLuckyNumber = LotteryGameLuckyNumTable
+            .getSumLotteryTicketLuckyNumber(lotteryGameId_) +
+            ticketLuckyNumber_;
+
         LotteryGameLuckyNumTable.setSumLotteryTicketLuckyNumber(
             lotteryGameId_,
-            LotteryGameLuckyNumTable.getSumLotteryTicketLuckyNumber(
-                lotteryGameId_
-            ) + luckyNumber_
+            currentSumLotteryTicketLuckyNumber
         );
 
         LotteryGameLuckyNumTable.setCurrentNumber(
             lotteryGameId_,
             computeLuckyNumber(
-                LotteryGameLuckyNumTable.getSumLotteryTicketLuckyNumber(
-                    lotteryGameId_
-                ),
+                currentSumLotteryTicketLuckyNumber,
                 block.difficulty,
                 block.timestamp,
                 block.number,

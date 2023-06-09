@@ -4,7 +4,7 @@ import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 
-describe.only('LotteryGameLuckyNumberSystem', function () {
+describe('LotteryGameLuckyNumberSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameLuckyNumberSystem: Contract;

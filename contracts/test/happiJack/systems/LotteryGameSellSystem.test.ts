@@ -69,7 +69,7 @@ describe('LotteryGameSellSystem', function () {
     return lotteryGameId;
   }
 
-  describe('buyTicket', function () {
+  describe.only('buyTicket', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
 
@@ -317,6 +317,83 @@ describe('LotteryGameSellSystem', function () {
       ).to.be.revertedWith(
         'LotteryGameSellSystem: you already have a ticket for this lotteryGameId'
       );
+    });
+
+    it.only('success: buy ticket with lucky number', async () => {
+      const luckyNumber = ethers.BigNumber.from(1);
+      await lotteryGameSellSystem.buyLotteryTicketETH(
+        lotteryGameId,
+        luckyNumber,
+        {
+          value: ticketPrice,
+        }
+      );
+
+      // check ticket lucky number
+      const lotteryGameLuckyNumTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryGameLuckyNumTable'
+      );
+      let lotteryGameLuckyNumData = await gameRootContract
+        .getRecord(
+          lotteryGameLuckyNumTableId,
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
+          2
+        )
+        .then((res: any) => {
+          return {
+            CurrentLuckyNumber: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            SumLotteryTicketLuckyNumber: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[1]
+            )[0],
+          };
+        });
+      expect(lotteryGameLuckyNumData.SumLotteryTicketLuckyNumber).to.equal(
+        luckyNumber
+      );
+      expect(lotteryGameLuckyNumData.CurrentLuckyNumber)
+        .to.gte(1)
+        .and.lte(999999);
+
+      // buy ticket
+      const luckyNumber2 = ethers.BigNumber.from(123452);
+      const [, addr1] = await ethers.getSigners();
+      await lotteryGameSellSystem
+        .connect(addr1)
+        .buyLotteryTicketETH(lotteryGameId, luckyNumber2, {
+          value: ticketPrice,
+        });
+
+      // check ticket lucky number
+
+      lotteryGameLuckyNumData = await gameRootContract
+        .getRecord(
+          lotteryGameLuckyNumTableId,
+          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
+          2
+        )
+        .then((res: any) => {
+          return {
+            CurrentLuckyNumber: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[0]
+            )[0],
+            SumLotteryTicketLuckyNumber: ethers.utils.defaultAbiCoder.decode(
+              ['uint256'],
+              res[1]
+            )[0],
+          };
+        });
+
+      expect(lotteryGameLuckyNumData.SumLotteryTicketLuckyNumber).to.equal(
+        luckyNumber.add(luckyNumber2)
+      );
+      expect(lotteryGameLuckyNumData.CurrentLuckyNumber)
+        .to.gte(1)
+        .and.lte(999999);
     });
   });
 });

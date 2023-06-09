@@ -150,6 +150,15 @@ contract LotteryGameSellSystem is
             getSystemAddress(LotteryGameBonusPoolSystemID)
         ).addBonusPoolTicketETH{value: msg.value}(lotteryGameId, ticketId);
 
+        // add lucky number
+        LotteryGameLuckyNumberSystem(
+            getSystemAddress(LotteryGameLuckyNumberSystemID)
+        ).addLotteryGameLuckyNumberByTicket(
+                lotteryGameId,
+                _msgSender(),
+                luckyNumber
+            );
+
         // emit event
         emit LotteryTicketBuy(
             lotteryGameId,
