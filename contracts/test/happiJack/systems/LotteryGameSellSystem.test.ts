@@ -70,14 +70,20 @@ describe.only('LotteryGameSellSystem', function () {
   }
 
   describe('buyTicket', function () {
-    it('success', async function () {
-      // create a lottery game
-      const lotteryGameId = await createLotteryGame();
+    const ticketPrice = ethers.utils.parseEther('0.0005');
+    let lotteryGameId: BigNumber;
 
+    beforeEach(async function () {
+      // create a lottery game
+      lotteryGameId = await createLotteryGame();
+    });
+    afterEach(async function () {});
+
+    it('success', async function () {
       // buy ticket
       const [owner] = await ethers.getSigners();
       const initialAmount = ethers.utils.parseEther('0.005');
-      const ticketPrice = ethers.utils.parseEther('0.0005');
+
       const luckyNumber = 999888;
       let ticketId = ethers.BigNumber.from(0);
 
@@ -256,6 +262,61 @@ describe.only('LotteryGameSellSystem', function () {
           },
           luckyNumber
         );
+    });
+
+    it('fail: buy ticket with wrong lotteryGameId', async () => {
+      // buy ticket
+      const lotteryGameId = ethers.BigNumber.from(1);
+      const luckyNumber = ethers.BigNumber.from(1);
+
+      await expect(
+        lotteryGameSellSystem.buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+          value: ticketPrice,
+        })
+      ).to.be.revertedWith(
+        'LotteryGameSellSystem: lotteryGameId does not exist'
+      );
+    });
+
+    it('fail: buy ticket with wrong luckyNumber', async () => {
+      // buy ticket
+      const luckyNumber = ethers.BigNumber.from(0);
+
+      await expect(
+        lotteryGameSellSystem.buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+          value: ticketPrice,
+        })
+      ).to.be.revertedWith('LotteryGameSellSystem: luckyNumber is not valid');
+    });
+
+    it('fail: buy ticket with wrong ticketPrice', async () => {
+      // buy ticket
+      const luckyNumber = ethers.BigNumber.from(1);
+
+      await expect(
+        lotteryGameSellSystem.buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+          value: ticketPrice.sub(1),
+        })
+      ).to.be.revertedWith('LotteryGameSellSystem: price is not valid');
+    });
+
+    it('fail: buy ticket with same address', async () => {
+      // buy ticket
+      const luckyNumber = ethers.BigNumber.from(1);
+      await lotteryGameSellSystem.buyLotteryTicketETH(
+        lotteryGameId,
+        luckyNumber,
+        {
+          value: ticketPrice,
+        }
+      );
+      await expect(
+        lotteryGameSellSystem.buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+          value: ticketPrice,
+        })
+      ).to.be.revertedWith(
+        'LotteryGameSellSystem: you already have a ticket for this lotteryGameId'
+      );
     });
   });
 });

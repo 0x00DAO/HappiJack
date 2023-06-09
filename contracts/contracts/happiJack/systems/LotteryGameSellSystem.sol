@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.
 import {System} from "../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
@@ -68,6 +69,10 @@ contract LotteryGameSellSystem is
         uint256 luckyNumber
     );
 
+    using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
+    mapping(uint256 => EnumerableSetUpgradeable.AddressSet)
+        internal ticketSoldByLotteryGameId;
+
     function buyLotteryTicketETH(
         uint256 lotteryGameId,
         uint256 luckyNumber
@@ -121,14 +126,12 @@ contract LotteryGameSellSystem is
             "LotteryGameSellSystem: price is not valid"
         );
 
-        // check only one ticket per address
-        // require(
-        //     LotteryGameTicketTable.getTicketCountByOwner(
-        //         lotteryGameId,
-        //         msg.sender
-        //     ) == 0,
-        //     "LotteryGameSellSystem: only one ticket per address"
-        // );
+        //check only one ticket per address
+        require(
+            ticketSoldByLotteryGameId[lotteryGameId].contains(_msgSender()) ==
+                false,
+            "LotteryGameSellSystem: you already have a ticket for this lotteryGameId"
+        );
 
         // create ticket
         uint256 ticketId = LotteryGameTicketSystem(
@@ -139,6 +142,8 @@ contract LotteryGameSellSystem is
                 luckyNumber,
                 block.timestamp
             );
+
+        ticketSoldByLotteryGameId[lotteryGameId].add(_msgSender());
 
         // send ETH to bonus pool
         LotteryGameBonusPoolSystem(

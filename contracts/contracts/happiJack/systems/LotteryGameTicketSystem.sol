@@ -104,6 +104,8 @@ contract LotteryGameTicketSystem is
             "LotteryGameTicketSystem: Invalid lucky number"
         );
 
+        require(owner_ != address(0), "LotteryGameTicketSystem: Invalid owner");
+
         uint256 lotteryGameTicketId_ = IdCounterTable.get(
             ID_LOTTERY_GAME_TICKET
         );
