@@ -121,7 +121,8 @@ contract LotteryGameSystem is
             TokenType.ETH,
             address(0),
             initialTicketPrice,
-            300
+            300,
+            1
         );
 
         //create the lottery game pool
@@ -224,7 +225,8 @@ contract LotteryGameSystem is
         TokenType tokenType_,
         address tokenAddress_,
         uint256 ticketPrice_,
-        uint256 ticketMaxCount_
+        uint256 ticketMaxCount_,
+        uint256 ticketMaxCountPerAddress_
     ) internal {
         require(
             tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
@@ -239,6 +241,10 @@ contract LotteryGameSystem is
 
         require(ticketMaxCount_ > 0, "ticket max amount is zero");
         require(ticketMaxCount_ <= 300, "ticket max amount is too high");
+        require(
+            ticketMaxCountPerAddress_ > 0,
+            "ticket max amount per address is zero"
+        );
 
         //set the lottery game ticket info
         LotteryGameConfigTicketTable.setTokenType(
@@ -256,6 +262,11 @@ contract LotteryGameSystem is
         LotteryGameConfigTicketTable.setTicketMaxCount(
             lotteryGameId_,
             ticketMaxCount_
+        );
+
+        LotteryGameConfigTicketTable.setTicketMaxCountPerAddress(
+            lotteryGameId_,
+            ticketMaxCountPerAddress_
         );
     }
 

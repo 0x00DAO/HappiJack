@@ -11,7 +11,7 @@ bytes32 constant _tableId = bytes32(
         abi.encodePacked("tableId", "HappiJack", "LotteryGameConfigTicketTable")
     )
 );
-uint8 constant _Columns = 4;
+uint8 constant _Columns = 5;
 bytes32 constant LotteryGameConfigTicketTableId = _tableId;
 
 library LotteryGameConfigTicketTable {
@@ -26,6 +26,7 @@ library LotteryGameConfigTicketTable {
         _fieldNames[1] = "TokenAddress"; // address
         _fieldNames[2] = "TicketPrice"; // uint256
         _fieldNames[3] = "TicketMaxCount"; // uint256
+        _fieldNames[4] = "TicketMaxCountPerAddress"; // uint256
 
         return ("LotteryGameConfigTicketTable", _fieldNames);
     }
@@ -63,6 +64,10 @@ library LotteryGameConfigTicketTable {
             0
         );
 
+        if (_blob.length == 0) {
+            return 0;
+        }
+
         tokenType = abi.decode(_blob, (uint256));
     }
 
@@ -92,6 +97,9 @@ library LotteryGameConfigTicketTable {
             _keyTuple,
             1
         );
+        if (_blob.length == 0) {
+            return address(0);
+        }
         tokenAddress = entityToAddress(abi.decode(_blob, (uint256)));
     }
 
@@ -121,7 +129,9 @@ library LotteryGameConfigTicketTable {
             _keyTuple,
             2
         );
-
+        if (_blob.length == 0) {
+            return 0;
+        }
         ticketPrice = abi.decode(_blob, (uint256));
     }
 
@@ -151,23 +161,75 @@ library LotteryGameConfigTicketTable {
             _keyTuple,
             3
         );
-
+        if (_blob.length == 0) {
+            return 0;
+        }
         ticketMaxCount = abi.decode(_blob, (uint256));
     }
 
+    /** Set  */
+    function setTicketMaxCountPerAddress(
+        uint256 lotteryGameId,
+        uint256 ticketMaxCountPerAddress
+    ) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        StoreDelegate.Store().setField(
+            _tableId,
+            _keyTuple,
+            4,
+            abi.encodePacked((ticketMaxCountPerAddress))
+        );
+    }
+
+    /** Get  */
+    function getTicketMaxCountPerAddress(
+        uint256 lotteryGameId
+    ) internal view returns (uint256 ticketMaxCountPerAddress) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            4
+        );
+        if (_blob.length == 0) {
+            return 0;
+        }
+        ticketMaxCountPerAddress = abi.decode(_blob, (uint256));
+    }
+
     /** Get record */
+
     function getRecord(
         uint256 id
-    ) internal view returns (uint256 ownerFeeRate, uint256 developFeeRate) {
+    )
+        internal
+        view
+        returns (
+            uint256 tokenType,
+            address tokenAddress,
+            uint256 ticketPrice,
+            uint256 ticketMaxCount,
+            uint256 ticketMaxCountPerAddress
+        )
+    {
         bytes32[] memory _keyTuple = entityKeys(id);
+
         bytes[] memory _blobs = StoreDelegate.Store().getRecord(
             _tableId,
             _keyTuple,
             _Columns
         );
+        if (_blobs.length == 0) {
+            return (0, address(0), 0, 0, 0);
+        }
 
-        ownerFeeRate = abi.decode(_blobs[0], (uint256));
-        developFeeRate = abi.decode(_blobs[1], (uint256));
+        tokenType = abi.decode(_blobs[0], (uint256));
+        tokenAddress = entityToAddress(abi.decode(_blobs[1], (uint256)));
+        ticketPrice = abi.decode(_blobs[2], (uint256));
+        ticketMaxCount = abi.decode(_blobs[3], (uint256));
+        ticketMaxCountPerAddress = abi.decode(_blobs[4], (uint256));
     }
 
     /** Delete record */
