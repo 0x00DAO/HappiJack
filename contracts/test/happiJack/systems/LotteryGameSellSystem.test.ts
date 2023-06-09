@@ -221,6 +221,41 @@ describe.only('LotteryGameSellSystem', function () {
           ticketPrice.mul(10).div(100)
         ).sub(ticketPrice.mul(10).div(100))
       );
+
+      // check bonus pool eth balance
+      const bonusPoolEthBalance = await ethers.provider.getBalance(
+        (
+          await eonTestUtil.getSystem(
+            gameRootContract,
+            'LotteryGameBonusPoolSystem',
+            gameDeploy.systemIdPrefix
+          )
+        ).address
+      );
+
+      expect(bonusPoolEthBalance).to.equal(
+        lotteryGameBonusPoolData.TotalAmount
+      );
+
+      //sell ticket to other
+      const [, addr1] = await ethers.getSigners();
+      await expect(
+        lotteryGameSellSystem
+          .connect(addr1)
+          .buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+            value: ticketPrice,
+          })
+      )
+        .to.emit(lotteryGameSellSystem, 'LotteryTicketBuy')
+        .withArgs(
+          lotteryGameId,
+          addr1.address,
+          (x: any) => {
+            expect(x).to.equal(ticketId.add(1));
+            return true;
+          },
+          luckyNumber
+        );
     });
   });
 });

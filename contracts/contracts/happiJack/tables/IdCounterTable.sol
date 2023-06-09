@@ -71,7 +71,7 @@ library IdCounterTable {
         uint256 id,
         uint256 defaultValue
     ) internal returns (uint256 amount) {
-        uint256 _amount = get(defaultValue);
+        uint256 _amount = get(id, defaultValue);
         _amount += 1;
         set(id, _amount);
         return _amount;

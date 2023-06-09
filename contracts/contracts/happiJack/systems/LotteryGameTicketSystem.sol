@@ -104,12 +104,10 @@ contract LotteryGameTicketSystem is
             "LotteryGameTicketSystem: Invalid lucky number"
         );
 
-        uint256 initialLotteryId_ = 1;
         uint256 lotteryGameTicketId_ = IdCounterTable.get(
-            ID_LOTTERY_GAME_TICKET,
-            initialLotteryId_
+            ID_LOTTERY_GAME_TICKET
         );
-        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET, initialLotteryId_);
+        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET);
 
         //create lottery game ticket nft
         LotteryGameTicketNFTSystem(
