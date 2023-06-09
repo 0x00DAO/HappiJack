@@ -77,4 +77,72 @@ contract LotteryGameLuckyNumberSystem is
             0
         );
     }
+
+    function addLotteryGameLuckyNumber(
+        uint256 lotteryGameId_,
+        uint256 luckyNumber_,
+        address ticketOwner_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        //check if lottery game exists
+        require(
+            LotteryGameTable.hasRecord(lotteryGameId_),
+            "LotteryGameLuckyNumberSystem: Lottery game does not exist"
+        );
+
+        require(
+            LotteryGameLuckyNumTable.hasRecord(lotteryGameId_),
+            "LotteryGameLuckyNumberSystem: Lottery game lucky number does not exist"
+        );
+
+        //check if lucky number is valid
+        require(
+            luckyNumber_ > 0 && luckyNumber_ <= 999999,
+            "LotteryGameLuckyNumberSystem: Lucky number is invalid"
+        );
+
+        //add lucky number
+        LotteryGameLuckyNumTable.setSumLotteryTicketLuckyNumber(
+            lotteryGameId_,
+            LotteryGameLuckyNumTable.getSumLotteryTicketLuckyNumber(
+                lotteryGameId_
+            ) + luckyNumber_
+        );
+
+        LotteryGameLuckyNumTable.setCurrentNumber(
+            lotteryGameId_,
+            computeLuckyNumber(
+                LotteryGameLuckyNumTable.getSumLotteryTicketLuckyNumber(
+                    lotteryGameId_
+                ),
+                block.difficulty,
+                block.timestamp,
+                block.number,
+                ticketOwner_
+            )
+        );
+    }
+
+    function computeLuckyNumber(
+        uint256 totalNumber,
+        uint256 blkDiffculty,
+        uint256 blkTime,
+        uint256 blkNumber,
+        address lastLotteryOwner
+    ) public pure returns (uint256) {
+        uint256 luckyNumber = uint256(
+            keccak256(
+                abi.encodePacked(
+                    totalNumber,
+                    blkDiffculty,
+                    blkTime,
+                    blkNumber,
+                    lastLotteryOwner
+                )
+            )
+        );
+
+        //lucky number must be between 1 and 999999
+        luckyNumber = (luckyNumber % 999999) + 1;
+        return luckyNumber;
+    }
 }
