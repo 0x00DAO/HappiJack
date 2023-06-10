@@ -22,7 +22,7 @@ library LotteryGameLuckyNumTable {
         returns (string memory, string[] memory)
     {
         string[] memory _fieldNames = new string[](_Columns);
-        _fieldNames[0] = "CurrentNumber"; // uint256
+        _fieldNames[0] = "CurrentLuckyNumber"; // uint256
         _fieldNames[1] = "SumLotteryTicketLuckyNumber"; // uint256
 
         return ("LotteryGameLuckyNumTable", _fieldNames);
