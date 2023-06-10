@@ -69,9 +69,115 @@ describe('LotteryGameLotteryCoreSystem', function () {
     return lotteryGameId;
   }
 
+  describe('addLotteryGameLuckyNumber', function () {
+    beforeEach(async function () {
+      //register owner as system, so that owner can call system functions
+      const [owner] = await ethers.getSigners();
+      await gameRootContract.registerSystem(
+        ethers.utils.id(owner.address),
+        owner.address
+      );
+    });
+    const lotteryGameId = ethers.BigNumber.from(1999999999);
+    it('success', async function () {
+      await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+        lotteryGameId,
+        ethers.BigNumber.from(1)
+      );
+
+      //check luck number count
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumberCount(lotteryGameId, ethers.BigNumber.from(1))
+        .then((res: any) => {
+          expect(res).to.equal(1);
+        });
+      //check luck number
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumbers(lotteryGameId)
+        .then((res: any) => {
+          expect(res.length).to.equal(1);
+          expect(res[0]).to.equal(ethers.BigNumber.from(1));
+        });
+
+      //add another luck number
+      await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+        lotteryGameId,
+        ethers.BigNumber.from(1)
+      );
+      //check luck number count
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumberCount(lotteryGameId, ethers.BigNumber.from(1))
+        .then((res: any) => {
+          expect(res).to.equal(2);
+        });
+
+      //check luck number
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumbers(lotteryGameId)
+        .then((res: any) => {
+          expect(res.length).to.equal(1);
+          expect(res[0]).to.equal(ethers.BigNumber.from(1));
+        });
+
+      //add another luck number
+      await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+        lotteryGameId,
+        ethers.BigNumber.from(2)
+      );
+      //check luck number count
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumberCount(lotteryGameId, ethers.BigNumber.from(2))
+        .then((res: any) => {
+          expect(res).to.equal(1);
+        });
+      //check luck number
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumbers(lotteryGameId)
+        .then((res: any) => {
+          expect(res.length).to.equal(2);
+          expect(res[0]).to.equal(ethers.BigNumber.from(1));
+          expect(res[1]).to.equal(ethers.BigNumber.from(2));
+        });
+    });
+
+    it.only('success batch', async function () {
+      //add 30 random luck numbers, half of them are same
+      const luckNumbers = [];
+      for (let i = 0; i < 30; i++) {
+        luckNumbers.push(ethers.BigNumber.from(i % 15));
+      }
+
+      for (let i = 0; i < 30; i++) {
+        await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+          lotteryGameId,
+          luckNumbers[i]
+        );
+      }
+
+      //check luck number count
+      for (let i = 0; i < 15; i++) {
+        await lotteryGameLotteryCoreSystem
+          .getLuckNumberCount(lotteryGameId, ethers.BigNumber.from(i))
+          .then((res: any) => {
+            expect(res).to.equal(2);
+          });
+      }
+
+      //check luck number
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumbers(lotteryGameId)
+        .then((res: any) => {
+          expect(res.length).to.equal(15);
+          for (let i = 0; i < 15; i++) {
+            expect(res[i]).to.equal(ethers.BigNumber.from(i));
+          }
+        });
+    });
+  });
+
   describe('add Lucky number when buy a ticket', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
-    it.only('success', async function () {
+    it('success', async function () {
       const lotteryGameId = await createLotteryGame();
       const lotteryGameSellSystem = await eonTestUtil.getSystem(
         gameRootContract,
