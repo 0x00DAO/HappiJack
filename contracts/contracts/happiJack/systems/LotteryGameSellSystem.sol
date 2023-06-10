@@ -17,6 +17,7 @@ import "../tables/Tables.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
+import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameSellSystem")
@@ -158,6 +159,11 @@ contract LotteryGameSellSystem is
                 _msgSender(),
                 luckyNumber
             );
+
+        // add lucky number to lottery core
+        LotteryGameLotteryCoreSystem(
+            getSystemAddress(LotteryGameLotteryCoreSystemID)
+        ).addLotteryGameLuckyNumber(lotteryGameId, luckyNumber);
 
         // emit event
         emit LotteryTicketBuy(

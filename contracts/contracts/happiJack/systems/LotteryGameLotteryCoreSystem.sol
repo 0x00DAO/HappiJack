@@ -69,7 +69,7 @@ contract LotteryGameLotteryCoreSystem is
     // 1=>[111111, 200000]
     mapping(uint256 => EnumerableSetUpgradeable.UintSet) internal luckNumbers;
 
-    function addLuckNumber(
+    function addLotteryGameLuckyNumber(
         uint256 lotteryGameId_,
         uint256 luckNumber_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {

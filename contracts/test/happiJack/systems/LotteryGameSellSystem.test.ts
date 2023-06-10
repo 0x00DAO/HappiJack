@@ -69,7 +69,7 @@ describe('LotteryGameSellSystem', function () {
     return lotteryGameId;
   }
 
-  describe.only('buyTicket', function () {
+  describe('buyTicket', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
 
@@ -319,7 +319,7 @@ describe('LotteryGameSellSystem', function () {
       );
     });
 
-    it.only('success: buy ticket with lucky number', async () => {
+    it('success: buy ticket with lucky number', async () => {
       const luckyNumber = ethers.BigNumber.from(1);
       await lotteryGameSellSystem.buyLotteryTicketETH(
         lotteryGameId,
