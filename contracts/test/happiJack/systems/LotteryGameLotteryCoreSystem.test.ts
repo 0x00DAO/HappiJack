@@ -140,7 +140,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
         });
     });
 
-    it.only('success batch', async function () {
+    it('success batch', async function () {
       //add 30 random luck numbers, half of them are same
       const luckNumbers = [];
       for (let i = 0; i < 30; i++) {
@@ -170,6 +170,43 @@ describe('LotteryGameLotteryCoreSystem', function () {
           expect(res.length).to.equal(15);
           for (let i = 0; i < 15; i++) {
             expect(res[i]).to.equal(ethers.BigNumber.from(i));
+          }
+        });
+    });
+
+    it('success batch with random luck number and sort', async function () {
+      //add 300 random luck numbers, luck number range is 1-999999
+      const luckNumbers = [];
+      for (let i = 0; i < 300; i++) {
+        luckNumbers.push(Math.floor(Math.random() * 999999));
+      }
+
+      for (let i = 0; i < 300; i++) {
+        await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+          lotteryGameId,
+          luckNumbers[i]
+        );
+      }
+
+      //luck number unique count
+      const luckNumberUniqueCount = new Set(luckNumbers).size;
+
+      //check luck number count
+
+      //check luck number
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumbers(lotteryGameId)
+        .then((res: any) => {
+          expect(res.length).to.equal(luckNumberUniqueCount);
+        });
+
+      //check luck number with sort
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumbersWithSort(lotteryGameId)
+        .then((res: any) => {
+          expect(res.length).to.equal(luckNumberUniqueCount);
+          for (let i = 0; i < luckNumberUniqueCount - 1; i++) {
+            expect(res[i]).to.lessThan(res[i + 1]);
           }
         });
     });

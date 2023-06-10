@@ -10,6 +10,7 @@ import {System} from "../../eon/System.sol";
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
+import {ArraySort} from "../libraries/ArraySort.sol";
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
@@ -91,5 +92,12 @@ contract LotteryGameLotteryCoreSystem is
         uint256 lotteryGameId_
     ) public view returns (uint256[] memory) {
         return luckNumbers[lotteryGameId_].values();
+    }
+
+    function getLuckNumbersWithSort(
+        uint256 lotteryGameId_
+    ) public view returns (uint256[] memory) {
+        uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
+        return ArraySort.sort(luckNumbers_);
     }
 }
