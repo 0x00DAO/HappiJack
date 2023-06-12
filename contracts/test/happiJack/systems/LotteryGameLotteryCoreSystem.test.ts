@@ -269,7 +269,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
     });
   });
 
-  describe.only('getLuckNumberByClosest', function () {
+  describe('getLuckNumberByClosest', function () {
     beforeEach(async function () {
       //register owner as system, so that owner can call system functions
       const [owner] = await ethers.getSigners();
@@ -309,4 +309,6 @@ describe('LotteryGameLotteryCoreSystem', function () {
         });
     });
   });
+
+  describe.only('computeLotteryResult', function () {});
 });

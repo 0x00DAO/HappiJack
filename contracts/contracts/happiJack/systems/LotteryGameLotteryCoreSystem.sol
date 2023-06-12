@@ -70,6 +70,11 @@ contract LotteryGameLotteryCoreSystem is
     // 1=>[111111, 200000]
     mapping(uint256 => EnumerableSetUpgradeable.UintSet) internal luckNumbers;
 
+    // LotteryResult
+    // LotteryGameId=>Order=>LuckNumbers
+    // 1=>1=>[111111, 200000]
+    mapping(uint256 => mapping(uint256 => uint256[])) internal lotteryResults;
+
     function addLotteryGameLuckyNumber(
         uint256 lotteryGameId_,
         uint256 luckNumber_
@@ -118,6 +123,11 @@ contract LotteryGameLotteryCoreSystem is
         uint256 luckNumber_,
         uint256 topNumber_
     ) public view returns (uint256[][] memory) {
+        require(
+            topNumber_ > 0,
+            "LotteryGameLotteryCoreSystem: topNumber_ must be greater than 0"
+        );
+
         uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
         uint256[][] memory result = new uint256[][](topNumber_);
 
@@ -162,5 +172,29 @@ contract LotteryGameLotteryCoreSystem is
         }
 
         return result;
+    }
+
+    function computeLotteryResult(
+        uint256 lotteryGameId_,
+        uint256 luckNumber_,
+        uint256 topNumber_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        require(
+            luckNumber_ > 0,
+            "LotteryGameLotteryCoreSystem: luckNumber_ must be greater than 0"
+        );
+
+        uint256[][] memory result = getLuckNumberByClosest(
+            lotteryGameId_,
+            luckNumber_,
+            topNumber_
+        );
+
+        for (uint256 i = 0; i < result.length; i++) {
+            uint256[] memory temp = result[i];
+            for (uint256 j = 0; j < temp.length; j++) {
+                lotteryResults[lotteryGameId_][i][j] = temp[j];
+            }
+        }
     }
 }
