@@ -194,8 +194,11 @@ contract LotteryGameLotteryCoreSystem is
 
         for (uint256 i = 0; i < result.length; i++) {
             uint256[] memory temp = result[i];
+            //remove exist order
+            lotteryResults[lotteryGameId_][i] = new uint256[](0);
+
             for (uint256 j = 0; j < temp.length; j++) {
-                lotteryResults[lotteryGameId_][i][j] = temp[j];
+                lotteryResults[lotteryGameId_][i].push(temp[j]);
             }
         }
     }

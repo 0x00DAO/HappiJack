@@ -316,5 +316,46 @@ describe('LotteryGameLotteryCoreSystem', function () {
     });
   });
 
-  describe('computeLotteryResult', function () {});
+  describe.only('computeLotteryResult', function () {
+    beforeEach(async function () {
+      //register owner as system, so that owner can call system functions
+      const [owner] = await ethers.getSigners();
+      await gameRootContract.registerSystem(
+        ethers.utils.id(owner.address),
+        owner.address
+      );
+    });
+    const lotteryGameId = ethers.BigNumber.from(1999999999);
+    it('success', async function () {
+      //add 300 random luck numbers, luck number range is 1-999999
+      const luckNumbers = [];
+      for (let i = 0; i < 300; i++) {
+        luckNumbers.push(Math.floor(Math.random() * 999999));
+      }
+
+      for (let i = 0; i < 300; i++) {
+        await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+          lotteryGameId,
+          luckNumbers[i],
+          i
+        );
+      }
+
+      const luckNumber = 100000;
+      // getLuckNumberByClosest
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumberByClosest(lotteryGameId, luckNumber, 3)
+        .then((res: any) => {
+          expect(res.length).to.equal(3);
+          console.log(res);
+        });
+
+      //compute lottery result
+      await lotteryGameLotteryCoreSystem.computeLotteryResult(
+        lotteryGameId,
+        luckNumber,
+        3
+      );
+    });
+  });
 });
