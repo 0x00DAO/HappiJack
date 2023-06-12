@@ -268,4 +268,45 @@ describe('LotteryGameLotteryCoreSystem', function () {
         });
     });
   });
+
+  describe.only('getLuckNumberByClosest', function () {
+    beforeEach(async function () {
+      //register owner as system, so that owner can call system functions
+      const [owner] = await ethers.getSigners();
+      await gameRootContract.registerSystem(
+        ethers.utils.id(owner.address),
+        owner.address
+      );
+    });
+    const lotteryGameId = ethers.BigNumber.from(1999999999);
+    it('success', async function () {
+      //add 300 random luck numbers, luck number range is 1-999999
+      const luckNumbers = [];
+      for (let i = 0; i < 300; i++) {
+        luckNumbers.push(Math.floor(Math.random() * 999999));
+      }
+
+      for (let i = 0; i < 300; i++) {
+        await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
+          lotteryGameId,
+          luckNumbers[i]
+        );
+      }
+      console.log('add luck number success');
+
+      const luckNumber = 100000;
+      //compute closest luck number
+      const closestLuckNumber = luckNumbers.reduce((prev, curr) =>
+        Math.abs(curr - luckNumber) < Math.abs(prev - luckNumber) ? curr : prev
+      );
+
+      // getLuckNumberByClosest
+      await lotteryGameLotteryCoreSystem
+        .getLuckNumberByClosest(lotteryGameId, luckNumber, 4)
+        .then((res: any) => {
+          expect(res.length).to.equal(4);
+          expect(res[0][0]).to.equal(closestLuckNumber);
+        });
+    });
+  });
 });

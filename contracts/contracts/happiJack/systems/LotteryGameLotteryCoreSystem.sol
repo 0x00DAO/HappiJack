@@ -115,34 +115,50 @@ contract LotteryGameLotteryCoreSystem is
     //例如 有数字2,4,5.指定数字是3,那么接近度排序后的数组是[[4,2],[5]]
     function getLuckNumberByClosest(
         uint256 lotteryGameId_,
-        uint256 luckNumber_
+        uint256 luckNumber_,
+        uint256 topNumber_
     ) public view returns (uint256[][] memory) {
         uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
-        uint256[][] memory result = new uint256[][](luckNumbers_.length);
+        uint256[][] memory result = new uint256[][](topNumber_);
 
         //Get the proximity of all numbers to the specified number
-        uint256[] memory distance = new uint256[](luckNumbers_.length);
+        uint256[] memory distanceOrigin = new uint256[](luckNumbers_.length);
         for (uint256 i = 0; i < luckNumbers_.length; i++) {
-            distance[i] = getDistance(luckNumber_, luckNumbers_[i]);
+            distanceOrigin[i] = getDistance(luckNumber_, luckNumbers_[i]);
         }
 
+        //copy
+        uint256[] memory distanceCopy = ArraySort.clone(distanceOrigin);
+
         //Sort by proximity
-        uint256[] memory distanceSort = ArraySort.sort(distance);
+        uint256[] memory distanceSort = ArraySort.sort(distanceCopy);
 
         //uniqueness
         uint256[] memory distanceSortUnique = ArraySort.unique(distanceSort);
+        //[1,2,3,4,5,6,7,8,9,10]
 
         //Get the proximity of all numbers to the specified number
-        for (uint256 i = 0; i < distanceSortUnique.length; i++) {
-            uint256[] memory temp = new uint256[](luckNumbers_.length);
+        //top topNumber_
+        for (
+            uint256 i = 0;
+            i < distanceSortUnique.length && i < topNumber_;
+            i++
+        ) {
+            uint256[] memory temp = new uint256[](5);
             uint256 tempIndex = 0;
-            for (uint256 j = 0; j < distance.length; j++) {
-                if (distance[j] == distanceSortUnique[i]) {
+            for (uint256 j = 0; j < distanceOrigin.length; j++) {
+                if (distanceOrigin[j] == distanceSortUnique[i]) {
                     temp[tempIndex] = luckNumbers_[j];
                     tempIndex++;
                 }
             }
-            result[i] = temp;
+
+            // remove empty
+            uint256[] memory temp2 = new uint256[](tempIndex);
+            for (uint256 j = 0; j < tempIndex; j++) {
+                temp2[j] = temp[j];
+            }
+            result[i] = temp2;
         }
 
         return result;

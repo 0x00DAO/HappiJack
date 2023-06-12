@@ -2,6 +2,16 @@
 pragma solidity ^0.8.9;
 
 library ArraySort {
+    function clone(
+        uint256[] memory data
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory result = new uint256[](data.length);
+        for (uint256 i = 0; i < data.length; i++) {
+            result[i] = data[i];
+        }
+        return result;
+    }
+
     function sort(
         uint256[] memory data
     ) internal pure returns (uint256[] memory) {
