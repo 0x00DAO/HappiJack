@@ -8,7 +8,7 @@ import '@openzeppelin/hardhat-defender';
 import '@openzeppelin/hardhat-upgrades';
 import 'hardhat-abi-exporter';
 
-import { gameDeploy } from './scripts/consts/deploy.game.const';
+require('./contracts/tasks/eno.hardhat.task');
 
 const {
   POLYGON_TESTNET_URL,
@@ -30,22 +30,6 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
     console.log(account.address);
   }
 });
-
-task(
-  'game.systems',
-  'Prints the list of game-system',
-  async (taskArgs, hre) => {
-    const systems = gameDeploy.systems;
-
-    for (const system of systems) {
-      const systemId = hre.ethers.utils.id(
-        `${gameDeploy.systemIdPrefix}.${system}`
-      );
-      const systemIdAsNumber = hre.ethers.BigNumber.from(systemId);
-      console.log(`${system}  =>  ${systemIdAsNumber}`);
-    }
-  }
-);
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
