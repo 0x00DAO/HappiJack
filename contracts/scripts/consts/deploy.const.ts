@@ -3,4 +3,6 @@ export enum deployNetwork {
   bsc_mainnet = 'bsc_mainnet',
   polygon_testnet = 'polygon_testnet',
   polygon_mainnet = 'polygon_mainnet',
+  eth_testnet = 'eth_testnet',
+  eth_mainnet = 'eth_mainnet',
 }

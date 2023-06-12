@@ -13,6 +13,10 @@ const {
   POLYGON_TESTNET_DEPLOYER_PRIVATE_KEY,
   POLYGON_MAINNET_URL,
   POLYGON_MAINNET_DEPLOYER_PRIVATE_KEY,
+  ETH_TESTNET_URL,
+  ETH_TESTNET_DEPLOYER_PRIVATE_KEY,
+  ETH_MAINNET_URL,
+  ETH_MAINNET_DEPLOYER_PRIVATE_KEY,
 } = process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -46,6 +50,16 @@ const config: HardhatUserConfig = {
     polygon_mainnet: {
       url: POLYGON_MAINNET_URL,
       accounts: [`0x${POLYGON_MAINNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    eth_testnet: {
+      url: ETH_TESTNET_URL,
+      chainId: 1,
+      gasPrice: 20000000000,
+      accounts: [`0x${ETH_TESTNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    eth_mainnet: {
+      url: ETH_MAINNET_URL,
+      accounts: [`0x${ETH_MAINNET_DEPLOYER_PRIVATE_KEY}`],
     },
   },
   mocha: {

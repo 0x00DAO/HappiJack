@@ -1,0 +1,44 @@
+// We require the Hardhat Runtime Environment explicitly here. This is optional
+// but useful for running the script in a standalone fashion through `node <script>`.
+//
+// When running the script with `npx hardhat run <script>` you'll find the Hardhat
+// Runtime Environment's members available in the global scope.
+// const hre = require("hardhat");
+import { ContractDeployAddress } from '../consts/deploy.address.const';
+import { gameDeploy } from '../consts/deploy.game.const';
+import { deployUtil } from '../utils/deploy.util';
+
+const DeployContractName = 'GameRoot';
+const contractGameRootAddress = ContractDeployAddress.GameRoot;
+
+async function main() {
+  const systems = gameDeploy.systems;
+
+  // const systemContractName = 'LotteryGameLuckyNumberSystem';
+
+  for (let i = 0; i < systems.length; i++) {
+    const systemContractName = systems[i];
+    console.log(`Deploy ${i + 1}/${systems.length}, ${systemContractName}`);
+    await deployUtil.gameSystemDeploy(
+      'GameRoot',
+      contractGameRootAddress as string,
+      systemContractName,
+      `${gameDeploy.systemIdPrefix}.${systemContractName}`
+    );
+
+    console.log(
+      `Deploy ${i + 1}/${systems.length}, ${systemContractName} done`
+    );
+    //sleep 1s
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+  }
+}
+
+// We recommend this pattern to be able to use async/await everywhere
+// and properly handle errors.
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

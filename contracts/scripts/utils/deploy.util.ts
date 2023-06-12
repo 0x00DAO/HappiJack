@@ -1,4 +1,5 @@
 import { DeployProxyOptions } from '@openzeppelin/hardhat-upgrades/dist/utils';
+import { assert } from 'console';
 import { Contract, ContractFactory, ContractTransaction } from 'ethers';
 import hre, { defender, ethers, upgrades } from 'hardhat';
 import { getRuntimeConfig } from './config.util';
@@ -195,10 +196,56 @@ async function gameSystemGrantInternalRole(
     );
   }
 }
+
+async function gameSystemDeploy(
+  GameRootContractName = 'GameRoot',
+  GameRootContractAddress: string,
+  GameSystemContractName: string,
+  GameSystemId: string,
+  GameSystemContractArgs?: any[],
+  opts?: DeployProxyOptions
+): Promise<Contract> {
+  assert(GameRootContractAddress, 'GameRoot contract address is not set');
+  const gameRootContract = await ethers.getContractAt(
+    GameRootContractName,
+    GameRootContractAddress
+  );
+
+  const systemContractId = ethers.utils.id(`${GameSystemId}`);
+  const systemContractAddress = await gameRootContract.getSystemAddress(
+    systemContractId
+  );
+
+  console.log(
+    `[deploy contract]:System Contract: ${GameSystemContractName}, address: ${systemContractAddress}`
+  );
+
+  let contract: Contract;
+  if (systemContractAddress == ethers.constants.AddressZero) {
+    if (!GameSystemContractArgs) {
+      GameSystemContractArgs = [];
+    }
+    contract = await deployUpgradeProxy(
+      GameSystemContractName,
+      [GameRootContractAddress, ...GameSystemContractArgs],
+      opts
+    );
+    gameRegisterSystem(gameRootContract, contract.address);
+  } else {
+    contract = await deployUpgradeUpdate(
+      GameSystemContractName,
+      systemContractAddress
+    );
+  }
+
+  return contract;
+}
+
 export const deployUtil = {
   grantRoles: deployGrantRoles,
   revokeRoles: deployRevokeRoles,
   gameEntityGrantWriteRole: gameEntityGrantWriteRole,
   gameSystemGrantInternalRole: gameSystemGrantInternalRole,
   gameRegisterSystem: gameRegisterSystem,
+  gameSystemDeploy: gameSystemDeploy,
 };
