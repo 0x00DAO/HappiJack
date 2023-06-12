@@ -100,4 +100,51 @@ contract LotteryGameLotteryCoreSystem is
         uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
         return ArraySort.sort(luckNumbers_);
     }
+
+    function getDistance(
+        uint256 luckNumber_,
+        uint256 luckNumber2_
+    ) internal view returns (uint256) {
+        return
+            luckNumber_ > luckNumber2_
+                ? luckNumber_ - luckNumber2_
+                : luckNumber2_ - luckNumber_;
+    }
+
+    //通过对指定数字接近度排序数组,获取按照接近度排序后的二维数组
+    //例如 有数字2,4,5.指定数字是3,那么接近度排序后的数组是[[4,2],[5]]
+    function getLuckNumberByClosest(
+        uint256 lotteryGameId_,
+        uint256 luckNumber_
+    ) public view returns (uint256[][] memory) {
+        uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
+        uint256[][] memory result = new uint256[][](luckNumbers_.length);
+
+        //Get the proximity of all numbers to the specified number
+        uint256[] memory distance = new uint256[](luckNumbers_.length);
+        for (uint256 i = 0; i < luckNumbers_.length; i++) {
+            distance[i] = getDistance(luckNumber_, luckNumbers_[i]);
+        }
+
+        //Sort by proximity
+        uint256[] memory distanceSort = ArraySort.sort(distance);
+
+        //uniqueness
+        uint256[] memory distanceSortUnique = ArraySort.unique(distanceSort);
+
+        //Get the proximity of all numbers to the specified number
+        for (uint256 i = 0; i < distanceSortUnique.length; i++) {
+            uint256[] memory temp = new uint256[](luckNumbers_.length);
+            uint256 tempIndex = 0;
+            for (uint256 j = 0; j < distance.length; j++) {
+                if (distance[j] == distanceSortUnique[i]) {
+                    temp[tempIndex] = luckNumbers_[j];
+                    tempIndex++;
+                }
+            }
+            result[i] = temp;
+        }
+
+        return result;
+    }
 }

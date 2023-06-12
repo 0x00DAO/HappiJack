@@ -31,4 +31,24 @@ library ArraySort {
         if (left < j) quickSort(arr, left, j);
         if (i < right) quickSort(arr, i, right);
     }
+
+    /// @dev Remove duplicate elements in the array
+    /// @param data The array is sorted
+    function unique(
+        uint256[] memory data
+    ) internal pure returns (uint256[] memory) {
+        if (data.length == 0) return data;
+        uint256 j = 0;
+        for (uint256 i = 1; i < data.length; i++) {
+            if (data[j] != data[i]) {
+                j++;
+                data[j] = data[i];
+            }
+        }
+        uint256[] memory result = new uint256[](j + 1);
+        for (uint256 i = 0; i < j + 1; i++) {
+            result[i] = data[i];
+        }
+        return result;
+    }
 }
