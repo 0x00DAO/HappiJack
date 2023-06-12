@@ -104,7 +104,7 @@ contract LotteryGameLotteryCoreSystem is
     function getDistance(
         uint256 luckNumber_,
         uint256 luckNumber2_
-    ) internal view returns (uint256) {
+    ) internal pure returns (uint256) {
         return
             luckNumber_ > luckNumber2_
                 ? luckNumber_ - luckNumber2_
