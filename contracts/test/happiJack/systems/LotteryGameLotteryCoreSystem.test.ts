@@ -82,7 +82,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
     it('success', async function () {
       await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
         lotteryGameId,
-        ethers.BigNumber.from(1)
+        ethers.BigNumber.from(1),
+        3
       );
 
       //check luck number count
@@ -102,7 +103,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
       //add another luck number
       await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
         lotteryGameId,
-        ethers.BigNumber.from(1)
+        ethers.BigNumber.from(1),
+        2
       );
       //check luck number count
       await lotteryGameLotteryCoreSystem
@@ -122,7 +124,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
       //add another luck number
       await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
         lotteryGameId,
-        ethers.BigNumber.from(2)
+        ethers.BigNumber.from(2),
+        1
       );
       //check luck number count
       await lotteryGameLotteryCoreSystem
@@ -150,7 +153,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
       for (let i = 0; i < 30; i++) {
         await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
           lotteryGameId,
-          luckNumbers[i]
+          luckNumbers[i],
+          i
         );
       }
 
@@ -184,7 +188,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
       for (let i = 0; i < 300; i++) {
         await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
           lotteryGameId,
-          luckNumbers[i]
+          luckNumbers[i],
+          i
         );
       }
 
@@ -289,7 +294,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
       for (let i = 0; i < 300; i++) {
         await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
           lotteryGameId,
-          luckNumbers[i]
+          luckNumbers[i],
+          i
         );
       }
       console.log('add luck number success');
@@ -310,5 +316,5 @@ describe('LotteryGameLotteryCoreSystem', function () {
     });
   });
 
-  describe.only('computeLotteryResult', function () {});
+  describe('computeLotteryResult', function () {});
 });

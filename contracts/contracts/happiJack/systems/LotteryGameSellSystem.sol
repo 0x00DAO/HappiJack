@@ -163,7 +163,7 @@ contract LotteryGameSellSystem is
         // add lucky number to lottery core
         LotteryGameLotteryCoreSystem(
             getSystemAddress(LotteryGameLotteryCoreSystemID)
-        ).addLotteryGameLuckyNumber(lotteryGameId, luckyNumber);
+        ).addLotteryGameLuckyNumber(lotteryGameId, luckyNumber, ticketId);
 
         // emit event
         emit LotteryTicketBuy(

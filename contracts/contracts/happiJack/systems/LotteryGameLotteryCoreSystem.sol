@@ -61,10 +61,11 @@ contract LotteryGameLotteryCoreSystem is
 
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 
-    // LotteryGameId=>LuckNumber=>LuckNumberCount, LuckNumberCount is the number of times the luck number has been drawn
-    // 1=>111111=>10
-    // 1=>200000=>2
-    mapping(uint256 => mapping(uint256 => uint256)) internal luckNumberCount;
+    // LotteryGameId=>LuckNumber=>[TicketId], LuckNumberCount is the number of times the luck number has been drawn
+    // 1=>111111=>[1, 2, 3]
+    // 1=>200000=>[4, 5, 6]
+    mapping(uint256 => mapping(uint256 => uint256[]))
+        internal luckNumberWithTicketIds;
 
     // LotteryGameId=>Set<LuckNumber>, Set is a list of unique numbers
     // 1=>[111111, 200000]
@@ -77,9 +78,10 @@ contract LotteryGameLotteryCoreSystem is
 
     function addLotteryGameLuckyNumber(
         uint256 lotteryGameId_,
-        uint256 luckNumber_
+        uint256 luckNumber_,
+        uint256 ticketId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-        luckNumberCount[lotteryGameId_][luckNumber_] += 1;
+        luckNumberWithTicketIds[lotteryGameId_][luckNumber_].push(ticketId_);
 
         if (!luckNumbers[lotteryGameId_].contains(luckNumber_)) {
             luckNumbers[lotteryGameId_].add(luckNumber_);
@@ -90,7 +92,7 @@ contract LotteryGameLotteryCoreSystem is
         uint256 lotteryGameId_,
         uint256 luckNumber_
     ) public view returns (uint256) {
-        return luckNumberCount[lotteryGameId_][luckNumber_];
+        return luckNumberWithTicketIds[lotteryGameId_][luckNumber_].length;
     }
 
     function getLuckNumbers(
