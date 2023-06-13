@@ -167,6 +167,15 @@ contract LotteryGameBonusPoolSystem is
                 developFeeAmount
         );
 
+        //add Verify Fee Amount
+        uint256 verifyFeeAmount = (depositAmount *
+            LotteryGameConfigFeeTable.getVerifyFeeRate(lotteryGameId_)) / 100;
+        LotteryGameBonusPoolTable.setVerifyFeeAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getVerifyFeeAmount(lotteryGameId_) +
+                verifyFeeAmount
+        );
+
         //add Owner Fee Amount
         uint256 ownerFeeAmount = (depositAmount *
             LotteryGameConfigFeeTable.getOwnerFeeRate(lotteryGameId_)) / 100;
@@ -177,7 +186,10 @@ contract LotteryGameBonusPoolSystem is
         );
 
         //add Bonus Amount
-        uint256 bonusAmount = depositAmount - developFeeAmount - ownerFeeAmount;
+        uint256 bonusAmount = depositAmount -
+            developFeeAmount -
+            ownerFeeAmount -
+            verifyFeeAmount;
         LotteryGameBonusPoolTable.setBonusAmount(
             lotteryGameId_,
             LotteryGameBonusPoolTable.getBonusAmount(lotteryGameId_) +

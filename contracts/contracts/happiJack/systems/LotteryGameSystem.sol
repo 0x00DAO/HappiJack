@@ -16,6 +16,7 @@ import "../tables/Tables.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
+import {LotteryGameSystemConfig, ID as LotteryGameSystemConfigID} from "./LotteryGameSystemConfig.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -104,26 +105,30 @@ contract LotteryGameSystem is
         uint256 initialTicketPrice = 0.0005 ether;
 
         //set the lottery game info
-        configGame(lotteryGameId, owner, ad_, startTime_, during_);
+        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
+            .configGame(lotteryGameId, owner, ad_, startTime_, during_);
         //set the lottery game fee info
-        configGameFee(lotteryGameId, 10, 10);
+        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
+            .configGameFee(lotteryGameId, 10, 10, 1);
         //set the lottery game bonus pool info
-        configGameBonusPool(
-            lotteryGameId,
-            TokenType.ETH,
-            address(0),
-            initialPoolAmount
-        );
+        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
+            .configGameBonusPool(
+                lotteryGameId,
+                TokenType.ETH,
+                address(0),
+                initialPoolAmount
+            );
 
         //set the lottery game ticket info
-        configGameTicket(
-            lotteryGameId,
-            TokenType.ETH,
-            address(0),
-            initialTicketPrice,
-            300,
-            1
-        );
+        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
+            .configGameTicket(
+                lotteryGameId,
+                TokenType.ETH,
+                address(0),
+                initialTicketPrice,
+                300,
+                1
+            );
 
         //create the lottery game pool
         LotteryGameBonusPoolSystem(
@@ -152,122 +157,6 @@ contract LotteryGameSystem is
         );
 
         return lotteryGameId;
-    }
-
-    function configGame(
-        uint256 lotteryGameId_,
-        address owner_,
-        string memory ad_,
-        uint256 startTime_,
-        uint256 during_
-    ) internal {
-        uint256 endTime_ = startTime_ + during_;
-        require(during_ >= 12 hours, "during is too short");
-        require(endTime_ > block.timestamp, "end time is in the past");
-
-        //set the lottery game info
-        LotteryGameConfigTable.setOwner(lotteryGameId_, owner_);
-        LotteryGameConfigTable.setAd(lotteryGameId_, ad_);
-        LotteryGameConfigTable.setStartTime(lotteryGameId_, startTime_);
-        LotteryGameConfigTable.setDuring(lotteryGameId_, during_);
-    }
-
-    function configGameFee(
-        uint256 lotteryGameId_,
-        uint256 ownerFeeRate_,
-        uint256 developFeeRate_
-    ) internal {
-        require(ownerFeeRate_ <= 30, "owner fee rate is too high");
-        require(developFeeRate_ <= 10, "develop fee rate is too high");
-
-        //set the lottery game fee info
-        LotteryGameConfigFeeTable.setOwnerFeeRate(
-            lotteryGameId_,
-            ownerFeeRate_
-        );
-        LotteryGameConfigFeeTable.setDevelopFeeRate(
-            lotteryGameId_,
-            developFeeRate_
-        );
-    }
-
-    function configGameBonusPool(
-        uint256 lotteryGameId_,
-        TokenType tokenType_,
-        address tokenAddress_,
-        uint256 initialAmount_
-    ) internal {
-        require(tokenType_ == TokenType.ETH, "token type is not supported");
-        require(initialAmount_ > 0, "initial amount is zero");
-        if (tokenType_ == TokenType.ERC20) {
-            require(tokenAddress_ != address(0), "token address is zero");
-        } else if (tokenType_ == TokenType.ETH) {
-            require(tokenAddress_ == address(0), "token address is not zero");
-        }
-
-        //set the lottery game bonus pool info
-        LotteryGameConfigBonusPoolTable.setTokenType(
-            lotteryGameId_,
-            uint256(tokenType_)
-        );
-        LotteryGameConfigBonusPoolTable.setTokenAddress(
-            lotteryGameId_,
-            tokenAddress_
-        );
-        LotteryGameConfigBonusPoolTable.setInitialAmount(
-            lotteryGameId_,
-            initialAmount_
-        );
-    }
-
-    function configGameTicket(
-        uint256 lotteryGameId_,
-        TokenType tokenType_,
-        address tokenAddress_,
-        uint256 ticketPrice_,
-        uint256 ticketMaxCount_,
-        uint256 ticketMaxCountPerAddress_
-    ) internal {
-        require(
-            tokenType_ == TokenType.ETH || tokenType_ == TokenType.ERC20,
-            "token type is not supported"
-        );
-        require(ticketPrice_ > 0, "initial amount is zero");
-        if (tokenType_ == TokenType.ERC20) {
-            require(tokenAddress_ != address(0), "token address is zero");
-        } else if (tokenType_ == TokenType.ETH) {
-            require(tokenAddress_ == address(0), "token address is not zero");
-        }
-
-        require(ticketMaxCount_ > 0, "ticket max amount is zero");
-        require(ticketMaxCount_ <= 300, "ticket max amount is too high");
-        require(
-            ticketMaxCountPerAddress_ > 0,
-            "ticket max amount per address is zero"
-        );
-
-        //set the lottery game ticket info
-        LotteryGameConfigTicketTable.setTokenType(
-            lotteryGameId_,
-            uint256(tokenType_)
-        );
-        LotteryGameConfigTicketTable.setTokenAddress(
-            lotteryGameId_,
-            tokenAddress_
-        );
-        LotteryGameConfigTicketTable.setTicketPrice(
-            lotteryGameId_,
-            ticketPrice_
-        );
-        LotteryGameConfigTicketTable.setTicketMaxCount(
-            lotteryGameId_,
-            ticketMaxCount_
-        );
-
-        LotteryGameConfigTicketTable.setTicketMaxCountPerAddress(
-            lotteryGameId_,
-            ticketMaxCountPerAddress_
-        );
     }
 
     function getLotteryGame(
