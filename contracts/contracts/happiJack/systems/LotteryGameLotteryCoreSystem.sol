@@ -61,7 +61,7 @@ contract LotteryGameLotteryCoreSystem is
 
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
 
-    // LotteryGameId=>LuckNumber=>[TicketId], LuckNumberCount is the number of times the luck number has been drawn
+    // LotteryGameId=>LuckNumber=>[TicketId], LuckNumber is a unique number
     // 1=>111111=>[1, 2, 3]
     // 1=>200000=>[4, 5, 6]
     mapping(uint256 => mapping(uint256 => uint256[]))
@@ -211,14 +211,14 @@ contract LotteryGameLotteryCoreSystem is
     }
 
     /// @dev Get the order of the lottery ticket in the lottery results
-    function getLotteryTicketOrder(
+    function getLotteryLuckNumberOrder(
         uint256 lotteryGameId_,
-        uint256 ticketId_,
+        uint256 luckNumber_,
         uint256 maxOrder_
     ) public view returns (uint256) {
         require(
-            ticketId_ > 0,
-            "LotteryGameLotteryCoreSystem: ticketId_ must be greater than 0"
+            luckNumber_ > 0,
+            "LotteryGameLotteryCoreSystem: luckNumber_ must be greater than 0"
         );
         require(
             maxOrder_ > 0,
@@ -228,7 +228,7 @@ contract LotteryGameLotteryCoreSystem is
         for (uint256 i = 0; i < maxOrder_; i++) {
             uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
             for (uint256 j = 0; j < luckNumbers_.length; j++) {
-                if (luckNumbers_[j] == ticketId_) {
+                if (luckNumbers_[j] == luckNumber_) {
                     return i;
                 }
             }

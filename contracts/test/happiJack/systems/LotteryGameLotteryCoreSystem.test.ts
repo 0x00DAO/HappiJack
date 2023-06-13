@@ -369,7 +369,11 @@ describe('LotteryGameLotteryCoreSystem', function () {
       for (let i = 0; i < 3; i++) {
         for (let j = 0; j < winnerLuckNumbers[i].length; j++) {
           await lotteryGameLotteryCoreSystem
-            .getLotteryTicketOrder(lotteryGameId, winnerLuckNumbers[i][j], 4)
+            .getLotteryLuckNumberOrder(
+              lotteryGameId,
+              winnerLuckNumbers[i][j],
+              4
+            )
             .then((res: any) => {
               expect(res).to.equal(i);
             });
@@ -379,7 +383,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
       //get lottery result any ticket order
 
       await lotteryGameLotteryCoreSystem
-        .getLotteryTicketOrder(lotteryGameId, 1000, 4)
+        .getLotteryLuckNumberOrder(lotteryGameId, 1000, 4)
         .then((res: any) => {
           expect(res).to.equal(4);
         });
