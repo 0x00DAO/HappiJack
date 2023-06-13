@@ -316,7 +316,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
     });
   });
 
-  describe.only('computeLotteryResult', function () {
+  describe('computeLotteryResult', function () {
     beforeEach(async function () {
       //register owner as system, so that owner can call system functions
       const [owner] = await ethers.getSigners();
@@ -326,7 +326,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
       );
     });
     const lotteryGameId = ethers.BigNumber.from(1999999999);
-    it('success', async function () {
+    it.only('success', async function () {
       //add 300 random luck numbers, luck number range is 1-999999
       const luckNumbers = [];
       for (let i = 0; i < 300; i++) {
@@ -342,20 +342,47 @@ describe('LotteryGameLotteryCoreSystem', function () {
       }
 
       const luckNumber = 100000;
+
+      // winnerLuckNumbers=>[[],[],[]]
+      const winnerLuckNumbers = [[]];
+
       // getLuckNumberByClosest
       await lotteryGameLotteryCoreSystem
         .getLuckNumberByClosest(lotteryGameId, luckNumber, 3)
         .then((res: any) => {
           expect(res.length).to.equal(3);
-          console.log(res);
+          for (let i = 0; i < 3; i++) {
+            winnerLuckNumbers[i] = res[i];
+          }
         });
 
       //compute lottery result
       await lotteryGameLotteryCoreSystem.computeLotteryResult(
         lotteryGameId,
-        luckNumber,
-        3
+        luckNumber
       );
+
+      console.log('winnerLuckNumbers', winnerLuckNumbers);
+
+      //get lottery result ticket order
+
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < winnerLuckNumbers[i].length; j++) {
+          await lotteryGameLotteryCoreSystem
+            .getLotteryTicketOrder(lotteryGameId, winnerLuckNumbers[i][j], 4)
+            .then((res: any) => {
+              expect(res).to.equal(i);
+            });
+        }
+      }
+
+      //get lottery result any ticket order
+
+      await lotteryGameLotteryCoreSystem
+        .getLotteryTicketOrder(lotteryGameId, 1000, 4)
+        .then((res: any) => {
+          expect(res).to.equal(4);
+        });
     });
   });
 });

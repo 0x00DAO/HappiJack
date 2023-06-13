@@ -172,5 +172,7 @@ contract LotteryGameSellSystem is
             ticketId,
             luckyNumber
         );
+
+        return ticketId;
     }
 }

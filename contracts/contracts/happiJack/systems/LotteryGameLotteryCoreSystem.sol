@@ -178,9 +178,16 @@ contract LotteryGameLotteryCoreSystem is
 
     function computeLotteryResult(
         uint256 lotteryGameId_,
+        uint256 luckNumber_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        _computeLotteryResult(lotteryGameId_, luckNumber_, 3);
+    }
+
+    function _computeLotteryResult(
+        uint256 lotteryGameId_,
         uint256 luckNumber_,
         uint256 topNumber_
-    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+    ) internal {
         require(
             luckNumber_ > 0,
             "LotteryGameLotteryCoreSystem: luckNumber_ must be greater than 0"
@@ -201,5 +208,32 @@ contract LotteryGameLotteryCoreSystem is
                 lotteryResults[lotteryGameId_][i].push(temp[j]);
             }
         }
+    }
+
+    /// @dev Get the order of the lottery ticket in the lottery results
+    function getLotteryTicketOrder(
+        uint256 lotteryGameId_,
+        uint256 ticketId_,
+        uint256 maxOrder_
+    ) public view returns (uint256) {
+        require(
+            ticketId_ > 0,
+            "LotteryGameLotteryCoreSystem: ticketId_ must be greater than 0"
+        );
+        require(
+            maxOrder_ > 0,
+            "LotteryGameLotteryCoreSystem: maxOrder_ must be greater than 0"
+        );
+        // uint256 maxOrder_ = 4;
+        for (uint256 i = 0; i < maxOrder_; i++) {
+            uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
+            for (uint256 j = 0; j < luckNumbers_.length; j++) {
+                if (luckNumbers_[j] == ticketId_) {
+                    return i;
+                }
+            }
+        }
+
+        return maxOrder_;
     }
 }
