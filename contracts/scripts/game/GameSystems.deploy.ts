@@ -29,8 +29,10 @@ async function main() {
     console.log(
       `Deploy ${i + 1}/${systems.length}, ${systemContractName} done`
     );
-    //sleep 1s
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    //sleep3s
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    console.log(`Deploy next ${i + 1}/${systems.length}`);
   }
 }
 
