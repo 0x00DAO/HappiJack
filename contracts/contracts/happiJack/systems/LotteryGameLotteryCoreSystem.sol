@@ -176,13 +176,6 @@ contract LotteryGameLotteryCoreSystem is
         return result;
     }
 
-    function computeLotteryResult(
-        uint256 lotteryGameId_,
-        uint256 luckNumber_
-    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-        _computeLotteryResult(lotteryGameId_, luckNumber_, 3);
-    }
-
     function _computeLotteryResult(
         uint256 lotteryGameId_,
         uint256 luckNumber_,
@@ -208,6 +201,13 @@ contract LotteryGameLotteryCoreSystem is
                 lotteryResults[lotteryGameId_][i].push(temp[j]);
             }
         }
+    }
+
+    function computeLotteryResult(
+        uint256 lotteryGameId_,
+        uint256 luckNumber_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        _computeLotteryResult(lotteryGameId_, luckNumber_, 3);
     }
 
     /// @dev Get the order of the lottery ticket in the lottery results
