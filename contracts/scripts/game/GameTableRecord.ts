@@ -43,6 +43,54 @@ async function LotteryTicketTableGetRecord(
   return tableData;
 }
 
+async function LotteryGameBonusPoolTableGetRecord(
+  gameRoot: Contract,
+  lotteryGameId: BigNumber
+): Promise<{
+  TotalAmount: BigNumber;
+  BonusAmount: BigNumber;
+  OwnerFeeAmount: BigNumber;
+  DevelopFeeAmount: BigNumber;
+}> {
+  const tableId = ethers.utils.id(
+    'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
+  );
+  const tableData = await gameRoot
+    .getRecord(
+      tableId,
+      [
+        ethers.utils.hexZeroPad(
+          ethers.BigNumber.from(lotteryGameId).toHexString(),
+          32
+        ),
+      ],
+      4
+    )
+    .then((res: any) => {
+      return {
+        TotalAmount: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[0]
+        )[0],
+        BonusAmount: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[1]
+        )[0],
+        OwnerFeeAmount: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[2]
+        )[0],
+        DevelopFeeAmount: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[3]
+        )[0],
+      };
+    });
+
+  return tableData;
+}
+
 export const getTableRecord = {
   LotteryTicketTable: LotteryTicketTableGetRecord,
+  LotteryGameBonusPoolTable: LotteryGameBonusPoolTableGetRecord,
 };

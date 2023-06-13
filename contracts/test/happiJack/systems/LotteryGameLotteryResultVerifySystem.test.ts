@@ -146,7 +146,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       // buy ticket
       const addresses = await ethers.getSigners();
       const ticketIds: Map<string, BigNumber> = new Map();
-      for (let i = 0; i < addresses.length, i < 10; i++) {
+      for (let i = 0; i < addresses.length, i < 11; i++) {
         const [ticketId, luckNumber] = await buyTicket(
           lotteryGameId,
           addresses[i]
@@ -160,6 +160,13 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       const during = 60 * 60 * 24 * 1 + 1; // 1 days
       await ethers.provider.send('evm_increaseTime', [during]);
 
+      //get lottery bonus pool
+      const lotteryPool = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      // console.log('lotteryPool:', lotteryPool);
+
       // verify
       await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
         .to.be.emit(
@@ -171,10 +178,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           return true;
         });
 
-      // check ticket
-      const LotteryTicketTableId = ethers.utils.id(
-        'tableId' + 'HappiJack' + 'LotteryTicketTable'
+      // check lottery bonus pool
+      const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
       );
+
+      expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
+
       // get ticket lucky number
       for (let [ticketId, luckyNumber] of ticketIds) {
         const ticketData = await getTableRecord.LotteryTicketTable(
