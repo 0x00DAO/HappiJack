@@ -326,7 +326,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
       );
     });
     const lotteryGameId = ethers.BigNumber.from(1999999999);
-    it.only('success', async function () {
+    it('success', async function () {
       //add 300 random luck numbers, luck number range is 1-999999
       const luckNumbers = [];
       for (let i = 0; i < 300; i++) {

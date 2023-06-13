@@ -8,5 +8,6 @@ export const gameDeploy = {
     'LotteryGameSellSystem',
     'LotteryGameTicketNFTSystem',
     'LotteryGameLotteryCoreSystem',
+    'LotteryGameLotteryResultVerifySystem',
   ],
 };
