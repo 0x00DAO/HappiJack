@@ -11,7 +11,7 @@ bytes32 constant _tableId = bytes32(
         abi.encodePacked("tableId", "HappiJack", "LotteryGameConfigFeeTable")
     )
 );
-uint8 constant _Columns = 2;
+uint8 constant _Columns = 3;
 bytes32 constant LotteryGameConfigFeeTableId = _tableId;
 
 library LotteryGameConfigFeeTable {
