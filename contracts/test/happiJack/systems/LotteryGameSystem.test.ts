@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
+import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 
 describe('LotteryGameSystem', function () {
@@ -17,24 +18,34 @@ describe('LotteryGameSystem', function () {
     await gameRootContract.deployed();
 
     //deploy
-    lotteryGameSystem = await eonTestUtil.deploySystem(
+    const systems = gameDeploy.systems;
+    for (let i = 0; i < systems.length; i++) {
+      await eonTestUtil.deploySystem(gameRootContract, systems[i]);
+    }
+
+    //deploy
+    lotteryGameSystem = await eonTestUtil.getSystem(
       gameRootContract,
-      'LotteryGameSystem'
+      'LotteryGameSystem',
+      gameDeploy.systemIdPrefix
     );
 
-    lotteryGameBonusPoolSystem = await eonTestUtil.deploySystem(
+    lotteryGameBonusPoolSystem = await eonTestUtil.getSystem(
       gameRootContract,
-      'LotteryGameBonusPoolSystem'
+      'LotteryGameBonusPoolSystem',
+      gameDeploy.systemIdPrefix
     );
 
-    LotteryGameTicketSystem = await eonTestUtil.deploySystem(
+    LotteryGameTicketSystem = await eonTestUtil.getSystem(
       gameRootContract,
-      'LotteryGameTicketSystem'
+      'LotteryGameTicketSystem',
+      gameDeploy.systemIdPrefix
     );
 
-    lotteryGameLuckyNumberSystem = await eonTestUtil.deploySystem(
+    lotteryGameLuckyNumberSystem = await eonTestUtil.getSystem(
       gameRootContract,
-      'LotteryGameLuckyNumberSystem'
+      'LotteryGameLuckyNumberSystem',
+      gameDeploy.systemIdPrefix
     );
   });
   it('should be deployed', async function () {

@@ -142,7 +142,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       );
     });
 
-    it.only('success', async function () {
+    it('success', async function () {
       // buy ticket
       const addresses = await ethers.getSigners();
       const ticketIds: Map<string, BigNumber> = new Map();

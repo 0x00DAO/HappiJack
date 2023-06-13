@@ -3,6 +3,7 @@ import { BigNumber, Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameSellSystem', function () {
   let gameRootContract: Contract;
@@ -179,33 +180,11 @@ describe('LotteryGameSellSystem', function () {
       const lotteryGameBonusPoolTableId = ethers.utils.id(
         'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
       );
-      const lotteryGameBonusPoolData = await gameRootContract
-
-        .getRecord(
-          lotteryGameBonusPoolTableId,
-          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
-          4
-        )
-        .then((res: any) => {
-          return {
-            TotalAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[0]
-            )[0],
-            BonusAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[1]
-            )[0],
-            OwnerFeeAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[2]
-            )[0],
-            DevelopFeeAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[3]
-            )[0],
-          };
-        });
+      const lotteryGameBonusPoolData =
+        await getTableRecord.LotteryGameBonusPoolTable(
+          gameRootContract,
+          lotteryGameId
+        );
 
       // console.log(lotteryGameBonusPoolData);
       expect(lotteryGameBonusPoolData.TotalAmount).to.equal(
@@ -214,7 +193,9 @@ describe('LotteryGameSellSystem', function () {
       expect(lotteryGameBonusPoolData.TotalAmount).to.equal(
         lotteryGameBonusPoolData.OwnerFeeAmount.add(
           lotteryGameBonusPoolData.DevelopFeeAmount
-        ).add(lotteryGameBonusPoolData.BonusAmount)
+        )
+          .add(lotteryGameBonusPoolData.BonusAmount)
+          .add(lotteryGameBonusPoolData.VerifyFeeAmount)
       );
       expect(lotteryGameBonusPoolData.OwnerFeeAmount).to.equal(
         ticketPrice.mul(10).div(100)
@@ -222,10 +203,13 @@ describe('LotteryGameSellSystem', function () {
       expect(lotteryGameBonusPoolData.DevelopFeeAmount).to.equal(
         ticketPrice.mul(10).div(100)
       );
+      expect(lotteryGameBonusPoolData.VerifyFeeAmount).to.equal(
+        ticketPrice.mul(1).div(100)
+      );
       expect(lotteryGameBonusPoolData.BonusAmount).to.equal(
-        lotteryGameBonusPoolData.TotalAmount.sub(
-          ticketPrice.mul(10).div(100)
-        ).sub(ticketPrice.mul(10).div(100))
+        lotteryGameBonusPoolData.TotalAmount.sub(ticketPrice.mul(10).div(100))
+          .sub(ticketPrice.mul(10).div(100))
+          .sub(ticketPrice.mul(1).div(100))
       );
 
       // check bonus pool eth balance
