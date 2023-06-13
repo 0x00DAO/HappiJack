@@ -4,12 +4,14 @@ import { BigNumber, Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
   let lotteryGameLotteryResultVerifySystem: Contract;
+  let lotteryGameLotteryCoreSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -32,6 +34,12 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     lotteryGameSellSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameSellSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameLotteryCoreSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameLotteryCoreSystem',
       gameDeploy.systemIdPrefix
     );
   });
@@ -80,7 +88,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
   async function buyTicket(
     lotteryGameId: BigNumber,
     addr1: any
-  ): Promise<BigNumber> {
+  ): Promise<[BigNumber, BigNumber]> {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     const luckyNumber = ethers.BigNumber.from(randomInt(100000, 999999));
     let ticketId = ethers.BigNumber.from(0);
@@ -101,15 +109,22 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
         },
         luckyNumber
       );
-    return ticketId;
+    return [ticketId, luckyNumber];
   }
 
   describe('verify', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
+    let snapshotId: string;
     beforeEach(async function () {
+      snapshotId = await ethers.provider.send('evm_snapshot', []);
       // create a lottery game
       lotteryGameId = await createLotteryGame();
+      // create block snapshot
+    });
+    afterEach(async function () {
+      // revert block
+      await ethers.provider.send('evm_revert', [snapshotId]);
     });
 
     it('failed: lottery game not ended', async function () {
@@ -125,6 +140,61 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       ).to.be.revertedWith(
         'LotteryGameLotteryResultVerifySystem: Lottery game has not ended'
       );
+    });
+
+    it.only('success', async function () {
+      // buy ticket
+      const addresses = await ethers.getSigners();
+      const ticketIds: Map<string, BigNumber> = new Map();
+      for (let i = 0; i < addresses.length, i < 10; i++) {
+        const [ticketId, luckNumber] = await buyTicket(
+          lotteryGameId,
+          addresses[i]
+        );
+        ticketIds.set(ticketId.toString(), luckNumber);
+      }
+
+      console.log(ticketIds);
+
+      // skip to end time
+      const during = 60 * 60 * 24 * 1 + 1; // 1 days
+      await ethers.provider.send('evm_increaseTime', [during]);
+
+      // verify
+      await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
+        .to.be.emit(
+          lotteryGameLotteryResultVerifySystem,
+          'LotteryGameResultVerified'
+        )
+        .withArgs(lotteryGameId, (x: any) => {
+          console.log('luckyNumber:', x);
+          return true;
+        });
+
+      // check ticket
+      const LotteryTicketTableId = ethers.utils.id(
+        'tableId' + 'HappiJack' + 'LotteryTicketTable'
+      );
+      // get ticket lucky number
+      for (let [ticketId, luckyNumber] of ticketIds) {
+        const ticketData = await getTableRecord.LotteryTicketTable(
+          gameRootContract,
+          ethers.BigNumber.from(ticketId)
+        );
+
+        expect(ticketData.luckyNumber).to.be.equal(luckyNumber);
+      }
+
+      // check lottery game
+      for (let [ticketId, luckyNumber] of ticketIds) {
+        const order =
+          await lotteryGameLotteryCoreSystem.getLotteryLuckNumberOrder(
+            lotteryGameId,
+            luckyNumber,
+            3
+          );
+        // console.log(ticketId, luckyNumber, order);
+      }
     });
   });
 });

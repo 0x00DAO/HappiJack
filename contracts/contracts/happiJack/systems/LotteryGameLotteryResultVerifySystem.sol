@@ -11,6 +11,7 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
+import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameLotteryResultVerifySystem")
@@ -56,6 +57,11 @@ contract LotteryGameLotteryResultVerifySystem is
 
     /// custom logic here
 
+    event LotteryGameResultVerified(
+        uint256 indexed lotteryGameId,
+        uint256 indexed luckyNumber
+    );
+
     function verify(uint256 lotteryGameId_) public payable {
         //check if lottery game exists
         require(
@@ -77,5 +83,25 @@ contract LotteryGameLotteryResultVerifySystem is
                 block.timestamp,
             "LotteryGameLotteryResultVerifySystem: Lottery game has not ended"
         );
+
+        //set lottery game status to verified
+        LotteryGameTable.setStatus(
+            lotteryGameId_,
+            uint256(LotteryGameStatus.Ended)
+        );
+
+        uint256 currentLuckyNumber = LotteryGameLuckyNumTable.getCurrentNumber(
+            lotteryGameId_
+        );
+
+        //computeLotteryResult
+        LotteryGameLotteryCoreSystem(
+            getSystemAddress(LotteryGameLotteryCoreSystemID)
+        ).computeLotteryResult(lotteryGameId_, currentLuckyNumber);
+
+        //TODO 如果中奖人数等级为0，退还所有奖池给抽奖发起人
+
+        //emit event
+        emit LotteryGameResultVerified(lotteryGameId_, currentLuckyNumber);
     }
 }
