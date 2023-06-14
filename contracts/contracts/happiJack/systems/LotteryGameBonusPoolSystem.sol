@@ -255,4 +255,85 @@ contract LotteryGameBonusPoolSystem is
                 amount_
         );
     }
+
+    function withdrawOwnerFeeAmountToWalletSafeBoxETH(
+        uint256 lotteryGameId_,
+        address to_,
+        uint256 amount_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        requireWithdrawAmountEthParameterValid(lotteryGameId_, to_);
+
+        //check if amount is valid
+        require(
+            amount_ > 0 &&
+                amount_ <=
+                LotteryGameBonusPoolTable.getOwnerFeeAmount(lotteryGameId_),
+            "LotteryGameBonusPoolSystem: Invalid amount"
+        );
+
+        LotteryGameLotteryWalletSafeBoxSystem(
+            getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
+        ).depositETH{value: amount_}(to_);
+
+        //substract owner fee amount
+        LotteryGameBonusPoolTable.setOwnerFeeAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getOwnerFeeAmount(lotteryGameId_) -
+                amount_
+        );
+    }
+
+    function withdrawDevelopFeeAmountToWalletSafeBoxETH(
+        uint256 lotteryGameId_,
+        address to_,
+        uint256 amount_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        requireWithdrawAmountEthParameterValid(lotteryGameId_, to_);
+
+        //check if amount is valid
+        require(
+            amount_ > 0 &&
+                amount_ <=
+                LotteryGameBonusPoolTable.getDevelopFeeAmount(lotteryGameId_),
+            "LotteryGameBonusPoolSystem: Invalid amount"
+        );
+
+        LotteryGameLotteryWalletSafeBoxSystem(
+            getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
+        ).depositETH{value: amount_}(to_);
+
+        //substract develop fee amount
+        LotteryGameBonusPoolTable.setDevelopFeeAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getDevelopFeeAmount(lotteryGameId_) -
+                amount_
+        );
+    }
+
+    function withdrawVerifyFeeAmountToWalletSafeBoxETH(
+        uint256 lotteryGameId_,
+        address to_,
+        uint256 amount_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        requireWithdrawAmountEthParameterValid(lotteryGameId_, to_);
+
+        //check if amount is valid
+        require(
+            amount_ > 0 &&
+                amount_ <=
+                LotteryGameBonusPoolTable.getVerifyFeeAmount(lotteryGameId_),
+            "LotteryGameBonusPoolSystem: Invalid amount"
+        );
+
+        LotteryGameLotteryWalletSafeBoxSystem(
+            getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
+        ).depositETH{value: amount_}(to_);
+
+        //substract verify fee amount
+        LotteryGameBonusPoolTable.setVerifyFeeAmount(
+            lotteryGameId_,
+            LotteryGameBonusPoolTable.getVerifyFeeAmount(lotteryGameId_) -
+                amount_
+        );
+    }
 }

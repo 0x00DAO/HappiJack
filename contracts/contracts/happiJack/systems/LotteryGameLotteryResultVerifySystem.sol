@@ -99,8 +99,6 @@ contract LotteryGameLotteryResultVerifySystem is
             getSystemAddress(LotteryGameLotteryCoreSystemID)
         ).computeLotteryResult(lotteryGameId_, currentLuckyNumber);
 
-        //TODO 如果中奖人数等级为0，退还所有奖池给抽奖发起人
-
         uint256 ticketCount = LotteryGameTicketTable.getTicketSoldCount(
             lotteryGameId_
         );

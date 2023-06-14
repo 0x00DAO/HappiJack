@@ -139,6 +139,48 @@ describe('LotteryGameSellSystem', function () {
         .then((data) => {
           expect(data.BonusAmountWithdraw).to.equal(bonusAmount);
         });
+
+      // withdrawOwnerFeeAmountToWalletSafeBoxETH
+      const ownerFeeAmount = lotteryGameBonusPoolData.OwnerFeeAmount;
+      await lotteryGameBonusPoolSystem.withdrawOwnerFeeAmountToWalletSafeBoxETH(
+        lotteryGameId,
+        owner.address,
+        ownerFeeAmount
+      );
+
+      await getTableRecord
+        .LotteryGameBonusPoolTable(gameRootContract, lotteryGameId)
+        .then((data) => {
+          expect(data.OwnerFeeAmount).to.equal(0);
+        });
+
+      // withdrawDevelopFeeAmountToWalletSafeBoxETH
+      const developFeeAmount = lotteryGameBonusPoolData.DevelopFeeAmount;
+      await lotteryGameBonusPoolSystem.withdrawDevelopFeeAmountToWalletSafeBoxETH(
+        lotteryGameId,
+        owner.address,
+        developFeeAmount
+      );
+
+      await getTableRecord
+        .LotteryGameBonusPoolTable(gameRootContract, lotteryGameId)
+        .then((data) => {
+          expect(data.DevelopFeeAmount).to.equal(0);
+        });
+
+      //withdrawVerifyFeeAmountToWalletSafeBoxETH
+      const verifyFeeAmount = lotteryGameBonusPoolData.VerifyFeeAmount;
+      await lotteryGameBonusPoolSystem.withdrawVerifyFeeAmountToWalletSafeBoxETH(
+        lotteryGameId,
+        owner.address,
+        verifyFeeAmount
+      );
+
+      await getTableRecord
+        .LotteryGameBonusPoolTable(gameRootContract, lotteryGameId)
+        .then((data) => {
+          expect(data.VerifyFeeAmount).to.equal(0);
+        });
     });
   });
 });
