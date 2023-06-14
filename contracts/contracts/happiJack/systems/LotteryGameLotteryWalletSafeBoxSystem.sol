@@ -5,6 +5,8 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
+
 import {System} from "../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
@@ -60,6 +62,18 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
     event DepositETH(address indexed owner, uint256 amount);
     event WithdrawETH(address indexed owner, uint256 amount);
 
+    event DepositERC20(
+        address indexed owner,
+        address indexed tokenAddress,
+        uint256 amount
+    );
+
+    event WithdrawERC20(
+        address indexed owner,
+        address indexed tokenAddress,
+        uint256 amount
+    );
+
     function depositETH(
         address owner_
     ) public payable onlyRole(SYSTEM_INTERNAL_ROLE) {
@@ -112,5 +126,72 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
         AddressUpgradeable.sendValue(payable(owner_), amount_);
 
         emit WithdrawETH(owner_, amount_);
+    }
+
+    function depositERC20(
+        address owner_,
+        IERC20Upgradeable token_,
+        uint256 amount_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: depositERC20: owner_ must not be 0 address"
+        );
+
+        require(
+            address(token_) != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: depositERC20: token_ must not be 0 address"
+        );
+        require(
+            amount_ > 0,
+            "LotteryGameLotteryWalletSafeBoxSystem: depositERC20: amount_ must be greater than 0"
+        );
+
+        LotteryGameWalletSafeBoxTable.setAmount(
+            owner_,
+            uint256(TokenType.ERC20),
+            address(token_),
+            LotteryGameWalletSafeBoxTable.getAmount(
+                owner_,
+                uint256(TokenType.ERC20),
+                address(token_)
+            ) + amount_
+        );
+
+        token_.transferFrom(_msgSender(), address(this), amount_);
+
+        emit DepositERC20(owner_, address(token_), amount_);
+    }
+
+    function withdrawERC20(IERC20Upgradeable token_) external {
+        address owner_ = _msgSender();
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: owner_ must not be 0 address"
+        );
+        require(
+            address(token_) != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: token_ must not be 0 address"
+        );
+        uint256 amount_ = LotteryGameWalletSafeBoxTable.getAmount(
+            owner_,
+            uint256(TokenType.ERC20),
+            address(token_)
+        );
+        require(
+            amount_ > 0,
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: amount_ must be greater than 0"
+        );
+
+        LotteryGameWalletSafeBoxTable.setAmount(
+            owner_,
+            uint256(TokenType.ERC20),
+            address(token_),
+            0
+        );
+
+        token_.transfer(owner_, amount_);
+
+        emit WithdrawERC20(owner_, address(token_), amount_);
     }
 }

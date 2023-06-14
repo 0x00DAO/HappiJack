@@ -70,7 +70,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     return lotteryGameId;
   }
 
-  describe.only('deposit/withdraw ETH', function () {
+  describe('deposit/withdraw ETH', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;
@@ -325,6 +325,84 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
         .getBalance(lotteryGameLotteryWalletSafeBoxSystem.address)
         .then((x) => {
           expect(x).to.equal(depositAmount);
+          return x;
+        });
+    });
+  });
+
+  describe('deposit/withdraw ERC20', function () {
+    let lotteryGameId: BigNumber;
+    let snapshotId: string;
+    let tokenExampleContract: Contract;
+    beforeEach(async function () {
+      snapshotId = await ethers.provider.send('evm_snapshot', []);
+      // create a lottery game
+      // lotteryGameId = await createLotteryGame();
+      // create block snapshot
+      //register owner as system, so that owner can call system functions
+      const [owner] = await ethers.getSigners();
+      await gameRootContract.registerSystem(
+        ethers.utils.id(owner.address),
+        owner.address
+      );
+
+      //create token
+      const TokenExample = await ethers.getContractFactory('ExampleToken');
+      tokenExampleContract = await upgrades.deployProxy(TokenExample);
+
+      await tokenExampleContract.deployed();
+
+      // mint token to owner
+      await tokenExampleContract.mint(
+        owner.address,
+        ethers.utils.parseEther('100')
+      );
+    });
+    afterEach(async function () {
+      // revert block
+      await ethers.provider.send('evm_revert', [snapshotId]);
+    });
+
+    it.only('success: deposit', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.005');
+
+      //approve
+      await tokenExampleContract
+        .connect(owner)
+        .approve(
+          lotteryGameLotteryWalletSafeBoxSystem.address,
+          ethers.utils.parseEther('100')
+        );
+
+      // depositERC20
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositERC20(
+          addr1.address,
+          tokenExampleContract.address,
+          initialAmount
+        )
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'DepositERC20')
+        .withArgs(addr1.address, tokenExampleContract.address, initialAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(1),
+          tokenExampleContract.address
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(initialAmount);
+          return x;
+        });
+
+      //balanceOf token
+      await tokenExampleContract
+        .balanceOf(lotteryGameLotteryWalletSafeBoxSystem.address)
+        .then((x: BigNumber) => {
+          expect(x).to.equal(initialAmount);
           return x;
         });
     });
