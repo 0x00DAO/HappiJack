@@ -154,7 +154,8 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       );
     });
 
-    it('success', async function () {
+    it.only('success', async function () {
+      const [owner] = await ethers.getSigners();
       // buy ticket
       const addresses = await ethers.getSigners();
       const ticketIds: Map<string, BigNumber> = new Map();
@@ -223,6 +224,15 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           );
         // console.log(ticketId, luckyNumber, order);
       }
+
+      //check lottery game
+      const lotteryGame = await getTableRecord.LotteryGameTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      // console.log('lotteryGame:', lotteryGame);
+      expect(lotteryGame.Status).to.be.equal(2);
+      expect(lotteryGame.Owner).to.be.equal(owner.address);
     });
   });
 });
