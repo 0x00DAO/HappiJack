@@ -86,7 +86,7 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
         emit DepositETH(owner_, msg.value);
     }
 
-    function withdrawETH() external onlyRole(SYSTEM_INTERNAL_ROLE) {
+    function withdrawETH() external {
         address owner_ = _msgSender();
         uint256 amount_ = LotteryGameWalletSafeBoxTable.getAmount(
             owner_,

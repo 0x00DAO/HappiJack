@@ -70,7 +70,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     return lotteryGameId;
   }
 
-  describe.only('depositETH', function () {
+  describe.only('deposit/withdraw ETH', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;
@@ -180,6 +180,153 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       ).to.be.revertedWith(
         'LotteryGameLotteryWalletSafeBoxSystem: depositETH: owner_ must not be 0 address'
       );
+    });
+
+    it('success: withdraw', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.005');
+      // depositETH
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositETH(addr1.address, {
+          value: initialAmount,
+        })
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'DepositETH')
+        .withArgs(addr1.address, initialAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(initialAmount);
+          return x;
+        });
+
+      //balanceOf addr1 before withdraw
+      const balanceBeforeWithdraw = await ethers.provider.getBalance(
+        addr1.address
+      );
+
+      //withdraw
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1).withdrawETH()
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'WithdrawETH')
+        .withArgs(addr1.address, initialAmount);
+
+      //balanceOf addr1 after withdraw
+      const balanceAfterWithdraw = await ethers.provider.getBalance(
+        addr1.address
+      );
+      //minus gas fee
+      expect(balanceAfterWithdraw)
+        .to.gt(balanceBeforeWithdraw)
+        .and.lt(balanceBeforeWithdraw.add(initialAmount));
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(0);
+          return x;
+        });
+      //balanceOf eth is zero
+      await ethers.provider
+        .getBalance(lotteryGameLotteryWalletSafeBoxSystem.address)
+        .then((x) => {
+          expect(x).to.equal(0);
+          return x;
+        });
+    });
+
+    it('success: withdraw 1 of 2 address', async function () {
+      const [owner, addr1, addr2] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.005');
+      // depositETH
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositETH(addr1.address, {
+          value: initialAmount,
+        })
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'DepositETH')
+        .withArgs(addr1.address, initialAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(initialAmount);
+          return x;
+        });
+
+      //deposit addr2
+      const depositAmount = ethers.utils.parseEther('0.001');
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositETH(addr2.address, {
+          value: depositAmount,
+        })
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'DepositETH')
+        .withArgs(addr2.address, depositAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr2.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(depositAmount);
+          return x;
+        });
+
+      //balanceOf eth
+      await ethers.provider
+        .getBalance(lotteryGameLotteryWalletSafeBoxSystem.address)
+        .then((x) => {
+          expect(x).to.equal(initialAmount.add(depositAmount));
+          return x;
+        });
+
+      //withdraw
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1).withdrawETH()
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'WithdrawETH')
+        .withArgs(addr1.address, initialAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(0);
+          return x;
+        });
+
+      //balanceOf eth
+      await ethers.provider
+        .getBalance(lotteryGameLotteryWalletSafeBoxSystem.address)
+        .then((x) => {
+          expect(x).to.equal(depositAmount);
+          return x;
+        });
     });
   });
 });
