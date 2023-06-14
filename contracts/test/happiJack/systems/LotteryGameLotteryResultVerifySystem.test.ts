@@ -112,7 +112,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     return [ticketId, luckyNumber];
   }
 
-  describe('verify', function () {
+  describe.only('verify', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;

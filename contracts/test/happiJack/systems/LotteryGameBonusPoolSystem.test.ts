@@ -77,7 +77,7 @@ describe('LotteryGameSellSystem', function () {
     return lotteryGameId;
   }
 
-  describe.only('withdrawBonusAmountToWalletSafeBoxETH', function () {
+  describe('withdrawBonusAmountToWalletSafeBoxETH', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
 
