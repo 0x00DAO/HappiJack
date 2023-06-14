@@ -57,8 +57,60 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
 
     /// custom logic here
 
-    event LotteryGameResultVerified(
-        uint256 indexed lotteryGameId,
-        uint256 indexed luckyNumber
-    );
+    event DepositETH(address indexed owner, uint256 amount);
+    event WithdrawETH(address indexed owner, uint256 amount);
+
+    function depositETH(
+        address owner_
+    ) public payable onlyRole(SYSTEM_INTERNAL_ROLE) {
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: depositETH: owner_ must not be 0 address"
+        );
+        require(
+            msg.value > 0,
+            "LotteryGameLotteryWalletSafeBoxSystem: depositETH: msg.value must be greater than 0"
+        );
+
+        LotteryGameWalletSafeBoxTable.setAmount(
+            owner_,
+            uint256(TokenType.ETH),
+            address(0),
+            LotteryGameWalletSafeBoxTable.getAmount(
+                owner_,
+                uint256(TokenType.ETH),
+                address(0)
+            ) + msg.value
+        );
+
+        emit DepositETH(owner_, msg.value);
+    }
+
+    function withdrawETH() external onlyRole(SYSTEM_INTERNAL_ROLE) {
+        address owner_ = _msgSender();
+        uint256 amount_ = LotteryGameWalletSafeBoxTable.getAmount(
+            owner_,
+            uint256(TokenType.ETH),
+            address(0)
+        );
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
+        );
+        require(
+            amount_ > 0,
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: amount_ must be greater than 0"
+        );
+
+        LotteryGameWalletSafeBoxTable.setAmount(
+            owner_,
+            uint256(TokenType.ETH),
+            address(0),
+            0
+        );
+
+        AddressUpgradeable.sendValue(payable(owner_), amount_);
+
+        emit WithdrawETH(owner_, amount_);
+    }
 }

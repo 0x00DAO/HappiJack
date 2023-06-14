@@ -36,7 +36,7 @@ library LotteryGameWalletSafeBoxTable {
         uint256 tokenType,
         address tokenAddress
     ) internal pure returns (bytes32[] memory) {
-        bytes32[] memory _keyTuple = new bytes32[](1);
+        bytes32[] memory _keyTuple = new bytes32[](3);
         _keyTuple[0] = bytes32(addressToEntity(owner));
         _keyTuple[1] = bytes32(tokenType);
         _keyTuple[2] = bytes32(addressToEntity(tokenAddress));
@@ -78,13 +78,13 @@ library LotteryGameWalletSafeBoxTable {
         address tokenAddress
     ) internal view returns (uint256) {
         bytes32[] memory _keyTuple = entityKeys(owner, tokenType, tokenAddress);
-        bytes[] memory _blobs = StoreDelegate.Store().getRecord(
+        bytes memory _blob = StoreDelegate.Store().getField(
             _tableId,
             _keyTuple,
-            _Columns
+            0
         );
-        if (_blobs.length == 0) return 0;
-        return abi.decode(_blobs[0], (uint256));
+        if (_blob.length == 0) return 0;
+        return abi.decode(_blob, (uint256));
     }
 
     /** Get record */
