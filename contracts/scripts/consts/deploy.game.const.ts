@@ -3,6 +3,7 @@ export const gameDeploy = {
   systems: [
     'LotteryGameSystem',
     'LotteryGameSystemConfig',
+    'LotteryGameConstantVariableSystem',
     'LotteryGameBonusPoolSystem',
     'LotteryGameTicketSystem',
     'LotteryGameLuckyNumberSystem',

@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.
 import {System} from "../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-
+import {addressToEntity, entityToAddress} from "../../eon/utils.sol";
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
@@ -60,6 +60,9 @@ contract LotteryGameSystemConfig is
     ) internal override onlyRole(UPGRADER_ROLE) {}
 
     /// custom logic here
+
+    uint256 public constant ID_LotteryGameConfigDeveloperAddress =
+        uint256(keccak256("ID_LotteryGameConfigDeveloperAddress"));
 
     function configGame(
         uint256 lotteryGameId_,

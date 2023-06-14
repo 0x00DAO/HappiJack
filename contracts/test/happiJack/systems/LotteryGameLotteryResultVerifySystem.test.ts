@@ -142,7 +142,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       );
     });
 
-    it('success', async function () {
+    it.only('success', async function () {
       // buy ticket
       const addresses = await ethers.getSigners();
       const ticketIds: Map<string, BigNumber> = new Map();
@@ -154,7 +154,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
         ticketIds.set(ticketId.toString(), luckNumber);
       }
 
-      console.log(ticketIds);
+      // console.log(ticketIds);
 
       // skip to end time
       const during = 60 * 60 * 24 * 1 + 1; // 1 days
@@ -174,7 +174,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           'LotteryGameResultVerified'
         )
         .withArgs(lotteryGameId, (x: any) => {
-          console.log('luckyNumber:', x);
+          // console.log('luckyNumber:', x);
           return true;
         });
 
@@ -185,6 +185,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       );
 
       expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
+      console.log('lotteryPoolAfter:', lotteryPoolAfter);
 
       // get ticket lucky number
       for (let [ticketId, luckyNumber] of ticketIds) {

@@ -13,6 +13,7 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
+import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameLotteryResultVerifySystem")
@@ -126,16 +127,21 @@ contract LotteryGameLotteryResultVerifySystem is
                     LotteryGameBonusPoolTable.getOwnerFeeAmount(lotteryGameId_)
                 );
 
-            //TODO 发放平台收益
-            // LotteryGameBonusPoolSystem(
-            //     getSystemAddress(LotteryGameBonusPoolSystemID)
-            // ).withdrawDevelopFeeAmountToWalletSafeBoxETH(
-            //         lotteryGameId_,
-            //         LotteryGameConfigTable.getPlatform(lotteryGameId_),
-            //         LotteryGameBonusPoolTable.getPlatformFeeAmount(
-            //             lotteryGameId_
-            //         )
-            //     );
+            address developAddress = LotteryGameConstantVariableSystem(
+                getSystemAddress(LotteryGameConstantVariableSystemID)
+            ).getDeveloperAddress();
+            if (developAddress != address(0)) {
+                //发放开发者收益
+                LotteryGameBonusPoolSystem(
+                    getSystemAddress(LotteryGameBonusPoolSystemID)
+                ).withdrawDevelopFeeAmountToWalletSafeBoxETH(
+                        lotteryGameId_,
+                        developAddress,
+                        LotteryGameBonusPoolTable.getDevelopFeeAmount(
+                            lotteryGameId_
+                        )
+                    );
+            }
 
             // 发放验证者收益
             LotteryGameBonusPoolSystem(
@@ -147,65 +153,67 @@ contract LotteryGameLotteryResultVerifySystem is
                 );
 
             //如果中奖者不能覆盖1,2,3等的奖金，那么就把奖金退还给发起人
-
-            //退还奖池百分比
-            uint256 bonusPoolRefundPercent = 0;
-            //是否有1等级奖金
-            if (
-                LotteryGameLotteryCoreSystem(
-                    getSystemAddress(LotteryGameLotteryCoreSystemID)
-                ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 0).length == 0
-            ) {
-                bonusPoolRefundPercent = 70 + 20 + 5 + 5;
-            }
-            //是否有2等级奖金
-            if (
-                bonusPoolRefundPercent != 0 &&
-                LotteryGameLotteryCoreSystem(
-                    getSystemAddress(LotteryGameLotteryCoreSystemID)
-                ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 1).length ==
-                0
-            ) {
-                bonusPoolRefundPercent = 20 + 5 + 5;
-            }
-
-            //是否有3等级奖金
-            if (
-                bonusPoolRefundPercent != 0 &&
-                LotteryGameLotteryCoreSystem(
-                    getSystemAddress(LotteryGameLotteryCoreSystemID)
-                ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 2).length ==
-                0
-            ) {
-                bonusPoolRefundPercent = 5 + 5;
-            }
-
-            //是否有4等级奖金
-            if (
-                bonusPoolRefundPercent != 0 &&
-                LotteryGameLotteryCoreSystem(
-                    getSystemAddress(LotteryGameLotteryCoreSystemID)
-                ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 3).length ==
-                0
-            ) {
-                bonusPoolRefundPercent = 5;
-            }
-
-            if (bonusPoolRefundPercent != 0) {
-                //退还奖池
-                LotteryGameBonusPoolSystem(
-                    getSystemAddress(LotteryGameBonusPoolSystemID)
-                ).withdrawBonusAmountToWalletSafeBoxETH(
-                        lotteryGameId_,
-                        LotteryGameConfigTable.getOwner(lotteryGameId_),
-                        (LotteryGameBonusPoolTable.getBonusAmount(
-                            lotteryGameId_
-                        ) * bonusPoolRefundPercent) / 100
-                    );
-            }
+            bonusPoolRefund(lotteryGameId_);
         }
 
         //emit event
         emit LotteryGameResultVerified(lotteryGameId_, currentLuckyNumber);
+    }
+
+    function bonusPoolRefund(uint256 lotteryGameId_) internal {
+        //退还奖池百分比
+        uint256 bonusPoolRefundPercent = 0;
+        //是否有1等级奖金
+        if (
+            LotteryGameLotteryCoreSystem(
+                getSystemAddress(LotteryGameLotteryCoreSystemID)
+            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 0).length == 0
+        ) {
+            bonusPoolRefundPercent = 70 + 20 + 5 + 5;
+        }
+        //是否有2等级奖金
+        if (
+            bonusPoolRefundPercent != 0 &&
+            LotteryGameLotteryCoreSystem(
+                getSystemAddress(LotteryGameLotteryCoreSystemID)
+            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 1).length ==
+            0
+        ) {
+            bonusPoolRefundPercent = 20 + 5 + 5;
+        }
+
+        //是否有3等级奖金
+        if (
+            bonusPoolRefundPercent != 0 &&
+            LotteryGameLotteryCoreSystem(
+                getSystemAddress(LotteryGameLotteryCoreSystemID)
+            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 2).length ==
+            0
+        ) {
+            bonusPoolRefundPercent = 5 + 5;
+        }
+
+        //是否有4等级奖金
+        if (
+            bonusPoolRefundPercent != 0 &&
+            LotteryGameLotteryCoreSystem(
+                getSystemAddress(LotteryGameLotteryCoreSystemID)
+            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 3).length ==
+            0
+        ) {
+            bonusPoolRefundPercent = 5;
+        }
+
+        if (bonusPoolRefundPercent != 0) {
+            //退还奖池
+            LotteryGameBonusPoolSystem(
+                getSystemAddress(LotteryGameBonusPoolSystemID)
+            ).withdrawBonusAmountToWalletSafeBoxETH(
+                    lotteryGameId_,
+                    LotteryGameConfigTable.getOwner(lotteryGameId_),
+                    (LotteryGameBonusPoolTable.getBonusAmount(lotteryGameId_) *
+                        bonusPoolRefundPercent) / 100
+                );
+        }
     }
 }
