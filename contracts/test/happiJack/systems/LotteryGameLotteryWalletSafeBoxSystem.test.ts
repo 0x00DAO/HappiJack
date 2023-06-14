@@ -152,5 +152,34 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           return x;
         });
     });
+
+    it('fail: deposit, amount is zero', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.00');
+      // depositETH
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositETH(addr1.address, {
+          value: initialAmount,
+        })
+      ).to.be.revertedWith(
+        'LotteryGameLotteryWalletSafeBoxSystem: depositETH: msg.value must be greater than 0'
+      );
+    });
+
+    it('fail: deposit, address is zero', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.005');
+      // depositETH
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositETH(
+          ethers.constants.AddressZero,
+          {
+            value: initialAmount,
+          }
+        )
+      ).to.be.revertedWith(
+        'LotteryGameLotteryWalletSafeBoxSystem: depositETH: owner_ must not be 0 address'
+      );
+    });
   });
 });
