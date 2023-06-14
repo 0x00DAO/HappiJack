@@ -3,6 +3,7 @@ import { BigNumber, Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
@@ -69,7 +70,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     return lotteryGameId;
   }
 
-  describe('depositETH', function () {
+  describe.only('depositETH', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;
@@ -90,7 +91,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       await ethers.provider.send('evm_revert', [snapshotId]);
     });
 
-    it.only('success: depositETH', async function () {
+    it('success: deposit', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const initialAmount = ethers.utils.parseEther('0.005');
       // depositETH
@@ -101,6 +102,55 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       )
         .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'DepositETH')
         .withArgs(addr1.address, initialAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(initialAmount);
+          return x;
+        });
+
+      //balanceOf eth
+      await ethers.provider
+        .getBalance(lotteryGameLotteryWalletSafeBoxSystem.address)
+        .then((x) => {
+          expect(x).to.equal(initialAmount);
+          return x;
+        });
+
+      //deposit again
+      const depositAmount = ethers.utils.parseEther('0.001');
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.depositETH(addr1.address, {
+          value: depositAmount,
+        })
+      )
+        .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'DepositETH')
+        .withArgs(addr1.address, depositAmount);
+
+      await getTableRecord
+        .LotteryGameWalletSafeBoxTable(
+          gameRootContract,
+          addr1.address,
+          BigNumber.from(0),
+          ethers.constants.AddressZero
+        )
+        .then((x) => {
+          expect(x.Amount).to.equal(initialAmount.add(depositAmount));
+          return x;
+        });
+      //balanceOf eth
+      await ethers.provider
+        .getBalance(lotteryGameLotteryWalletSafeBoxSystem.address)
+        .then((x) => {
+          expect(x).to.equal(initialAmount.add(depositAmount));
+          return x;
+        });
     });
   });
 });
