@@ -31,6 +31,7 @@ contract GameRoot is
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
+    bytes32 public constant ROOT_SYSTEM_ROLE = keccak256("ROOT_SYSTEM_ROLE");
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -45,6 +46,7 @@ contract GameRoot is
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(UPGRADER_ROLE, msg.sender);
+        _grantRole(ROOT_SYSTEM_ROLE, msg.sender);
 
         _grantRole(COMPONENT_WRITE_ROLE, address(this));
 
@@ -68,7 +70,7 @@ contract GameRoot is
     function __initailize() internal {}
 
     function _version() internal pure override returns (uint256) {
-        return 2;
+        return 3;
     }
 
     /// system management
@@ -81,7 +83,7 @@ contract GameRoot is
     function registerSystem(
         uint256 systemId,
         address systemAddress
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) public onlyRole(ROOT_SYSTEM_ROLE) {
         require(systemAddress != address(0), "System address is zero");
         require(
             GameRootSystemsTable.get(systemId) == address(0),
@@ -120,7 +122,7 @@ contract GameRoot is
 
     function deleteSystem(
         uint256 systemId
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external onlyRole(ROOT_SYSTEM_ROLE) {
         address systemAddress = GameRootSystemsTable.get(systemId);
         require(systemAddress != address(0), "System not registered");
 
@@ -133,7 +135,7 @@ contract GameRoot is
         bytes32[] memory key,
         uint8 schemaIndex,
         bytes memory data
-    ) public {
+    ) public whenNotPaused {
         _setField(tableId, key, schemaIndex, data);
     }
 
@@ -164,7 +166,7 @@ contract GameRoot is
         bytes32 tableId,
         bytes32[] memory key,
         uint8 columnCount
-    ) public {
+    ) public whenNotPaused {
         _deleteRecord(tableId, key, columnCount);
     }
 
