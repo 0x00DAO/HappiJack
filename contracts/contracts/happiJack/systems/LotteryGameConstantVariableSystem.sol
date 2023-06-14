@@ -62,7 +62,7 @@ contract LotteryGameConstantVariableSystem is
 
     function setGameDeveloperAddress(
         address developerAddress_
-    ) public onlyRole(DEFAULT_ADMIN_ROLE) {
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(developerAddress_ != address(0), "developer address is zero");
 
         //set the lottery game developer address

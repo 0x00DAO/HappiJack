@@ -12,6 +12,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
   let lotteryGameSellSystem: Contract;
   let lotteryGameLotteryResultVerifySystem: Contract;
   let lotteryGameLotteryCoreSystem: Contract;
+  let lotteryGameConstantVariableSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -40,6 +41,12 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     lotteryGameLotteryCoreSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameLotteryCoreSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameConstantVariableSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameConstantVariableSystem',
       gameDeploy.systemIdPrefix
     );
   });
@@ -112,7 +119,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     return [ticketId, luckyNumber];
   }
 
-  describe.only('verify', function () {
+  describe('verify', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;
@@ -121,6 +128,11 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       // create a lottery game
       lotteryGameId = await createLotteryGame();
       // create block snapshot
+      const [owner] = await ethers.getSigners();
+
+      await lotteryGameConstantVariableSystem.setGameDeveloperAddress(
+        owner.address
+      );
     });
     afterEach(async function () {
       // revert block
@@ -142,7 +154,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       );
     });
 
-    it.only('success', async function () {
+    it('success', async function () {
       // buy ticket
       const addresses = await ethers.getSigners();
       const ticketIds: Map<string, BigNumber> = new Map();
@@ -186,6 +198,10 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
 
       expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
       console.log('lotteryPoolAfter:', lotteryPoolAfter);
+      expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(0);
 
       // get ticket lucky number
       for (let [ticketId, luckyNumber] of ticketIds) {
