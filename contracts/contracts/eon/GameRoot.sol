@@ -111,9 +111,7 @@ contract GameRoot is
         return component.getId();
     }
 
-    function isSystemAddress(
-        address systemAddress
-    ) external view returns (bool) {
+    function isSystemAddress(address systemAddress) public view returns (bool) {
         if (systemAddress == address(0)) return false;
         uint256 systemId = GameRootSystemsIndexTable.get(systemAddress);
         if (systemId == 0) return false;

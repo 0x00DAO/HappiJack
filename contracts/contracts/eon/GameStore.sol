@@ -46,31 +46,6 @@ contract GameStore is
     ) internal initializer {}
 
     /**
-     * Set the given component value for the given entity.
-     * Registers the update in the World contract.
-     * Can only be called by addresses with write access to this component.
-     * @param entity Entity to set the value for.
-     * @param value Value to set for the given entity.
-     */
-
-    function set(
-        uint256 entity,
-        bytes memory value
-    ) public onlyRole(COMPONENT_WRITE_ROLE) {
-        _set(entity, value);
-    }
-
-    /**
-     * Remove the given entity from this component.
-     * Registers the update in the World contract.
-     * Can only be called by addresses with write access to this component.
-     * @param entity Entity to remove from this component.
-     */
-    function remove(uint256 entity) public onlyRole(COMPONENT_WRITE_ROLE) {
-        _remove(entity);
-    }
-
-    /**
      * Check whether the given entity has a value in this component.
      * @param entity Entity to check whether it has a value in this component for.
      */
@@ -126,8 +101,8 @@ contract GameStore is
         delete entityToValue[entity];
     }
 
-    function set(uint256 entity, uint256 value) public virtual {
-        set(entity, abi.encode(value));
+    function _set(uint256 entity, uint256 value) internal virtual {
+        _set(entity, abi.encode(value));
     }
 
     // as record operations are not supported in bare component, we use a slot to store the tableId
@@ -146,7 +121,7 @@ contract GameStore is
         bytes memory data
     ) internal {
         uint256 entityId = getRecordId(tableId, key, columnIndex);
-        set(entityId, data);
+        _set(entityId, data);
     }
 
     function _getField(
@@ -185,7 +160,7 @@ contract GameStore is
     ) internal {
         for (uint8 i = 0; i < columnCount; i++) {
             uint256 entityId = getRecordId(tableId, key, i);
-            remove(entityId);
+            _remove(entityId);
         }
     }
 }
