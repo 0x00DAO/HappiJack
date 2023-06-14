@@ -236,4 +236,11 @@ contract LotteryGameLotteryCoreSystem is
 
         return maxOrder_;
     }
+
+    function getLotteryLuckNumbersAtOrder(
+        uint256 lotteryGameId_,
+        uint256 order_
+    ) public view returns (uint256[] memory) {
+        return lotteryResults[lotteryGameId_][order_];
+    }
 }

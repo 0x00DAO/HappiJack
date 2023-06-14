@@ -52,6 +52,7 @@ async function LotteryGameBonusPoolTableGetRecord(
   OwnerFeeAmount: BigNumber;
   DevelopFeeAmount: BigNumber;
   VerifyFeeAmount: BigNumber;
+  BonusAmountWithdraw: BigNumber;
 }> {
   const tableId = ethers.utils.id(
     'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
@@ -65,7 +66,7 @@ async function LotteryGameBonusPoolTableGetRecord(
           32
         ),
       ],
-      5
+      6
     )
     .then((res: any) => {
       return {
@@ -88,6 +89,10 @@ async function LotteryGameBonusPoolTableGetRecord(
         VerifyFeeAmount: ethers.utils.defaultAbiCoder.decode(
           ['uint256'],
           res[4]
+        )[0],
+        BonusAmountWithdraw: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[5]
         )[0],
       };
     });

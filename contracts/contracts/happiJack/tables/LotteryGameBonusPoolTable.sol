@@ -11,7 +11,7 @@ bytes32 constant _tableId = bytes32(
         abi.encodePacked("tableId", "HappiJack", "LotteryGameBonusPoolTable")
     )
 );
-uint8 constant _Columns = 5;
+uint8 constant _Columns = 6;
 bytes32 constant LotteryGameBonusPoolTableId = _tableId;
 
 library LotteryGameBonusPoolTable {
@@ -27,6 +27,7 @@ library LotteryGameBonusPoolTable {
         _fieldNames[2] = "OwnerFeeAmount"; // uint256
         _fieldNames[3] = "DevelopFeeAmount"; // uint256
         _fieldNames[4] = "VerifyFeeAmount"; // uint256
+        _fieldNames[5] = "BonusAmountWithdraw"; // uint256
         return ("LotteryGameBonusPoolTable", _fieldNames);
     }
 
@@ -190,6 +191,36 @@ library LotteryGameBonusPoolTable {
         verifyFeeAmount = abi.decode(_blob, (uint256));
     }
 
+    /** Set  */
+    function setBonusAmountWithdraw(
+        uint256 lotteryGameId,
+        uint256 bonusAmountWithdraw
+    ) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        StoreDelegate.Store().setField(
+            _tableId,
+            _keyTuple,
+            5,
+            abi.encodePacked((bonusAmountWithdraw))
+        );
+    }
+
+    /** Get  */
+    function getBonusAmountWithdraw(
+        uint256 lotteryGameId
+    ) internal view returns (uint256 bonusAmountWithdraw) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            5
+        );
+        if (_blob.length == 0) return 0;
+        bonusAmountWithdraw = abi.decode(_blob, (uint256));
+    }
+
     /** Get record */
     function getRecord(
         uint256 lotteryGameId
@@ -201,7 +232,8 @@ library LotteryGameBonusPoolTable {
             uint256 bonusAmount,
             uint256 ownerFeeAmount,
             uint256 developFeeAmount,
-            uint256 verifyFeeAmount
+            uint256 verifyFeeAmount,
+            uint256 bonusAmountWithdraw
         )
     {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
@@ -212,12 +244,13 @@ library LotteryGameBonusPoolTable {
             _Columns
         );
 
-        if (_blobs[0].length == 0) return (0, 0, 0, 0, 0);
+        if (_blobs[0].length == 0) return (0, 0, 0, 0, 0, 0);
         totalAmount = abi.decode(_blobs[0], (uint256));
         bonusAmount = abi.decode(_blobs[1], (uint256));
         ownerFeeAmount = abi.decode(_blobs[2], (uint256));
         developFeeAmount = abi.decode(_blobs[3], (uint256));
         verifyFeeAmount = abi.decode(_blobs[4], (uint256));
+        bonusAmountWithdraw = abi.decode(_blobs[5], (uint256));
     }
 
     /** Has record */

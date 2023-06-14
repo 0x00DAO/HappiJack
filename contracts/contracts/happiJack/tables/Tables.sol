@@ -2,6 +2,8 @@
 pragma solidity ^0.8.9;
 
 import {IdCounterTable, IdCounterTableId} from "./IdCounterTable.sol";
+import {ContractUint256VariableTable, ContractUint256VariableTableId} from "./ContractUint256VariableTable.sol";
+
 import {LotteryGameTable, LotteryGameTableId} from "./LotteryGameTable.sol";
 import {LotteryGameConfigTable, LotteryGameConfigTableId} from "./LotteryGameConfigTable.sol";
 import {LotteryGameConfigFeeTable, LotteryGameConfigFeeTableId} from "./LotteryGameConfigFeeTable.sol";

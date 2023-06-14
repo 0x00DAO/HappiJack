@@ -230,12 +230,15 @@ async function gameSystemDeploy(
       [GameRootContractAddress, ...GameSystemContractArgs],
       opts
     );
-    gameRegisterSystem(gameRootContract, contract.address);
+    await gameRegisterSystem(gameRootContract, contract.address);
   } else {
     contract = await deployUpgradeUpdate(
       GameSystemContractName,
       systemContractAddress
     );
+
+    //grant system to write
+    await gameEntityGrantWriteRole(gameRootContract, [systemContractAddress]);
   }
 
   return contract;
