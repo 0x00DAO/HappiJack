@@ -101,6 +101,13 @@ contract LotteryGameLotteryResultVerifySystem is
 
         //TODO 如果中奖人数等级为0，退还所有奖池给抽奖发起人
 
+        uint256 ticketCount = LotteryGameTicketTable.getTicketSoldCount(
+            lotteryGameId_
+        );
+        if (ticketCount == 0) {
+            //如果没有人买票，退还所有奖池给抽奖发起人
+        } else {}
+
         //emit event
         emit LotteryGameResultVerified(lotteryGameId_, currentLuckyNumber);
     }
