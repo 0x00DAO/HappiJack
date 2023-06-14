@@ -328,6 +328,16 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           return x;
         });
     });
+
+    it('fail: balanceOf is zero', async function () {
+      const [owner, addr1] = await ethers.getSigners();
+      //withdraw
+      await expect(
+        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1).withdrawETH()
+      ).to.be.revertedWith(
+        'LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: amount_ must be greater than 0'
+      );
+    });
   });
 
   describe('deposit/withdraw ERC20', function () {
@@ -407,7 +417,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
         });
     });
 
-    it.only('success: withdraw', async function () {
+    it('success: withdraw', async function () {
       const [owner, addr1] = await ethers.getSigners();
       const initialAmount = ethers.utils.parseEther('0.005');
 
