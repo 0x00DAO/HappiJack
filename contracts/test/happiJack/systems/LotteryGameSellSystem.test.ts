@@ -80,7 +80,7 @@ describe('LotteryGameSellSystem', function () {
     });
     afterEach(async function () {});
 
-    it.only('success', async function () {
+    it('success', async function () {
       // buy ticket
       const [owner] = await ethers.getSigners();
       const initialAmount = ethers.utils.parseEther('0.005');

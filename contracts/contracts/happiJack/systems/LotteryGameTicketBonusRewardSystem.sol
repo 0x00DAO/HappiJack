@@ -89,14 +89,13 @@ contract LotteryGameTicketBonusRewardSystem is
 
         //check lotter game status
         uint256 lotteryGameId = LotteryTicketTable.getLotteryGameId(ticketId);
-
-        uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
-
         require(
             LotteryGameTable.getStatus(lotteryGameId) ==
                 uint256(LotteryGameStatus.Ended),
             "LotteryGameTicketBonusRewardSystem: lottery game is not completed"
         );
+
+        uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
 
         //查询彩票是否中奖
         uint256 winnerLevel = LotteryGameLotteryCoreSystem(
@@ -105,7 +104,6 @@ contract LotteryGameTicketBonusRewardSystem is
 
         //0 一等奖 1 二等奖 2 三等奖
         //计算奖金
-
         require(
             winnerLevel <= 3,
             "LotteryGameTicketBonusRewardSystem: ticket is not a winner"
@@ -115,12 +113,35 @@ contract LotteryGameTicketBonusRewardSystem is
         _claimReward(lotteryGameId, ticketId, ticketLuckNumber, winnerLevel);
     }
 
-    function _claimReward(
-        uint256 lotteryGameId,
-        uint256 ticketId,
-        uint256 ticketLuckNumber,
-        uint256 winnerLevel
-    ) internal {
+    function getClaimRewardAmount(
+        uint256 ticketId
+    ) public view returns (uint256) {
+        return _getClaimRewardAmount(ticketId);
+    }
+
+    function _getClaimRewardAmount(
+        uint256 ticketId
+    ) internal view returns (uint256) {
+        require(
+            LotteryTicketBonusRewardTable.hasRecord(ticketId) == false,
+            "LotteryGameTicketBonusRewardSystem: ticket already claimed"
+        );
+        //check lotter game status
+        uint256 lotteryGameId = LotteryTicketTable.getLotteryGameId(ticketId);
+        require(
+            LotteryGameTable.getStatus(lotteryGameId) ==
+                uint256(LotteryGameStatus.Ended),
+            "LotteryGameTicketBonusRewardSystem: lottery game is not completed"
+        );
+        uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
+
+        uint256 winnerLevel = LotteryGameLotteryCoreSystem(
+            getSystemAddress(LotteryGameLotteryCoreSystemID)
+        ).getLotteryLuckNumberOrder(lotteryGameId, ticketLuckNumber, 3);
+        require(
+            winnerLevel <= 3,
+            "LotteryGameTicketBonusRewardSystem: ticket is not a winner"
+        );
         uint256 bonusAmount = LotteryGameBonusPoolTable.getBonusAmount(
             lotteryGameId
         );
@@ -149,6 +170,16 @@ contract LotteryGameTicketBonusRewardSystem is
         );
 
         bonusReward = bonusReward / winnersCount;
+        return bonusReward;
+    }
+
+    function _claimReward(
+        uint256 lotteryGameId,
+        uint256 ticketId,
+        uint256 ticketLuckNumber,
+        uint256 winnerLevel
+    ) internal {
+        uint256 bonusReward = _getClaimRewardAmount(ticketId);
         require(
             bonusReward > 0,
             "LotteryGameTicketBonusRewardSystem: bonus reward is zero"

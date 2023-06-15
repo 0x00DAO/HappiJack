@@ -146,7 +146,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
       await ethers.provider.send('evm_revert', [snapshotId]);
     });
 
-    it('success', async function () {
+    it.only('success', async function () {
       const [owner] = await ethers.getSigners();
       // buy ticket
       const addresses = await ethers.getSigners();
