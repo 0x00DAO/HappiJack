@@ -8,7 +8,7 @@ async function LotteryTicketTableGetRecord(
   Owner: any;
   luckyNumber: BigNumber;
   buyTime: BigNumber;
-  winStatus: BigNumber;
+  BonusPercent: BigNumber;
 }> {
   const tableId = ethers.utils.id(
     'tableId' + 'HappiJack' + 'LotteryTicketTable'
@@ -36,7 +36,10 @@ async function LotteryTicketTableGetRecord(
           res[2]
         )[0],
         buyTime: ethers.utils.defaultAbiCoder.decode(['uint256'], res[3])[0],
-        winStatus: ethers.utils.defaultAbiCoder.decode(['uint256'], res[4])[0],
+        BonusPercent: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[4]
+        )[0],
       };
     });
 

@@ -126,7 +126,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
     return [ticketId, luckyNumber];
   }
 
-  describe.only('claimTicketReward', function () {
+  describe('claimTicketReward', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;

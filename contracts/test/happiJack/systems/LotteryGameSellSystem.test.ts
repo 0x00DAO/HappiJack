@@ -80,7 +80,7 @@ describe('LotteryGameSellSystem', function () {
     });
     afterEach(async function () {});
 
-    it('success', async function () {
+    it.only('success', async function () {
       // buy ticket
       const [owner] = await ethers.getSigners();
       const initialAmount = ethers.utils.parseEther('0.005');
@@ -105,42 +105,15 @@ describe('LotteryGameSellSystem', function () {
         );
 
       // check ticket
-      const LotteryTicketTableId = ethers.utils.id(
-        'tableId' + 'HappiJack' + 'LotteryTicketTable'
+      const ticketData = await getTableRecord.LotteryTicketTable(
+        gameRootContract,
+        ticketId
       );
-
-      const ticketData = await gameRootContract
-        .getRecord(
-          LotteryTicketTableId,
-          [ethers.utils.hexZeroPad(ticketId.toHexString(), 32)],
-          5
-        )
-        .then((res: any) => {
-          return {
-            lotteryGameId: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[0]
-            )[0],
-            Owner: ethers.utils.defaultAbiCoder.decode(['address'], res[1])[0],
-            luckyNumber: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[2]
-            )[0],
-            buyTime: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[3]
-            )[0],
-            winStatus: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[4]
-            )[0],
-          };
-        });
 
       expect(ticketData.lotteryGameId).to.equal(lotteryGameId);
       expect(ticketData.Owner).to.equal(owner.address);
       expect(ticketData.luckyNumber).to.equal(luckyNumber);
-      expect(ticketData.winStatus).to.equal(0);
+      expect(ticketData.BonusPercent).to.equal(80);
 
       //check ticket nft
       const lotteryGameTicketNFTSystem = await eonTestUtil.getSystem(
