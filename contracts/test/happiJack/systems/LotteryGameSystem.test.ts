@@ -3,6 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameSystem', function () {
   let gameRootContract: Contract;
@@ -10,6 +11,7 @@ describe('LotteryGameSystem', function () {
   let lotteryGameBonusPoolSystem: Contract;
   let LotteryGameTicketSystem: Contract;
   let lotteryGameLuckyNumberSystem: Contract;
+  let lotteryGameLotteryNFTSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -45,6 +47,12 @@ describe('LotteryGameSystem', function () {
     lotteryGameLuckyNumberSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameLuckyNumberSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameLotteryNFTSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameLotteryNFTSystem',
       gameDeploy.systemIdPrefix
     );
   });
@@ -221,35 +229,11 @@ describe('LotteryGameSystem', function () {
       expect(LotteryGameConfigTicket.ticketMaxCount).to.equal(300);
 
       // get lottery game bonus pool
-      const LotteryGameBonusPoolTableId = ethers.utils.id(
-        'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
-      );
-      const LotteryGameBonusPool = await gameRootContract
-        .getRecord(
-          LotteryGameBonusPoolTableId,
-          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
-          4
-        )
-        .then((res: any) => {
-          return {
-            TotalAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[0]
-            )[0],
-            BonusAmount: ethers.utils.defaultAbiCoder.decode(
-              ['address'],
-              res[1]
-            )[0],
-            OwnerFeeAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[2]
-            )[0],
-            DevelopFeeAmount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[3]
-            )[0],
-          };
-        });
+      const LotteryGameBonusPool =
+        await getTableRecord.LotteryGameBonusPoolTable(
+          gameRootContract,
+          lotteryGameId
+        );
 
       expect(LotteryGameBonusPool.TotalAmount).to.equal(initialAmount);
       expect(LotteryGameBonusPool.BonusAmount).to.equal(initialAmount);
@@ -332,6 +316,14 @@ describe('LotteryGameSystem', function () {
 
       expect(LotteryGameLuckyNumber.CurrentNumber).to.equal(0);
       expect(LotteryGameLuckyNumber.SumLotteryTicketLuckyNumber).to.equal(0);
+
+      //check nft token
+      await lotteryGameLotteryNFTSystem
+        .tokenOfOwnerByIndex(owner.address, 0)
+        .then((res: any) => {
+          expect(res).to.equal(lotteryGameId);
+          return res;
+        });
     });
   });
 });

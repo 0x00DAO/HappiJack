@@ -17,6 +17,7 @@ import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
 import {LotteryGameSystemConfig, ID as LotteryGameSystemConfigID} from "./LotteryGameSystemConfig.sol";
+import {LotteryGameLotteryNFTSystem, ID as LotteryGameLotteryNFTSystemID} from "./LotteryGameLotteryNFTSystem.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
 
@@ -148,6 +149,11 @@ contract LotteryGameSystem is
         LotteryGameLuckyNumberSystem(
             getSystemAddress(LotteryGameLuckyNumberSystemID)
         ).createLotteryGameLuckyNumber(lotteryGameId);
+
+        //create the lottery nft
+        LotteryGameLotteryNFTSystem(
+            getSystemAddress(LotteryGameLotteryNFTSystemID)
+        ).mintNFT(owner, lotteryGameId);
 
         emit LotteryGameCreated(
             lotteryGameId,
