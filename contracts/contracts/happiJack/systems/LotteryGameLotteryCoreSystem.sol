@@ -124,8 +124,8 @@ contract LotteryGameLotteryCoreSystem is
                 : luckNumber2_ - luckNumber_;
     }
 
-    //通过对指定数字接近度排序数组,获取按照接近度排序后的二维数组
-    //例如 有数字2,4,5.指定数字是3,那么接近度排序后的数组是[[4,2],[5]]
+    //Get the two-dimensional array sorted by proximity by sorting the array of proximity to the specified number
+    //For example, there are numbers 2,4,5. The specified number is 3, then the array sorted by proximity is [[4,2],[5]]
     function getLuckNumberByClosest(
         uint256 lotteryGameId_,
         uint256 luckNumber_,

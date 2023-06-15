@@ -108,7 +108,7 @@ contract LotteryGameLotteryResultVerifySystem is
         }
 
         if (ticketCount == 0) {
-            //如果没有人买票，退还所有奖池给抽奖发起人
+            //If no one buys a ticket, return all the prize pool to the lottery initiator
             LotteryGameBonusPoolSystem(
                 getSystemAddress(LotteryGameBonusPoolSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
@@ -120,8 +120,8 @@ contract LotteryGameLotteryResultVerifySystem is
                         )
                 );
         } else {
-            //如果有人买票
-            //发放发起者收益
+            //If someone buys a ticket
+            //distribute owner fee
             LotteryGameBonusPoolSystem(
                 getSystemAddress(LotteryGameBonusPoolSystemID)
             ).withdrawOwnerFeeAmountToWalletSafeBoxETH(
@@ -134,7 +134,7 @@ contract LotteryGameLotteryResultVerifySystem is
                 getSystemAddress(LotteryGameConstantVariableSystemID)
             ).getDeveloperAddress();
             if (developAddress != address(0)) {
-                //发放开发者收益
+                //distribute developer fee
                 LotteryGameBonusPoolSystem(
                     getSystemAddress(LotteryGameBonusPoolSystemID)
                 ).withdrawDevelopFeeAmountToWalletSafeBoxETH(
@@ -146,7 +146,7 @@ contract LotteryGameLotteryResultVerifySystem is
                     );
             }
 
-            // 发放验证者收益
+            // Distribute validator income
             LotteryGameBonusPoolSystem(
                 getSystemAddress(LotteryGameBonusPoolSystemID)
             ).withdrawVerifyFeeAmountToWalletSafeBoxETH(
@@ -155,7 +155,7 @@ contract LotteryGameLotteryResultVerifySystem is
                     LotteryGameBonusPoolTable.getVerifyFeeAmount(lotteryGameId_)
                 );
 
-            //如果中奖者不能覆盖1,2,3等的奖金，那么就把奖金退还给发起人
+            //If the winner cannot cover the prize money of 1,2,3, etc., then the prize money will be returned to the initiator
             bonusPoolRefund(lotteryGameId_);
         }
 
@@ -164,9 +164,9 @@ contract LotteryGameLotteryResultVerifySystem is
     }
 
     function bonusPoolRefund(uint256 lotteryGameId_) internal {
-        //退还奖池百分比
+        //Refund pool percentage
         uint256 bonusPoolRefundPercent = 0;
-        //是否有1等级奖金
+        //whether there is a 1-level bonus
         if (
             LotteryGameLotteryCoreSystem(
                 getSystemAddress(LotteryGameLotteryCoreSystemID)
@@ -174,7 +174,7 @@ contract LotteryGameLotteryResultVerifySystem is
         ) {
             bonusPoolRefundPercent = 70 + 20 + 5 + 5;
         }
-        //是否有2等级奖金
+        //whether there is a 2-level bonus
         if (
             bonusPoolRefundPercent == 0 &&
             LotteryGameLotteryCoreSystem(
@@ -193,7 +193,7 @@ contract LotteryGameLotteryResultVerifySystem is
                     getSystemAddress(LotteryGameConstantVariableSystemID)
                 ).getBonusRewardPercent(3);
         }
-        //是否有3等级奖金
+        //whether there is a 3-level bonus
         if (
             bonusPoolRefundPercent == 0 &&
             LotteryGameLotteryCoreSystem(
@@ -209,7 +209,7 @@ contract LotteryGameLotteryResultVerifySystem is
                     getSystemAddress(LotteryGameConstantVariableSystemID)
                 ).getBonusRewardPercent(3);
         }
-        //是否有4等级奖金
+        //whether there is a 4-level bonus
         if (
             bonusPoolRefundPercent == 0 &&
             LotteryGameLotteryCoreSystem(
@@ -223,7 +223,7 @@ contract LotteryGameLotteryResultVerifySystem is
         }
 
         if (bonusPoolRefundPercent != 0) {
-            //退还奖池
+            //Refund pool
             LotteryGameBonusPoolSystem(
                 getSystemAddress(LotteryGameBonusPoolSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(

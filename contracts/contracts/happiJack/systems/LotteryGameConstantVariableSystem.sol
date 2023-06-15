@@ -98,4 +98,9 @@ contract LotteryGameConstantVariableSystem is
         }
         return 0;
     }
+
+    ///@dev this is the percent of ticket get bonus
+    function getTicketBonusPercent() public pure returns (uint256) {
+        return 80;
+    }
 }

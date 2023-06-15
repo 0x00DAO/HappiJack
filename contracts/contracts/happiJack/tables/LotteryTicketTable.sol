@@ -24,7 +24,7 @@ library LotteryTicketTable {
         _fieldNames[1] = "owner"; // address
         _fieldNames[2] = "luckyNumber"; // uint256
         _fieldNames[3] = "buyTime"; // uint256
-        _fieldNames[4] = "winStatus"; // uint256 (0: waiting, 1: win, 2: lose)
+        _fieldNames[4] = "BonusPercent"; // uint256 BonusPercent (0-100)
 
         return ("LotteryTicketTable", _fieldNames);
     }
@@ -157,19 +157,22 @@ library LotteryTicketTable {
     }
 
     /** Set  */
-    function setWinStatus(uint256 lotteryTicketId, uint256 winStatus) internal {
+    function setBonusPercent(
+        uint256 lotteryTicketId,
+        uint256 bonusPercent
+    ) internal {
         bytes32[] memory _keyTuple = entityKeys(lotteryTicketId);
 
         StoreDelegate.Store().setField(
             _tableId,
             _keyTuple,
             4,
-            abi.encodePacked((winStatus))
+            abi.encodePacked((bonusPercent))
         );
     }
 
     /** Get  */
-    function getWinStatus(
+    function getBonusPercent(
         uint256 lotteryTicketId
     ) internal view returns (uint256 winStatus) {
         bytes32[] memory _keyTuple = entityKeys(lotteryTicketId);
@@ -196,7 +199,7 @@ library LotteryTicketTable {
             address owner,
             uint256 luckyNumber,
             uint256 buyTime,
-            uint256 winStatus
+            uint256 bonusPercent
         )
     {
         bytes32[] memory _keyTuple = entityKeys(id);

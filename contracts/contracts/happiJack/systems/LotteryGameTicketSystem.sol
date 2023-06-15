@@ -13,6 +13,7 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 
 import {LotteryGameTicketNFTSystem, ID as LotteryGameTicketNFTSystemID} from "./LotteryGameTicketNFTSystem.sol";
+import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameTicketSystem")
@@ -123,7 +124,12 @@ contract LotteryGameTicketSystem is
         LotteryTicketTable.setOwner(lotteryGameTicketId_, owner_);
         LotteryTicketTable.setLuckyNumber(lotteryGameTicketId_, luckyNumber_);
         LotteryTicketTable.setBuyTime(lotteryGameTicketId_, buyTime_);
-        LotteryTicketTable.setWinStatus(lotteryGameTicketId_, 0);
+        LotteryTicketTable.setBonusPercent(
+            lotteryGameTicketId_,
+            LotteryGameConstantVariableSystem(
+                getSystemAddress(LotteryGameConstantVariableSystemID)
+            ).getTicketBonusPercent()
+        );
 
         //increase ticket sold count
         LotteryGameTicketTable.setTicketSoldCount(
