@@ -142,7 +142,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     it('failed: lottery game not ended', async function () {
       // buy ticket
       const addresses = await ethers.getSigners();
-      for (let i = 0; i < addresses.length, i < 10; i++) {
+      for (let i = 0; i < addresses.length, i < 2; i++) {
         await buyTicket(lotteryGameId, addresses[i]);
       }
 

@@ -61,9 +61,6 @@ contract LotteryGameSystemConfig is
 
     /// custom logic here
 
-    uint256 public constant ID_LotteryGameConfigDeveloperAddress =
-        uint256(keccak256("ID_LotteryGameConfigDeveloperAddress"));
-
     function configGame(
         uint256 lotteryGameId_,
         address owner_,
