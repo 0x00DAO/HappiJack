@@ -191,14 +191,24 @@ contract LotteryGameSellSystem is
         uint256 lastSoldTicketId_ = LotteryGameTicketTable.getLastSoldTicketId(
             lotteryGameId_
         );
-        if (lastSoldTicketId_ > 0) {
-            //set last sold ticket bouns percent to 100%
-            LotteryTicketTable.setBonusPercent(lastSoldTicketId_, 100);
-        }
+
         //set last sold ticket id
         LotteryGameTicketTable.setLastSoldTicketId(
             lotteryGameId_,
             lotteryGameTicketId_
         );
+
+        if (lastSoldTicketId_ > 0) {
+            //set last sold ticket bouns percent to 100%
+            LotteryTicketTable.setBonusPercent(lastSoldTicketId_, 100);
+        }
+
+        //if reached max ticket, set current ticket bouns percent to 100%
+        if (
+            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId_) ==
+            LotteryGameConfigTicketTable.getTicketMaxCount(lotteryGameId_)
+        ) {
+            LotteryTicketTable.setBonusPercent(lotteryGameTicketId_, 100);
+        }
     }
 }
