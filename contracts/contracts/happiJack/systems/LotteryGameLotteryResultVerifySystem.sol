@@ -96,14 +96,17 @@ contract LotteryGameLotteryResultVerifySystem is
             lotteryGameId_
         );
 
-        //computeLotteryResult
-        LotteryGameLotteryCoreSystem(
-            getSystemAddress(LotteryGameLotteryCoreSystemID)
-        ).computeLotteryResult(lotteryGameId_, currentLuckyNumber);
-
         uint256 ticketCount = LotteryGameTicketTable.getTicketSoldCount(
             lotteryGameId_
         );
+
+        if (ticketCount > 0) {
+            //computeLotteryResult
+            LotteryGameLotteryCoreSystem(
+                getSystemAddress(LotteryGameLotteryCoreSystemID)
+            ).computeLotteryResult(lotteryGameId_, currentLuckyNumber);
+        }
+
         if (ticketCount == 0) {
             //如果没有人买票，退还所有奖池给抽奖发起人
             LotteryGameBonusPoolSystem(

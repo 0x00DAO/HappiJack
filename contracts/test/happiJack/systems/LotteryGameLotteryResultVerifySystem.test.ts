@@ -234,5 +234,55 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       expect(lotteryGame.Status).to.be.equal(2);
       expect(lotteryGame.Owner).to.be.equal(owner.address);
     });
+
+    it.only('success, not sold ticket', async function () {
+      const [owner] = await ethers.getSigners();
+
+      // skip to end time
+      const during = 60 * 60 * 24 * 1 + 1; // 1 days
+      await ethers.provider.send('evm_increaseTime', [during]);
+
+      //get lottery bonus pool
+      const lotteryPool = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      console.log('lotteryPool:', lotteryPool);
+
+      // verify
+      await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
+        .to.be.emit(
+          lotteryGameLotteryResultVerifySystem,
+          'LotteryGameResultVerified'
+        )
+        .withArgs(lotteryGameId, (x: any) => {
+          // console.log('luckyNumber:', x);
+          return true;
+        });
+
+      // check lottery bonus pool
+      const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
+      );
+
+      expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
+
+      console.log('lotteryPoolAfter:', lotteryPoolAfter);
+      expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(
+        lotteryPoolAfter.BonusAmount
+      );
+
+      //check lottery game
+      const lotteryGame = await getTableRecord.LotteryGameTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      expect(lotteryGame.Status).to.be.equal(2);
+      expect(lotteryGame.Owner).to.be.equal(owner.address);
+    });
   });
 });
