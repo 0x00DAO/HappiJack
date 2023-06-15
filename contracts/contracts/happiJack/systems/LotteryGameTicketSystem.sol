@@ -108,9 +108,10 @@ contract LotteryGameTicketSystem is
         require(owner_ != address(0), "LotteryGameTicketSystem: Invalid owner");
 
         uint256 lotteryGameTicketId_ = IdCounterTable.get(
-            ID_LOTTERY_GAME_TICKET
+            ID_LOTTERY_GAME_TICKET,
+            1000
         );
-        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET);
+        IdCounterTable.increase(ID_LOTTERY_GAME_TICKET, 1000);
 
         //create lottery game ticket nft
         LotteryGameTicketNFTSystem(
@@ -131,11 +132,7 @@ contract LotteryGameTicketSystem is
             ).getTicketBonusPercent()
         );
 
-        //increase ticket sold count
-        LotteryGameTicketTable.setTicketSoldCount(
-            lotteryGameId_,
-            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId_) + 1
-        );
+        _updateSoldTicket(lotteryGameId_, lotteryGameTicketId_);
 
         //emit event
         emit LotteryTicketCreated(
@@ -147,5 +144,29 @@ contract LotteryGameTicketSystem is
         );
 
         return lotteryGameTicketId_;
+    }
+
+    function _updateSoldTicket(
+        uint256 lotteryGameId_,
+        uint256 lotteryGameTicketId_
+    ) internal {
+        //increase ticket sold count
+        LotteryGameTicketTable.setTicketSoldCount(
+            lotteryGameId_,
+            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId_) + 1
+        );
+
+        uint256 lastSoldTicketId_ = LotteryGameTicketTable.getLastSoldTicketId(
+            lotteryGameId_
+        );
+        if (lastSoldTicketId_ > 0) {
+            //set last sold ticket bouns percent to 100%
+            LotteryTicketTable.setBonusPercent(lastSoldTicketId_, 100);
+        }
+        //set last sold ticket id
+        LotteryGameTicketTable.setLastSoldTicketId(
+            lotteryGameId_,
+            lotteryGameTicketId_
+        );
     }
 }

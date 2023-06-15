@@ -130,29 +130,14 @@ describe('LotteryGameSellSystem', function () {
       expect(ticketNFTId).to.equal(ticketId);
 
       // check ticket sold amount
-      const lotteryGameTicketTableId = ethers.utils.id(
-        'tableId' + 'HappiJack' + 'LotteryGameTicketTable'
+      const lotteryGameTicketData = await getTableRecord.LotteryGameTicketTable(
+        gameRootContract,
+        lotteryGameId
       );
-      const lotteryGameTicketData = await gameRootContract
-        .getRecord(
-          lotteryGameTicketTableId,
-          [ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32)],
-          1
-        )
-        .then((res: any) => {
-          return {
-            TicketSoldCount: ethers.utils.defaultAbiCoder.decode(
-              ['uint256'],
-              res[0]
-            )[0],
-          };
-        });
       expect(lotteryGameTicketData.TicketSoldCount).to.equal(1);
+      expect(lotteryGameTicketData.LastSoldTicketId).to.equal(ticketId);
 
       // check bonus pool
-      const lotteryGameBonusPoolTableId = ethers.utils.id(
-        'tableId' + 'HappiJack' + 'LotteryGameBonusPoolTable'
-      );
       const lotteryGameBonusPoolData =
         await getTableRecord.LotteryGameBonusPoolTable(
           gameRootContract,
@@ -201,6 +186,7 @@ describe('LotteryGameSellSystem', function () {
       );
 
       //sell ticket to other
+      let ticketId2 = ethers.BigNumber.from(0);
       const [, addr1] = await ethers.getSigners();
       await expect(
         lotteryGameSellSystem
@@ -214,11 +200,41 @@ describe('LotteryGameSellSystem', function () {
           lotteryGameId,
           addr1.address,
           (x: any) => {
-            expect(x).to.equal(ticketId.add(1));
+            ticketId2 = x;
+            expect(ticketId2).to.equal(ticketId.add(1));
             return true;
           },
           luckyNumber
         );
+      // check ticket
+      const ticketData2 = await getTableRecord.LotteryTicketTable(
+        gameRootContract,
+        ticketId2
+      );
+
+      expect(ticketData2.lotteryGameId).to.equal(lotteryGameId);
+      expect(ticketData2.Owner).to.equal(addr1.address);
+      expect(ticketData2.luckyNumber).to.equal(luckyNumber);
+      expect(ticketData2.BonusPercent).to.equal(80);
+
+      //check ticket 1 data
+      await getTableRecord
+        .LotteryTicketTable(gameRootContract, ticketId)
+        .then((x) => {
+          expect(x.lotteryGameId).to.equal(lotteryGameId);
+          expect(x.Owner).to.equal(owner.address);
+          expect(x.luckyNumber).to.equal(luckyNumber);
+          expect(x.BonusPercent).to.equal(100);
+        });
+
+      //check ticket sold amount
+      await getTableRecord
+        .LotteryGameTicketTable(gameRootContract, lotteryGameId)
+        .then((x) => {
+          expect(x.TicketSoldCount).to.equal(2);
+          expect(x.LastSoldTicketId).to.equal(ticketId2);
+          return x;
+        });
     });
 
     it('fail: buy ticket with wrong lotteryGameId', async () => {

@@ -167,9 +167,47 @@ async function LotteryGameTableGetRecord(
   return tableData;
 }
 
+async function LotteryGameTicketTableGetRecord(
+  gameRoot: Contract,
+  lotteryGameId: BigNumber
+): Promise<{
+  TicketSoldCount: BigNumber;
+  LastSoldTicketId: BigNumber;
+}> {
+  const tableId = ethers.utils.id(
+    'tableId' + 'HappiJack' + 'LotteryGameTicketTable'
+  );
+  const tableData = await gameRoot
+    .getRecord(
+      tableId,
+      [
+        ethers.utils.hexZeroPad(
+          ethers.BigNumber.from(lotteryGameId).toHexString(),
+          32
+        ),
+      ],
+      4
+    )
+    .then((res: any) => {
+      return {
+        TicketSoldCount: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[0]
+        )[0],
+        LastSoldTicketId: ethers.utils.defaultAbiCoder.decode(
+          ['uint256'],
+          res[1]
+        )[0],
+      };
+    });
+
+  return tableData;
+}
+
 export const getTableRecord = {
   LotteryTicketTable: LotteryTicketTableGetRecord,
   LotteryGameBonusPoolTable: LotteryGameBonusPoolTableGetRecord,
   LotteryGameWalletSafeBoxTable: LotteryGameWalletSafeBoxTableGetRecord,
   LotteryGameTable: LotteryGameTableGetRecord,
+  LotteryGameTicketTable: LotteryGameTicketTableGetRecord,
 };

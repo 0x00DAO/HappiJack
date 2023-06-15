@@ -11,7 +11,7 @@ bytes32 constant _tableId = bytes32(
         abi.encodePacked("tableId", "HappiJack", "LotteryGameTicketTable")
     )
 );
-uint8 constant _Columns = 1;
+uint8 constant _Columns = 2;
 bytes32 constant LotteryGameTicketTableId = _tableId;
 
 library LotteryGameTicketTable {
@@ -23,6 +23,7 @@ library LotteryGameTicketTable {
     {
         string[] memory _fieldNames = new string[](_Columns);
         _fieldNames[0] = "TicketSoldCount"; // uint256
+        _fieldNames[1] = "LastSoldTicketId"; // uint256
 
         return ("LotteryGameTicketTable", _fieldNames);
     }
@@ -75,19 +76,60 @@ library LotteryGameTicketTable {
         ticketSoldCount = abi.decode(_blob, (uint256));
     }
 
+    /** Set  */
+    function setLastSoldTicketId(
+        uint256 lotteryGameId,
+        uint256 lastSoldTicketId
+    ) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        StoreDelegate.Store().setField(
+            _tableId,
+            _keyTuple,
+            1,
+            abi.encodePacked((lastSoldTicketId))
+        );
+    }
+
+    /** Get  */
+    function getLastSoldTicketId(
+        uint256 lotteryGameId
+    ) internal view returns (uint256 lastSoldTicketId) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
+        bytes memory _blob = StoreDelegate.Store().getField(
+            _tableId,
+            _keyTuple,
+            1
+        );
+        if (_blob.length == 0) {
+            return 0;
+        }
+
+        lastSoldTicketId = abi.decode(_blob, (uint256));
+    }
+
     /** Get record */
     function getRecord(
-        uint256 id
-    ) internal view returns (uint256 ownerFeeRate, uint256 developFeeRate) {
-        bytes32[] memory _keyTuple = entityKeys(id);
+        uint256 lotteryGameId
+    )
+        internal
+        view
+        returns (uint256 ticketSoldCount, uint256 lastSoldTicketId)
+    {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId);
+
         bytes[] memory _blobs = StoreDelegate.Store().getRecord(
             _tableId,
             _keyTuple,
             _Columns
         );
+        if (_blobs.length == 0) {
+            return (0, 0);
+        }
 
-        ownerFeeRate = abi.decode(_blobs[0], (uint256));
-        developFeeRate = abi.decode(_blobs[1], (uint256));
+        ticketSoldCount = abi.decode(_blobs[0], (uint256));
+        lastSoldTicketId = abi.decode(_blobs[1], (uint256));
     }
 
     /** Delete record */
