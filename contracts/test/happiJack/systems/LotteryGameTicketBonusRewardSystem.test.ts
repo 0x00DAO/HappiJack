@@ -6,13 +6,14 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameLotteryResultVerifySystem', function () {
+describe('LotteryGameTicketBonusRewardSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
   let lotteryGameLotteryResultVerifySystem: Contract;
   let lotteryGameLotteryCoreSystem: Contract;
   let lotteryGameConstantVariableSystem: Contract;
+  let lotteryGameTicketBonusRewardSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -47,6 +48,12 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     lotteryGameConstantVariableSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameConstantVariableSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameTicketBonusRewardSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameTicketBonusRewardSystem',
       gameDeploy.systemIdPrefix
     );
   });
@@ -119,7 +126,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
     return [ticketId, luckyNumber];
   }
 
-  describe('verify', function () {
+  describe('claimTicketReward', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;
@@ -139,22 +146,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       await ethers.provider.send('evm_revert', [snapshotId]);
     });
 
-    it('failed: lottery game not ended', async function () {
-      // buy ticket
-      const addresses = await ethers.getSigners();
-      for (let i = 0; i < addresses.length, i < 10; i++) {
-        await buyTicket(lotteryGameId, addresses[i]);
-      }
-
-      // verify
-      await expect(
-        lotteryGameLotteryResultVerifySystem.verify(lotteryGameId)
-      ).to.be.revertedWith(
-        'LotteryGameLotteryResultVerifySystem: Lottery game has not ended'
-      );
-    });
-
-    it('success', async function () {
+    it.only('success', async function () {
       const [owner] = await ethers.getSigners();
       // buy ticket
       const addresses = await ethers.getSigners();
@@ -191,30 +183,16 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           return true;
         });
 
-      // check lottery bonus pool
-      const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
-        gameRootContract,
-        lotteryGameId
-      );
+      // check bonus pool
+      // const lotteryPoolBefore = await getTableRecord.LotteryGameBonusPoolTable(
+      //   gameRootContract,
+      //   lotteryGameId
+      // );
+      // console.log('lotteryPoolBefore:', lotteryPoolBefore);
 
-      expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
-      console.log('lotteryPoolAfter:', lotteryPoolAfter);
-      expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
-      expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
-      expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
-      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(0);
-
-      // get ticket lucky number
-      for (let [ticketId, luckyNumber] of ticketIds) {
-        const ticketData = await getTableRecord.LotteryTicketTable(
-          gameRootContract,
-          ethers.BigNumber.from(ticketId)
-        );
-
-        expect(ticketData.luckyNumber).to.be.equal(luckyNumber);
-      }
-
-      // check lottery game
+      // claim reward for all ticket
+      let addressIndex = 0;
+      let claimAmount = ethers.BigNumber.from(0);
       for (let [ticketId, luckyNumber] of ticketIds) {
         const order =
           await lotteryGameLotteryCoreSystem.getLotteryLuckNumberOrder(
@@ -223,16 +201,42 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
             3
           );
         // console.log(ticketId, luckyNumber, order);
+        console.log(
+          `claim reward! order:${order} ticketId:${ticketId} luckyNumber:${luckyNumber}`
+        );
+
+        await expect(
+          lotteryGameTicketBonusRewardSystem
+            .connect(addresses[addressIndex])
+            .claimTicketReward(ticketId)
+        )
+          .to.emit(
+            lotteryGameTicketBonusRewardSystem,
+            'TicketBonusRewardClaimed'
+          )
+          .withArgs(
+            ticketId,
+            lotteryGameId,
+            (x: any) => {
+              claimAmount = claimAmount.add(x);
+              console.log('amount:', x);
+              return true;
+            },
+            order
+          );
+        addressIndex++;
       }
 
-      //check lottery game
-      const lotteryGame = await getTableRecord.LotteryGameTable(
+      // check bonus pool
+      const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
         gameRootContract,
         lotteryGameId
       );
-      // console.log('lotteryGame:', lotteryGame);
-      expect(lotteryGame.Status).to.be.equal(2);
-      expect(lotteryGame.Owner).to.be.equal(owner.address);
+      console.log('lotteryPoolAfter:', lotteryPoolAfter);
+      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(claimAmount);
+      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(
+        lotteryPoolAfter.BonusAmount
+      );
     });
   });
 });

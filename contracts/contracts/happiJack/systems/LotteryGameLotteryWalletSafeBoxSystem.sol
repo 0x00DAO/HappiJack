@@ -101,15 +101,25 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
     }
 
     function withdrawETH() external {
-        address owner_ = _msgSender();
+        _withdrawETH(_msgSender());
+    }
+
+    function withdrawETH(address to) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        _withdrawETH(to);
+    }
+
+    function _withdrawETH(address to) internal {
+        address owner_ = to;
+
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
+        );
+
         uint256 amount_ = LotteryGameWalletSafeBoxTable.getAmount(
             owner_,
             uint256(TokenType.ETH),
             address(0)
-        );
-        require(
-            owner_ != address(0),
-            "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
         );
         require(
             amount_ > 0,

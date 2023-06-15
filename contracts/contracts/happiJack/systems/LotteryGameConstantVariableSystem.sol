@@ -80,4 +80,22 @@ contract LotteryGameConstantVariableSystem is
                 )
             );
     }
+
+    function getBonusRewardPercent(
+        uint256 winnerLevel_
+    ) public pure returns (uint256) {
+        if (winnerLevel_ == 0) {
+            return 70;
+        }
+        if (winnerLevel_ == 1) {
+            return 20;
+        }
+        if (winnerLevel_ == 2) {
+            return 5;
+        }
+        if (winnerLevel_ == 3) {
+            return 5;
+        }
+        return 0;
+    }
 }

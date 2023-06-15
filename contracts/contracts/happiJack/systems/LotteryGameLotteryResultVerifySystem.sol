@@ -173,35 +173,50 @@ contract LotteryGameLotteryResultVerifySystem is
         }
         //是否有2等级奖金
         if (
-            bonusPoolRefundPercent != 0 &&
+            bonusPoolRefundPercent == 0 &&
             LotteryGameLotteryCoreSystem(
                 getSystemAddress(LotteryGameLotteryCoreSystemID)
             ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 1).length ==
             0
         ) {
-            bonusPoolRefundPercent = 20 + 5 + 5;
+            bonusPoolRefundPercent =
+                LotteryGameConstantVariableSystem(
+                    getSystemAddress(LotteryGameConstantVariableSystemID)
+                ).getBonusRewardPercent(1) +
+                LotteryGameConstantVariableSystem(
+                    getSystemAddress(LotteryGameConstantVariableSystemID)
+                ).getBonusRewardPercent(2) +
+                LotteryGameConstantVariableSystem(
+                    getSystemAddress(LotteryGameConstantVariableSystemID)
+                ).getBonusRewardPercent(3);
         }
-
         //是否有3等级奖金
         if (
-            bonusPoolRefundPercent != 0 &&
+            bonusPoolRefundPercent == 0 &&
             LotteryGameLotteryCoreSystem(
                 getSystemAddress(LotteryGameLotteryCoreSystemID)
             ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 2).length ==
             0
         ) {
-            bonusPoolRefundPercent = 5 + 5;
+            bonusPoolRefundPercent =
+                LotteryGameConstantVariableSystem(
+                    getSystemAddress(LotteryGameConstantVariableSystemID)
+                ).getBonusRewardPercent(2) +
+                LotteryGameConstantVariableSystem(
+                    getSystemAddress(LotteryGameConstantVariableSystemID)
+                ).getBonusRewardPercent(3);
         }
-
         //是否有4等级奖金
         if (
-            bonusPoolRefundPercent != 0 &&
+            bonusPoolRefundPercent == 0 &&
             LotteryGameLotteryCoreSystem(
                 getSystemAddress(LotteryGameLotteryCoreSystemID)
             ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 3).length ==
             0
         ) {
-            bonusPoolRefundPercent = 5;
+            bonusPoolRefundPercent = LotteryGameConstantVariableSystem(
+                getSystemAddress(LotteryGameConstantVariableSystemID)
+            ).getBonusRewardPercent(3);
         }
 
         if (bonusPoolRefundPercent != 0) {

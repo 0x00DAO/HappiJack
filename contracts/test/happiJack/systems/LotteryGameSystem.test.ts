@@ -57,7 +57,7 @@ describe('LotteryGameSystem', function () {
       const [owner] = await ethers.getSigners();
 
       const startTime = Math.floor(Date.now() / 1000); // current time
-      const during = 60 * 60 * 24 * 1; // 1 days
+      const during = 60 * 60 * 24 * 1; // 1 days ,seconds unit
       const endTime = startTime + during;
 
       const initialAmount = ethers.utils.parseEther('0.005');

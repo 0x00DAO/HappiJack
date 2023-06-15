@@ -12,5 +12,6 @@ export const gameDeploy = {
     'LotteryGameLotteryCoreSystem',
     'LotteryGameLotteryResultVerifySystem',
     'LotteryGameLotteryWalletSafeBoxSystem',
+    'LotteryGameTicketBonusRewardSystem',
   ],
 };

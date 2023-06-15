@@ -192,6 +192,9 @@ contract LotteryGameLotteryCoreSystem is
             topNumber_
         );
 
+        uint256[] memory uniqueLuckNumbers_ = luckNumbers[lotteryGameId_]
+            .values();
+
         for (uint256 i = 0; i < result.length; i++) {
             uint256[] memory temp = result[i];
             //remove exist order
@@ -199,6 +202,25 @@ contract LotteryGameLotteryCoreSystem is
 
             for (uint256 j = 0; j < temp.length; j++) {
                 lotteryResults[lotteryGameId_][i].push(temp[j]);
+            }
+
+            //remove exist luckNumber
+            for (uint256 j = 0; j < temp.length; j++) {
+                for (uint256 k = 0; k < uniqueLuckNumbers_.length; k++) {
+                    if (temp[j] == uniqueLuckNumbers_[k]) {
+                        uniqueLuckNumbers_[k] = 0;
+                        break;
+                    }
+                }
+            }
+        }
+
+        //add the remaining numbers to the last order
+        for (uint256 i = 0; i < uniqueLuckNumbers_.length; i++) {
+            if (uniqueLuckNumbers_[i] > 0) {
+                lotteryResults[lotteryGameId_][topNumber_].push(
+                    uniqueLuckNumbers_[i]
+                );
             }
         }
     }
@@ -242,5 +264,31 @@ contract LotteryGameLotteryCoreSystem is
         uint256 order_
     ) public view returns (uint256[] memory) {
         return lotteryResults[lotteryGameId_][order_];
+    }
+
+    ///@dev Get the lottery ticket ID of the specified order and number
+    function getLotteryTicketsAtOrder(
+        uint256 lotteryGameId_,
+        uint256 order_
+    ) public view returns (uint256[] memory) {
+        uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
+            lotteryGameId_,
+            order_
+        );
+
+        uint256[] memory result = new uint256[](luckNumbers_.length);
+        for (uint256 i = 0; i < luckNumbers_.length; i++) {
+            uint256 luckNumber_ = luckNumbers_[i];
+
+            uint256[] memory ticketIds_ = luckNumberWithTicketIds[
+                lotteryGameId_
+            ][luckNumber_];
+
+            for (uint256 j = 0; j < ticketIds_.length; j++) {
+                result[i] = ticketIds_[j];
+            }
+        }
+
+        return result;
     }
 }
