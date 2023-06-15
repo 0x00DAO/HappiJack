@@ -76,6 +76,12 @@ contract LotteryGameLotteryCoreSystem is
     // 1=>1=>[111111, 200000]
     mapping(uint256 => mapping(uint256 => uint256[])) internal lotteryResults;
 
+    //lotteryResultsTicketIds
+    // LotteryGameId=>Order=>[TicketId]
+    // 1=>1=>[1, 2, 3, 4, 5, 6]
+    mapping(uint256 => mapping(uint256 => uint256[]))
+        internal lotteryResultsTicketIds;
+
     function addLotteryGameLuckyNumber(
         uint256 lotteryGameId_,
         uint256 luckNumber_,
@@ -201,6 +207,7 @@ contract LotteryGameLotteryCoreSystem is
             lotteryResults[lotteryGameId_][i] = new uint256[](0);
 
             for (uint256 j = 0; j < temp.length; j++) {
+                // add luckNumber to order
                 lotteryResults[lotteryGameId_][i].push(temp[j]);
             }
 

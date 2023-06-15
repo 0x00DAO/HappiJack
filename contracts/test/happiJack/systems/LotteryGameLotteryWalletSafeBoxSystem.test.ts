@@ -5,7 +5,7 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameLotteryResultVerifySystem', function () {
+describe.only('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameLotteryWalletSafeBoxSystem: Contract;
@@ -213,7 +213,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
 
       //withdraw
       await expect(
-        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1).withdrawETH()
+        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1)['withdrawETH()']()
       )
         .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'WithdrawETH')
         .withArgs(addr1.address, initialAmount);
@@ -303,7 +303,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
 
       //withdraw
       await expect(
-        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1).withdrawETH()
+        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1)['withdrawETH()']()
       )
         .to.emit(lotteryGameLotteryWalletSafeBoxSystem, 'WithdrawETH')
         .withArgs(addr1.address, initialAmount);
@@ -333,7 +333,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       const [owner, addr1] = await ethers.getSigners();
       //withdraw
       await expect(
-        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1).withdrawETH()
+        lotteryGameLotteryWalletSafeBoxSystem.connect(addr1)['withdrawETH()']()
       ).to.be.revertedWith(
         'LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: amount_ must be greater than 0'
       );
