@@ -30,7 +30,7 @@ async function main() {
       `Deploy ${i + 1}/${systems.length}, ${systemContractName} done`
     );
     //sleep3s
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     console.log(`Deploy next ${i + 1}/${systems.length}`);
   }

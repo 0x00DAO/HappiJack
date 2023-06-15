@@ -176,9 +176,13 @@ async function gameEntityGrantWriteRole(
 ) {
   const role = ethers.utils.id('COMPONENT_WRITE_ROLE');
   for (const address of grantAddress) {
-    await contract
-      .grantRole(role, address)
-      .then((tx: ContractTransaction) => tx.wait());
+    //check if already grant
+    const hasRole = await contract.hasRole(role, address);
+    if (hasRole) {
+      await contract
+        .grantRole(role, address)
+        .then((tx: ContractTransaction) => tx.wait());
+    }
   }
 }
 async function gameSystemGrantInternalRole(
