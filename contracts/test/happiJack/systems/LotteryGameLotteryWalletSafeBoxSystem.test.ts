@@ -5,7 +5,7 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe.only('LotteryGameLotteryResultVerifySystem', function () {
+describe('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameLotteryWalletSafeBoxSystem: Contract;

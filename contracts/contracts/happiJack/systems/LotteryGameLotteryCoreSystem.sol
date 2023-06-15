@@ -230,6 +230,21 @@ contract LotteryGameLotteryCoreSystem is
                 );
             }
         }
+
+        //add ticketId to order
+        for (uint256 i = 0; i <= topNumber_; i++) {
+            uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
+            for (uint256 j = 0; j < luckNumbers_.length; j++) {
+                uint256[] memory ticketIds_ = luckNumberWithTicketIds[
+                    lotteryGameId_
+                ][luckNumbers_[j]];
+
+                for (uint256 k = 0; k < ticketIds_.length; k++) {
+                    uint256 ticketId_ = ticketIds_[k];
+                    lotteryResultsTicketIds[lotteryGameId_][i].push(ticketId_);
+                }
+            }
+        }
     }
 
     function computeLotteryResult(
@@ -278,24 +293,6 @@ contract LotteryGameLotteryCoreSystem is
         uint256 lotteryGameId_,
         uint256 order_
     ) public view returns (uint256[] memory) {
-        uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
-            lotteryGameId_,
-            order_
-        );
-
-        uint256[] memory result = new uint256[](luckNumbers_.length);
-        for (uint256 i = 0; i < luckNumbers_.length; i++) {
-            uint256 luckNumber_ = luckNumbers_[i];
-
-            uint256[] memory ticketIds_ = luckNumberWithTicketIds[
-                lotteryGameId_
-            ][luckNumber_];
-
-            for (uint256 j = 0; j < ticketIds_.length; j++) {
-                result[i] = ticketIds_[j];
-            }
-        }
-
-        return result;
+        return lotteryResultsTicketIds[lotteryGameId_][order_];
     }
 }
