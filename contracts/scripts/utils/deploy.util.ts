@@ -178,7 +178,7 @@ async function gameEntityGrantWriteRole(
   for (const address of grantAddress) {
     //check if already grant
     const hasRole = await contract.hasRole(role, address);
-    if (hasRole) {
+    if (!hasRole) {
       await contract
         .grantRole(role, address)
         .then((tx: ContractTransaction) => tx.wait());

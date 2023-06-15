@@ -132,8 +132,6 @@ contract LotteryGameTicketSystem is
             ).getTicketBonusPercent()
         );
 
-        _updateSoldTicket(lotteryGameId_, lotteryGameTicketId_);
-
         //emit event
         emit LotteryTicketCreated(
             lotteryGameTicketId_,
@@ -144,29 +142,5 @@ contract LotteryGameTicketSystem is
         );
 
         return lotteryGameTicketId_;
-    }
-
-    function _updateSoldTicket(
-        uint256 lotteryGameId_,
-        uint256 lotteryGameTicketId_
-    ) internal {
-        //increase ticket sold count
-        LotteryGameTicketTable.setTicketSoldCount(
-            lotteryGameId_,
-            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId_) + 1
-        );
-
-        uint256 lastSoldTicketId_ = LotteryGameTicketTable.getLastSoldTicketId(
-            lotteryGameId_
-        );
-        if (lastSoldTicketId_ > 0) {
-            //set last sold ticket bouns percent to 100%
-            LotteryTicketTable.setBonusPercent(lastSoldTicketId_, 100);
-        }
-        //set last sold ticket id
-        LotteryGameTicketTable.setLastSoldTicketId(
-            lotteryGameId_,
-            lotteryGameTicketId_
-        );
     }
 }

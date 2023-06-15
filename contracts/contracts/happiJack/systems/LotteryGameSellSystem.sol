@@ -144,6 +144,8 @@ contract LotteryGameSellSystem is
                 block.timestamp
             );
 
+        _updateTicketSoldCount(lotteryGameId, ticketId);
+
         ticketSoldByLotteryGameId[lotteryGameId].add(_msgSender());
 
         // send ETH to bonus pool
@@ -174,5 +176,29 @@ contract LotteryGameSellSystem is
         );
 
         return ticketId;
+    }
+
+    function _updateTicketSoldCount(
+        uint256 lotteryGameId_,
+        uint256 lotteryGameTicketId_
+    ) internal {
+        //increase ticket sold count
+        LotteryGameTicketTable.setTicketSoldCount(
+            lotteryGameId_,
+            LotteryGameTicketTable.getTicketSoldCount(lotteryGameId_) + 1
+        );
+
+        uint256 lastSoldTicketId_ = LotteryGameTicketTable.getLastSoldTicketId(
+            lotteryGameId_
+        );
+        if (lastSoldTicketId_ > 0) {
+            //set last sold ticket bouns percent to 100%
+            LotteryTicketTable.setBonusPercent(lastSoldTicketId_, 100);
+        }
+        //set last sold ticket id
+        LotteryGameTicketTable.setLastSoldTicketId(
+            lotteryGameId_,
+            lotteryGameTicketId_
+        );
     }
 }
