@@ -116,7 +116,12 @@ contract LotteryGameTicketBonusRewardSystem is
     function getClaimRewardAmount(
         uint256 ticketId
     ) public view returns (uint256) {
-        return _getClaimRewardAmount(ticketId);
+        uint256 bonusReward = _getClaimRewardAmount(ticketId);
+        //get ticket bonus percent
+        uint256 bonusRewardPercent = LotteryTicketTable.getBonusPercent(
+            ticketId
+        );
+        return (bonusReward * bonusRewardPercent) / 100;
     }
 
     function _getClaimRewardAmount(
@@ -185,33 +190,73 @@ contract LotteryGameTicketBonusRewardSystem is
             "LotteryGameTicketBonusRewardSystem: bonus reward is zero"
         );
 
-        //set bonus reward
-        LotteryTicketBonusRewardTable.setLotteryGameId(ticketId, lotteryGameId);
-        LotteryTicketBonusRewardTable.setIsRewardBonus(ticketId, true);
-        LotteryTicketBonusRewardTable.setRewardTime(ticketId, block.timestamp);
-        LotteryTicketBonusRewardTable.setRewardLevel(ticketId, winnerLevel);
-        LotteryTicketBonusRewardTable.setRewardAmount(ticketId, bonusReward);
+        //get ticket bonus percent
+        uint256 bonusRewardPercent = LotteryTicketTable.getBonusPercent(
+            ticketId
+        );
 
-        //send bonus from pool
-        LotteryGameBonusPoolSystem(
-            getSystemAddress(LotteryGameBonusPoolSystemID)
-        ).withdrawBonusAmountToWalletSafeBoxETH(
-                lotteryGameId,
-                _msgSender(),
-                bonusReward
+        address developAddress = LotteryGameConstantVariableSystem(
+            getSystemAddress(LotteryGameConstantVariableSystemID)
+        ).getDeveloperAddress();
+        uint256 ticketOwnerBonusReward = (bonusReward * bonusRewardPercent) /
+            100;
+        //if not set developer address, all bonus reward to ticket owner
+        if (developAddress == address(0)) {
+            ticketOwnerBonusReward = bonusReward;
+        }
+
+        if (ticketOwnerBonusReward > 0) {
+            //set bonus reward
+            LotteryTicketBonusRewardTable.setLotteryGameId(
+                ticketId,
+                lotteryGameId
+            );
+            LotteryTicketBonusRewardTable.setIsRewardBonus(ticketId, true);
+            LotteryTicketBonusRewardTable.setRewardTime(
+                ticketId,
+                block.timestamp
+            );
+            LotteryTicketBonusRewardTable.setRewardLevel(ticketId, winnerLevel);
+            LotteryTicketBonusRewardTable.setRewardAmount(
+                ticketId,
+                ticketOwnerBonusReward
             );
 
-        // withdraw bonus to wallet
-        LotteryGameLotteryWalletSafeBoxSystem(
-            getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
-        ).withdrawETH(_msgSender());
+            //send bonus from pool
+            LotteryGameBonusPoolSystem(
+                getSystemAddress(LotteryGameBonusPoolSystemID)
+            ).withdrawBonusAmountToWalletSafeBoxETH(
+                    lotteryGameId,
+                    _msgSender(),
+                    ticketOwnerBonusReward
+                );
+
+            // withdraw bonus to wallet
+            LotteryGameLotteryWalletSafeBoxSystem(
+                getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
+            ).withdrawETH(_msgSender());
+        }
+
+        if (
+            developAddress != address(0) &&
+            bonusReward - ticketOwnerBonusReward > 0
+        ) {
+            //send bonus from pool to developer
+            LotteryGameBonusPoolSystem(
+                getSystemAddress(LotteryGameBonusPoolSystemID)
+            ).withdrawBonusAmountToWalletSafeBoxETH(
+                    lotteryGameId,
+                    developAddress,
+                    bonusReward - ticketOwnerBonusReward
+                );
+        }
 
         //emit event
         emit TicketBonusRewardClaimed(
             ticketId,
             lotteryGameId,
             ticketLuckNumber,
-            bonusReward,
+            ticketOwnerBonusReward,
             winnerLevel
         );
     }

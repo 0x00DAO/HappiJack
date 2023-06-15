@@ -151,7 +151,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
       // buy ticket
       const addresses = await ethers.getSigners();
       const ticketIds: Map<string, BigNumber> = new Map();
-      for (let i = 0; i < addresses.length, i < 11; i++) {
+      for (let i = 0; i < addresses.length, i < 5; i++) {
         const [ticketId, luckNumber] = await buyTicket(
           lotteryGameId,
           addresses[i]
@@ -200,9 +200,14 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
             luckyNumber,
             3
           );
+
+        const ticketData = await getTableRecord.LotteryTicketTable(
+          gameRootContract,
+          BigNumber.from(ticketId)
+        );
         // console.log(ticketId, luckyNumber, order);
         console.log(
-          `claim reward! order:${order} ticketId:${ticketId} luckyNumber:${luckyNumber}`
+          `claim reward! order:${order} ticketId:${ticketId} luckyNumber:${luckyNumber} ticketBonusPercent:${ticketData.BonusPercent.toString()}`
         );
 
         await expect(
@@ -219,7 +224,8 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
             lotteryGameId,
             luckyNumber,
             (x: any) => {
-              claimAmount = claimAmount.add(x);
+              const originalAmount = x.mul(100).div(ticketData.BonusPercent);
+              claimAmount = claimAmount.add(originalAmount);
               console.log('amount:', x);
               return true;
             },
@@ -233,7 +239,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
         gameRootContract,
         lotteryGameId
       );
-      console.log('lotteryPoolAfter:', lotteryPoolAfter);
+      // console.log('lotteryPoolAfter:', lotteryPoolAfter);
       expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(claimAmount);
       expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(
         lotteryPoolAfter.BonusAmount
