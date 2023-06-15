@@ -6,7 +6,7 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameTicketBonusRewardSystem', function () {
+describe.only('LotteryGameTicketBonusRewardSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
@@ -217,6 +217,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
           .withArgs(
             ticketId,
             lotteryGameId,
+            luckyNumber,
             (x: any) => {
               claimAmount = claimAmount.add(x);
               console.log('amount:', x);

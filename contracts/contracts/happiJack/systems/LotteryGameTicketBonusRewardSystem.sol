@@ -64,7 +64,8 @@ contract LotteryGameTicketBonusRewardSystem is
     event TicketBonusRewardClaimed(
         uint256 indexed ticketId,
         uint256 indexed lotteryGameId,
-        uint256 indexed amount,
+        uint256 indexed ticketLuckNumber,
+        uint256 amount,
         uint256 winnerLevel
     );
 
@@ -178,6 +179,7 @@ contract LotteryGameTicketBonusRewardSystem is
         emit TicketBonusRewardClaimed(
             ticketId,
             lotteryGameId,
+            ticketLuckNumber,
             bonusReward,
             winnerLevel
         );
