@@ -129,8 +129,7 @@ contract LotteryGameSellSystem is
 
         //check only one ticket per address
         require(
-            ticketSoldByLotteryGameId[lotteryGameId].contains(_msgSender()) ==
-                false,
+            addressIsBoughtTicket(lotteryGameId, _msgSender()) == false,
             "LotteryGameSellSystem: you already have a ticket for this lotteryGameId"
         );
 
@@ -210,5 +209,13 @@ contract LotteryGameSellSystem is
         ) {
             LotteryTicketTable.setBonusPercent(lotteryGameTicketId_, 100);
         }
+    }
+
+    ///@dev check if address is bought ticket
+    function addressIsBoughtTicket(
+        uint256 lotteryGameId_,
+        address owner_
+    ) public view returns (bool) {
+        return ticketSoldByLotteryGameId[lotteryGameId_].contains(owner_);
     }
 }
