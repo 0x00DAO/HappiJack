@@ -12,6 +12,8 @@ import {addressToEntity, entityToAddress} from "../../../eon/utils.sol";
 
 import {MiniGameBonusTable} from "../tables/MiniGameBonusTable.sol";
 
+import {StoreU256SetSystem, ID as StoreU256SetSystemID} from "../../../eon/systems/StoreU256SetSystem.sol";
+
 uint256 constant ID = uint256(keccak256("game.systems.MiniGameBonusSystem"));
 
 contract MiniGameBonusSystem is
@@ -53,6 +55,10 @@ contract MiniGameBonusSystem is
     ) internal override onlyRole(UPGRADER_ROLE) {}
 
     /// custom logic here
+    uint256 public constant ID_BonusAddressList =
+        uint256(
+            keccak256("game.systems.MiniGameBonusSystem.ID_BonusAddressList")
+        );
 
     function winBonusExternal(
         address from,
@@ -91,5 +97,18 @@ contract MiniGameBonusSystem is
 
     function getBonusByAdddress(address from) internal view returns (uint256) {
         return MiniGameBonusTable.get(from);
+    }
+
+    function addBonusAddressList(address from) public {
+        StoreU256SetSystem(getSystemAddress(StoreU256SetSystemID)).add(
+            ID_BonusAddressList,
+            addressToEntity(from)
+        );
+    }
+
+    function getBonusAddressList() public view returns (address[] memory) {
+        return
+            StoreU256SetSystem(getSystemAddress(StoreU256SetSystemID))
+                .valuesAsAddress(ID_BonusAddressList);
     }
 }

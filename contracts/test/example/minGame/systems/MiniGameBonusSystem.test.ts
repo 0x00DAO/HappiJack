@@ -3,7 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { deployUtil } from '../../../../scripts/utils/deploy.util';
 
-describe('MiniGameBonusSystem', function () {
+describe.only('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
   let miniGameBonusSystem: Contract;
   let miniGameBonusSystemAgent: Contract;
@@ -39,6 +39,8 @@ describe('MiniGameBonusSystem', function () {
       gameRootContract,
       'MiniGameBonusSystemAgent'
     );
+
+    await deploySystem(gameRootContract, 'StoreU256SetSystem');
   });
   it('should be deployed', async function () {
     expect(miniGameBonusSystem.address).to.not.equal(null);
@@ -184,6 +186,34 @@ describe('MiniGameBonusSystem', function () {
         });
 
       expect(bonus).to.equal(amount);
+    });
+  });
+
+  describe.only('BonusAddressList', function () {
+    it('success: should be able to addBonusAddressList', async function () {
+      const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+      const amount = ethers.utils.parseEther('1');
+
+      await miniGameBonusSystem.addBonusAddressList(addr1.address);
+
+      await miniGameBonusSystem.getBonusAddressList().then((res: any) => {
+        expect(res[0]).to.equal(addr1.address);
+        console.log(res);
+      });
+
+      //test add 4 different address
+      await miniGameBonusSystem.addBonusAddressList(addr1.address);
+      await miniGameBonusSystem.addBonusAddressList(addr2.address);
+      await miniGameBonusSystem.addBonusAddressList(addr3.address);
+      await miniGameBonusSystem.addBonusAddressList(addr4.address);
+
+      await miniGameBonusSystem.getBonusAddressList().then((res: any) => {
+        expect(res[0]).to.equal(addr1.address);
+        expect(res[1]).to.equal(addr2.address);
+        expect(res[2]).to.equal(addr3.address);
+        expect(res[3]).to.equal(addr4.address);
+        console.log(res);
+      });
     });
   });
 });
