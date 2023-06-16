@@ -111,4 +111,11 @@ contract MiniGameBonusSystem is
             StoreU256SetSystem(getSystemAddress(StoreU256SetSystemID))
                 .valuesAsAddress(ID_BonusAddressList);
     }
+
+    function removeBonusAddressList(address from) public {
+        StoreU256SetSystem(getSystemAddress(StoreU256SetSystemID)).remove(
+            ID_BonusAddressList,
+            addressToEntity(from)
+        );
+    }
 }

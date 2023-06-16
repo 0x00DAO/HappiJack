@@ -3,10 +3,11 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { deployUtil } from '../../../../scripts/utils/deploy.util';
 
-describe.only('MiniGameBonusSystem', function () {
+describe('MiniGameBonusSystem', function () {
   let gameRootContract: Contract;
   let miniGameBonusSystem: Contract;
   let miniGameBonusSystemAgent: Contract;
+  let storeU256SetSystem: Contract;
 
   async function deploySystem(
     gameRoot: Contract,
@@ -40,7 +41,10 @@ describe.only('MiniGameBonusSystem', function () {
       'MiniGameBonusSystemAgent'
     );
 
-    await deploySystem(gameRootContract, 'StoreU256SetSystem');
+    storeU256SetSystem = await deploySystem(
+      gameRootContract,
+      'StoreU256SetSystem'
+    );
   });
   it('should be deployed', async function () {
     expect(miniGameBonusSystem.address).to.not.equal(null);
@@ -189,7 +193,7 @@ describe.only('MiniGameBonusSystem', function () {
     });
   });
 
-  describe.only('BonusAddressList', function () {
+  describe('BonusAddressList', function () {
     it('success: should be able to addBonusAddressList', async function () {
       const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');
@@ -198,7 +202,6 @@ describe.only('MiniGameBonusSystem', function () {
 
       await miniGameBonusSystem.getBonusAddressList().then((res: any) => {
         expect(res[0]).to.equal(addr1.address);
-        console.log(res);
       });
 
       //test add 4 different address
@@ -212,8 +215,22 @@ describe.only('MiniGameBonusSystem', function () {
         expect(res[1]).to.equal(addr2.address);
         expect(res[2]).to.equal(addr3.address);
         expect(res[3]).to.equal(addr4.address);
-        console.log(res);
+
+        // console.log(res);
       });
+
+      //test remove 1 address
+      await miniGameBonusSystem.removeBonusAddressList(addr1.address);
+
+      await miniGameBonusSystem.getBonusAddressList().then((res: any) => {
+        expect(res.length).to.equal(3);
+      });
+    });
+
+    it('fail: should not be able to addBonusAddressList use StoreU256SetSystem', async function () {
+      await expect(storeU256SetSystem.add(1, 1)).to.be.revertedWith(
+        'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7'
+      );
     });
   });
 });
