@@ -7,9 +7,7 @@ task(
     const systems = gameDeploy.systems;
 
     for (const system of systems) {
-      const systemId = hre.ethers.utils.id(
-        `${gameDeploy.systemIdPrefix}.${system}`
-      );
+      const systemId = hre.ethers.utils.id(gameDeploy.systemId(system));
       const systemIdAsNumber = hre.ethers.BigNumber.from(systemId);
       console.log(`${system}  =>  ${systemIdAsNumber}`);
     }
