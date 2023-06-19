@@ -2,7 +2,6 @@
 pragma solidity ^0.8.9;
 
 import {IStoreU256Set} from "../../../eon/interface/IStore.sol";
-import {System} from "../../../eon/System.sol";
 import {StoreU256SetSystemDelegate} from "../../../eon/StoreU256SetSystemDelegate.sol";
 
 bytes32 constant _tableId = bytes32(
@@ -26,38 +25,27 @@ library MiniGameBonusListTable {
 
     function add(uint256 entity, uint256 value) internal {
         bytes32[] memory _keyTuple = entityKeys(entity);
-        StoreU256SetSystemDelegate.StoreU256().add(_keyTuple, value);
+        store().add(_keyTuple, value);
     }
 
     function values(uint256 entity) internal view returns (uint256[] memory) {
         bytes32[] memory _keyTuple = entityKeys(entity);
-        return StoreU256SetSystemDelegate.StoreU256().values(_keyTuple);
+        return store().values(_keyTuple);
     }
 
     function remove(uint256 entity, uint256 value) internal {
         bytes32[] memory _keyTuple = entityKeys(entity);
-        StoreU256SetSystemDelegate.StoreU256().remove(_keyTuple, value);
+        store().remove(_keyTuple, value);
     }
 
     function valuesAsAddress(
         uint256 entity
     ) internal view returns (address[] memory) {
         bytes32[] memory _keyTuple = entityKeys(entity);
-        return
-            StoreU256SetSystemDelegate.StoreU256().valuesAsAddress(_keyTuple);
+        return store().valuesAsAddress(_keyTuple);
     }
 
     function store() internal view returns (IStoreU256Set) {
-        return StoreU256SetSystemDelegate.StoreU256();
+        return StoreU256SetSystemDelegate.StoreU256Set();
     }
-
-    /** Delete amount */
-    // function deleteRecord(address owner) internal {
-    //     bytes32[] memory _keyTuple = entityKeys(owner);
-    //     StoreU256SetSystemDelegate.StoreU256().deleteRecord(
-    //         _tableId,
-    //         _keyTuple,
-    //         1
-    //     );
-    // }
 }
