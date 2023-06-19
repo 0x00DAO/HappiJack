@@ -55,16 +55,16 @@ contract StoreU256SetSystem is
     /// custom logic here
 
     function add(
-        uint256 entity,
+        bytes32[] calldata key,
         uint256 value
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) returns (bool) {
-        return _add(entity, value);
+        return _add(key, value);
     }
 
     function remove(
-        uint256 entity,
+        bytes32[] calldata key,
         uint256 value
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) returns (bool) {
-        return _remove(entity, value);
+        return _remove(key, value);
     }
 }

@@ -25,15 +25,15 @@ abstract contract GameStoreU256Set is
      * Registers the update in the World contract.
      * Can only be called internally (by the component or contracts deriving from it),
      * without requiring explicit write access.
-     * @param entity Entity to set the value for.
+     * @param key to set the value for.
      * @param value Value to set for the given entity.
      */
     function _add(
-        uint256 entity,
+        bytes32[] calldata key,
         uint256 value
     ) internal virtual returns (bool) {
         // Store the entity's value;
-        return entityToValue[entity].add(value);
+        return entityToValue[getEntityId(key)].add(value);
     }
 
     /**
@@ -41,44 +41,45 @@ abstract contract GameStoreU256Set is
      * Registers the update in the World contract.
      * Can only be called internally (by the component or contracts deriving from it),
      * without requiring explicit write access.
-     * @param entity Entity to remove from this component.
      */
     function _remove(
-        uint256 entity,
+        bytes32[] calldata key,
         uint256 value
     ) internal virtual returns (bool) {
         // Remove the entity from the mapping
-        return entityToValue[entity].remove(value);
+        return entityToValue[getEntityId(key)].remove(value);
     }
 
     function has(
-        uint256 entity,
+        bytes32[] calldata key,
         uint256 value
     ) public view virtual returns (bool) {
-        return entityToValue[entity].contains(value);
+        return entityToValue[getEntityId(key)].contains(value);
     }
 
-    function length(uint256 entity) public view virtual returns (uint256) {
-        return entityToValue[entity].length();
+    function length(
+        bytes32[] calldata key
+    ) public view virtual returns (uint256) {
+        return entityToValue[getEntityId(key)].length();
     }
 
     function at(
-        uint256 entity,
+        bytes32[] calldata key,
         uint256 index
     ) public view virtual returns (uint256) {
-        return entityToValue[entity].at(index);
+        return entityToValue[getEntityId(key)].at(index);
     }
 
     function values(
-        uint256 entity
+        bytes32[] calldata key
     ) public view virtual returns (uint256[] memory) {
-        return entityToValue[entity].values();
+        return entityToValue[getEntityId(key)].values();
     }
 
     function valuesAsAddress(
-        uint256 entity
+        bytes32[] calldata key
     ) public view virtual returns (address[] memory) {
-        uint256[] memory store = entityToValue[entity].values();
+        uint256[] memory store = values(key);
         address[] memory addresses;
 
         assembly {

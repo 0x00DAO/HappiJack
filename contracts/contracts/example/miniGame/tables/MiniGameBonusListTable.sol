@@ -15,51 +15,37 @@ uint256 constant IdBonusAddressList = uint256(
 );
 
 library MiniGameBonusListTable {
-    // /** Get the table's metadata */
-    // function getMetadata()
-    //     internal
-    //     pure
-    //     returns (string memory, string[] memory)
-    // {
-    //     string[] memory _fieldNames = new string[](1);
-    //     _fieldNames[0] = "amount"; // uint256
-    //     return ("MiniGameBonusListTable", _fieldNames);
-    // }
+    function entityKeys(
+        uint256 entity
+    ) internal pure returns (bytes32[] memory) {
+        bytes32[] memory _keyTuple = new bytes32[](2);
+        _keyTuple[0] = _tableId;
+        _keyTuple[1] = bytes32(entity);
+        return _keyTuple;
+    }
 
-    // function entityKeys(
-    //     address owner
-    // ) internal pure returns (bytes32[] memory) {
-    //     bytes32[] memory _keyTuple = new bytes32[](1);
-    //     _keyTuple[0] = bytes32(uint256(uint160((owner))));
+    function add(uint256 entity, uint256 value) internal {
+        bytes32[] memory _keyTuple = entityKeys(entity);
+        StoreU256SetSystemDelegate.StoreU256().add(_keyTuple, value);
+    }
 
-    //     return _keyTuple;
-    // }
+    function values(uint256 entity) internal view returns (uint256[] memory) {
+        bytes32[] memory _keyTuple = entityKeys(entity);
+        return StoreU256SetSystemDelegate.StoreU256().values(_keyTuple);
+    }
 
-    // /** Set amount */
-    // function set(address owner, uint256 amount) internal {
-    //     bytes32[] memory _keyTuple = entityKeys(owner);
+    function remove(uint256 entity, uint256 value) internal {
+        bytes32[] memory _keyTuple = entityKeys(entity);
+        StoreU256SetSystemDelegate.StoreU256().remove(_keyTuple, value);
+    }
 
-    //     StoreDelegate.Store().setField(
-    //         _tableId,
-    //         _keyTuple,
-    //         0,
-    //         abi.encodePacked((amount))
-    //     );
-    // }
-
-    // /** Get amount */
-    // function get(address owner) internal view returns (uint256 amount) {
-    //     bytes32[] memory _keyTuple = entityKeys(owner);
-
-    //     bytes memory _blob = StoreDelegate.Store().getField(
-    //         _tableId,
-    //         _keyTuple,
-    //         0
-    //     );
-
-    //     if (_blob.length == 0) return 0;
-    //     return abi.decode(_blob, (uint256));
-    // }
+    function valuesAsAddress(
+        uint256 entity
+    ) internal view returns (address[] memory) {
+        bytes32[] memory _keyTuple = entityKeys(entity);
+        return
+            StoreU256SetSystemDelegate.StoreU256().valuesAsAddress(_keyTuple);
+    }
 
     function store() internal view returns (IStoreU256Set) {
         return StoreU256SetSystemDelegate.StoreU256();

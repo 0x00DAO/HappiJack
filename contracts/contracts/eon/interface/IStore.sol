@@ -43,20 +43,35 @@ interface IStore is IStoreRead, IStoreWrite {}
 
 interface IStoreU256SetRead {
     // Get partial data at schema index
-    function at(uint256 entity, uint256 index) external view returns (uint256);
+    function at(
+        bytes32[] calldata key,
+        uint256 index
+    ) external view returns (uint256);
 
     // Get all data at schema index
-    function values(uint256 entity) external view returns (uint256[] memory);
+    function values(
+        bytes32[] calldata key
+    ) external view returns (uint256[] memory);
 
-    function has(uint256 entity, uint256 value) external view returns (bool);
+    function valuesAsAddress(
+        bytes32[] calldata key
+    ) external view returns (address[] memory);
+
+    function has(
+        bytes32[] calldata key,
+        uint256 value
+    ) external view returns (bool);
 }
 
 interface IStoreU256SetWrite {
     // add data to last index
-    function add(uint256 entity, uint256 value) external returns (bool);
+    function add(bytes32[] calldata key, uint256 value) external returns (bool);
 
     // remove data from index
-    function remove(uint256 entity, uint256 value) external returns (bool);
+    function remove(
+        bytes32[] calldata key,
+        uint256 value
+    ) external returns (bool);
 }
 
 interface IStoreU256Set is IStoreU256SetRead, IStoreU256SetWrite {}
