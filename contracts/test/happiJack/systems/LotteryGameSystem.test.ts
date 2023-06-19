@@ -13,7 +13,6 @@ describe('LotteryGameSystem', function () {
   let LotteryGameTicketSystem: Contract;
   let lotteryGameLuckyNumberSystem: Contract;
   let lotteryGameLotteryNFTSystem: Contract;
-  let storeU256SetSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -57,19 +56,13 @@ describe('LotteryGameSystem', function () {
       'LotteryGameLotteryNFTSystem',
       gameDeploy.systemIdPrefix
     );
-
-    storeU256SetSystem = await eonTestUtil.getSystem(
-      gameRootContract,
-      'StoreU256SetSystem',
-      'eno.systems'
-    );
   });
   it('should be deployed', async function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
 
   describe('createLotteryGame', function () {
-    it.only('success', async function () {
+    it('success', async function () {
       const [owner] = await ethers.getSigners();
 
       const startTime = Math.floor(Date.now() / 1000); // current time

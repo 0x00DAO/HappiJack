@@ -92,6 +92,9 @@ contract LotteryGameLotteryResultVerifySystem is
             uint256(LotteryGameStatus.Ended)
         );
 
+        //remove lottery game from active list
+        LotteryGameActiveGameCollectionTable.remove(lotteryGameId_);
+
         uint256 currentLuckyNumber = LotteryGameLuckyNumTable.getCurrentNumber(
             lotteryGameId_
         );

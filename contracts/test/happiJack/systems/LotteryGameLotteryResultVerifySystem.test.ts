@@ -4,6 +4,7 @@ import { BigNumber, Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameLotteryResultVerifySystem', function () {
@@ -530,6 +531,52 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
         lotteryGameId
       );
       // console.log('lotteryGame:', lotteryGame);
+      expect(lotteryGame.Status).to.be.equal(2);
+      expect(lotteryGame.Owner).to.be.equal(owner.address);
+    });
+
+    it('success, active game remove from list', async function () {
+      const [owner] = await ethers.getSigners();
+
+      // skip to end time
+      const during = 60 * 60 * 24 * 1 + 1; // 1 days
+      await ethers.provider.send('evm_increaseTime', [during]);
+
+      //get lottery bonus pool
+      const lotteryPool = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      // console.log('lotteryPool:', lotteryPool);
+      //check active game
+      await GameCollectionTable.LotteryGameActiveGameCollectionTable.values(
+        gameRootContract
+      ).then((res: any) => {
+        expect(res[0]).to.equal(lotteryGameId);
+        expect(res.length).to.equal(1);
+      });
+      // verify
+      await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
+        .to.be.emit(
+          lotteryGameLotteryResultVerifySystem,
+          'LotteryGameResultVerified'
+        )
+        .withArgs(lotteryGameId, (x: any) => {
+          // console.log('luckyNumber:', x);
+          return true;
+        });
+
+      await GameCollectionTable.LotteryGameActiveGameCollectionTable.values(
+        gameRootContract
+      ).then((res: any) => {
+        expect(res.length).to.equal(0);
+      });
+
+      //check lottery game
+      const lotteryGame = await getTableRecord.LotteryGameTable(
+        gameRootContract,
+        lotteryGameId
+      );
       expect(lotteryGame.Status).to.be.equal(2);
       expect(lotteryGame.Owner).to.be.equal(owner.address);
     });
