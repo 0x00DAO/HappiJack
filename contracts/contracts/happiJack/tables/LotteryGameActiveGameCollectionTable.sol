@@ -16,7 +16,7 @@ bytes32 constant _tableId = bytes32(
 bytes32 constant LotteryGameActiveGameCollectionTableId = _tableId;
 
 bytes32 constant KeyActiveGameCollection = bytes32(
-    keccak256("KeyActiveGameCollection")
+    keccak256(abi.encodePacked("KeyActiveGameCollection"))
 );
 
 library LotteryGameActiveGameCollectionTable {
@@ -32,7 +32,7 @@ library LotteryGameActiveGameCollectionTable {
     }
 
     function entityKeys() internal pure returns (bytes32[] memory) {
-        bytes32[] memory _keyTuple = new bytes32[](3);
+        bytes32[] memory _keyTuple = new bytes32[](2);
         _keyTuple[0] = _tableId;
         _keyTuple[1] = KeyActiveGameCollection;
         // _keyTuple[2] = bytes32(lotteryGameId);

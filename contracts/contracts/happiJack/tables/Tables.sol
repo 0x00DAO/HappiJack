@@ -17,3 +17,6 @@ import {LotteryTicketTable, LotteryTicketTableId} from "./LotteryTicketTable.sol
 import {LotteryTicketBonusRewardTable, LotteryTicketBonusRewardTableId} from "./LotteryTicketBonusRewardTable.sol";
 
 import {LotteryGameWalletSafeBoxTable, LotteryGameWalletSafeBoxTableId} from "./LotteryGameWalletSafeBoxTable.sol";
+
+//below are collections
+import {LotteryGameActiveGameCollectionTable, LotteryGameActiveGameCollectionTableId} from "./LotteryGameActiveGameCollectionTable.sol";

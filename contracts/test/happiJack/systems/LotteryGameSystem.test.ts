@@ -3,6 +3,7 @@ import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameSystem', function () {
@@ -12,6 +13,7 @@ describe('LotteryGameSystem', function () {
   let LotteryGameTicketSystem: Contract;
   let lotteryGameLuckyNumberSystem: Contract;
   let lotteryGameLotteryNFTSystem: Contract;
+  let storeU256SetSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -55,13 +57,19 @@ describe('LotteryGameSystem', function () {
       'LotteryGameLotteryNFTSystem',
       gameDeploy.systemIdPrefix
     );
+
+    storeU256SetSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'StoreU256SetSystem',
+      'eno.systems'
+    );
   });
   it('should be deployed', async function () {
     expect(lotteryGameSystem.address).to.not.equal(null);
   });
 
   describe('createLotteryGame', function () {
-    it('success', async function () {
+    it.only('success', async function () {
       const [owner] = await ethers.getSigners();
 
       const startTime = Math.floor(Date.now() / 1000); // current time
@@ -324,6 +332,14 @@ describe('LotteryGameSystem', function () {
           expect(res).to.equal(lotteryGameId);
           return res;
         });
+
+      //check active game
+      await GameCollectionTable.LotteryGameActiveGameCollectionTable.values(
+        gameRootContract
+      ).then((res: any) => {
+        expect(res[0]).to.equal(lotteryGameId);
+        expect(res.length).to.equal(1);
+      });
     });
   });
 });

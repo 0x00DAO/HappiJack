@@ -48,6 +48,8 @@ interface IStoreU256SetRead {
         uint256 index
     ) external view returns (uint256);
 
+    function length(bytes32[] calldata key) external view returns (uint256);
+
     // Get all data at schema index
     function values(
         bytes32[] calldata key

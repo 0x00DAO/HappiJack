@@ -155,6 +155,9 @@ contract LotteryGameSystem is
             getSystemAddress(LotteryGameLotteryNFTSystemID)
         ).mintNFT(owner, lotteryGameId);
 
+        //increase the lottery game active list
+        LotteryGameActiveGameCollectionTable.add(lotteryGameId);
+
         emit LotteryGameCreated(
             lotteryGameId,
             owner,
