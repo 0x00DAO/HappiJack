@@ -14,6 +14,7 @@ import "../tables/Tables.sol";
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
+import {LotteryGameLotteryResultVerifyBonusPoolRefundSystem, ID as LotteryGameLotteryResultVerifyBonusPoolRefundSystemID} from "./LotteryGameLotteryResultVerifyBonusPoolRefundSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameLotteryResultVerifySystem")
@@ -64,18 +65,20 @@ contract LotteryGameLotteryResultVerifySystem is
         uint256 indexed luckyNumber
     );
 
-    function verify(uint256 lotteryGameId_) public payable {
+    function verify(
+        uint256 lotteryGameId_
+    ) external nonReentrant whenNotPaused {
         //check if lottery game exists
         require(
             LotteryGameTable.hasRecord(lotteryGameId_),
-            "LotteryGameLotteryResultVerifySystem: Lottery game does not exist"
+            "Lottery game does not exist"
         );
 
         //check if lottery game is in the correct status
         require(
             LotteryGameTable.getStatus(lotteryGameId_) ==
                 uint256(LotteryGameStatus.Active),
-            "LotteryGameLotteryResultVerifySystem: Lottery game is not in the correct status"
+            "Lottery game is not in the correct status"
         );
 
         //check if lottery game has ended
@@ -83,7 +86,7 @@ contract LotteryGameLotteryResultVerifySystem is
             LotteryGameConfigTable.getStartTime(lotteryGameId_) +
                 LotteryGameConfigTable.getDuring(lotteryGameId_) <=
                 block.timestamp,
-            "LotteryGameLotteryResultVerifySystem: Lottery game has not ended"
+            "Lottery game has not ended"
         );
 
         //set lottery game status to verified
@@ -161,82 +164,14 @@ contract LotteryGameLotteryResultVerifySystem is
                 );
 
             //If the winner cannot cover the prize money of 1,2,3, etc., then the prize money will be returned to the initiator
-            bonusPoolRefund(lotteryGameId_);
+            LotteryGameLotteryResultVerifyBonusPoolRefundSystem(
+                getSystemAddress(
+                    LotteryGameLotteryResultVerifyBonusPoolRefundSystemID
+                )
+            ).bonusPoolRefund(lotteryGameId_);
         }
 
         //emit event
         emit LotteryGameResultVerified(lotteryGameId_, currentLuckyNumber);
-    }
-
-    function bonusPoolRefund(uint256 lotteryGameId_) internal {
-        //Refund pool percentage
-        uint256 bonusPoolRefundPercent = 0;
-        //whether there is a 1-level bonus
-        if (
-            LotteryGameLotteryCoreSystem(
-                getSystemAddress(LotteryGameLotteryCoreSystemID)
-            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 0).length == 0
-        ) {
-            bonusPoolRefundPercent = 70 + 20 + 5 + 5;
-        }
-        //whether there is a 2-level bonus
-        if (
-            bonusPoolRefundPercent == 0 &&
-            LotteryGameLotteryCoreSystem(
-                getSystemAddress(LotteryGameLotteryCoreSystemID)
-            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 1).length ==
-            0
-        ) {
-            bonusPoolRefundPercent =
-                LotteryGameConstantVariableSystem(
-                    getSystemAddress(LotteryGameConstantVariableSystemID)
-                ).getBonusRewardPercent(1) +
-                LotteryGameConstantVariableSystem(
-                    getSystemAddress(LotteryGameConstantVariableSystemID)
-                ).getBonusRewardPercent(2) +
-                LotteryGameConstantVariableSystem(
-                    getSystemAddress(LotteryGameConstantVariableSystemID)
-                ).getBonusRewardPercent(3);
-        }
-        //whether there is a 3-level bonus
-        if (
-            bonusPoolRefundPercent == 0 &&
-            LotteryGameLotteryCoreSystem(
-                getSystemAddress(LotteryGameLotteryCoreSystemID)
-            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 2).length ==
-            0
-        ) {
-            bonusPoolRefundPercent =
-                LotteryGameConstantVariableSystem(
-                    getSystemAddress(LotteryGameConstantVariableSystemID)
-                ).getBonusRewardPercent(2) +
-                LotteryGameConstantVariableSystem(
-                    getSystemAddress(LotteryGameConstantVariableSystemID)
-                ).getBonusRewardPercent(3);
-        }
-        //whether there is a 4-level bonus
-        if (
-            bonusPoolRefundPercent == 0 &&
-            LotteryGameLotteryCoreSystem(
-                getSystemAddress(LotteryGameLotteryCoreSystemID)
-            ).getLotteryLuckNumbersAtOrder(lotteryGameId_, 3).length ==
-            0
-        ) {
-            bonusPoolRefundPercent = LotteryGameConstantVariableSystem(
-                getSystemAddress(LotteryGameConstantVariableSystemID)
-            ).getBonusRewardPercent(3);
-        }
-
-        if (bonusPoolRefundPercent != 0) {
-            //Refund pool
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
-            ).withdrawBonusAmountToWalletSafeBoxETH(
-                    lotteryGameId_,
-                    LotteryGameConfigTable.getOwner(lotteryGameId_),
-                    (LotteryGameBonusPoolTable.getBonusAmount(lotteryGameId_) *
-                        bonusPoolRefundPercent) / 100
-                );
-        }
     }
 }

@@ -68,4 +68,9 @@ library LotteryGameActiveGameCollectionTable {
         bytes32[] memory _keyTuple = entityKeys();
         return store().has(_keyTuple, lotteryGameId);
     }
+
+    function length() internal view returns (uint256) {
+        bytes32[] memory _keyTuple = entityKeys();
+        return store().length(_keyTuple);
+    }
 }

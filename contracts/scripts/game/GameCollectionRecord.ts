@@ -9,6 +9,7 @@ function LotteryGameActiveGameCollectionTable(): [string, string] {
     'tableId' + 'HappiJack' + 'LotteryGameActiveGameCollectionTable'
   );
   const Key = ethers.utils.id('KeyActiveGameCollection');
+
   return [tableId, Key];
 }
 async function LotteryGameActiveGameCollectionTableValues(
@@ -18,12 +19,20 @@ async function LotteryGameActiveGameCollectionTableValues(
   const store = await storeU256SetSystem(gameRoot);
   return store.values([tableId, Key]);
 }
+async function LotteryGameActiveGameCollectionTableLength(
+  gameRoot: Contract
+): Promise<BigNumber[]> {
+  const [tableId, Key] = LotteryGameActiveGameCollectionTable();
+  const store = await storeU256SetSystem(gameRoot);
+  return store.length([tableId, Key]);
+}
 
 function LotteryGameHistoryGameCollectionTable(): [string, string] {
   const tableId = ethers.utils.id(
     'tableId' + 'HappiJack' + 'LotteryGameHistoryGameCollectionTable'
   );
   const Key = ethers.utils.id('KeyHistory');
+
   return [tableId, Key];
 }
 
@@ -37,7 +46,7 @@ async function LotteryGameHistoryGameCollectionTableValues(
 
 async function LotteryGameHistoryGameCollectionTableLength(
   gameRoot: Contract
-): Promise<BigNumber[]> {
+): Promise<BigNumber> {
   const [tableId, Key] = LotteryGameHistoryGameCollectionTable();
   const store = await storeU256SetSystem(gameRoot);
   return store.length([tableId, Key]);
@@ -55,6 +64,7 @@ async function LotteryGameHistoryGameCollectionTableAt(
 export const GameCollectionTable = {
   LotteryGameActiveGameCollectionTable: {
     values: LotteryGameActiveGameCollectionTableValues,
+    length: LotteryGameActiveGameCollectionTableLength,
   },
 
   LotteryGameHistoryGameCollectionTable: {

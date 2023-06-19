@@ -85,6 +85,11 @@ contract LotteryGameSystem is
         // require(during_ >= 12 hours, "during is too short");
         // require(endTime_ > block.timestamp, "end time is in the past");
 
+        require(
+            LotteryGameActiveGameCollectionTable.length() < 1,
+            "too many active games"
+        );
+
         //get the lottery game id
         uint256 lotteryGameId = IdCounterTable.get(ID_LOTTERY_GAME, 10000000);
         address owner = _msgSender();
