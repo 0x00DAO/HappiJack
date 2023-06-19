@@ -193,7 +193,7 @@ describe('MiniGameBonusSystem', function () {
     });
   });
 
-  describe('BonusAddressList', function () {
+  describe.only('BonusAddressList', function () {
     it('success: should be able to addBonusAddressList', async function () {
       const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
       const amount = ethers.utils.parseEther('1');

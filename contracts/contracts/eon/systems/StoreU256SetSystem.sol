@@ -7,6 +7,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import {System} from "../System.sol";
 import {GameStoreU256Set} from "../GameStoreU256Set.sol";
+import {IStoreU256SetWrite} from "../interface/IStore.sol";
 
 uint256 constant ID = uint256(keccak256("eno.systems.StoreU256SetSystem"));
 
@@ -16,7 +17,8 @@ contract StoreU256SetSystem is
     UUPSUpgradeable,
     System,
     GameStoreU256Set,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    IStoreU256SetWrite
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");

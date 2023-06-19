@@ -4,8 +4,13 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
+import {IStoreU256SetRead} from "./interface/IStore.sol";
 
-abstract contract GameStoreU256Set is Initializable, ContextUpgradeable {
+abstract contract GameStoreU256Set is
+    Initializable,
+    ContextUpgradeable,
+    IStoreU256SetRead
+{
     /// custom logic here
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
     /** Mapping from entity id to value in this component */

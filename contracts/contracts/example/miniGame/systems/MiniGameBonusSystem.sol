@@ -13,6 +13,7 @@ import {addressToEntity, entityToAddress} from "../../../eon/utils.sol";
 import {MiniGameBonusTable} from "../tables/MiniGameBonusTable.sol";
 
 import {StoreU256SetSystem, ID as StoreU256SetSystemID} from "../../../eon/systems/StoreU256SetSystem.sol";
+import {MiniGameBonusListTable} from "../tables/MiniGameBonusListTable.sol";
 
 uint256 constant ID = uint256(keccak256("game.systems.MiniGameBonusSystem"));
 
@@ -100,10 +101,14 @@ contract MiniGameBonusSystem is
     }
 
     function addBonusAddressList(address from) public {
-        StoreU256SetSystem(getSystemAddress(StoreU256SetSystemID)).add(
+        MiniGameBonusListTable.store().add(
             ID_BonusAddressList,
             addressToEntity(from)
         );
+        // StoreU256SetSystem(getSystemAddress(StoreU256SetSystemID)).add(
+        // ID_BonusAddressList,
+        // addressToEntity(from)
+        // );
     }
 
     function getBonusAddressList() public view returns (address[] memory) {
