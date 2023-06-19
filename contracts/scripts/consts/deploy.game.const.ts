@@ -18,4 +18,12 @@ export const gameDeploy = {
     'LotteryGameTicketBonusRewardSystem',
     'LotteryGameLotteryNFTSystem',
   ],
+  //special system ids
+  systemId: function (systemName: string) {
+    switch (systemName) {
+      case 'StoreU256SetSystem':
+        return 'eno.systems.StoreU256SetSystem';
+    }
+    return `${this.systemIdPrefix}.${systemName}`;
+  },
 };

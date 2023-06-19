@@ -19,11 +19,13 @@ async function main() {
   for (let i = 0; i < systems.length; i++) {
     const systemContractName = systems[i];
     console.log(`Deploy ${i + 1}/${systems.length}, ${systemContractName}`);
+
+    const systemId = gameDeploy.systemId(systemContractName);
     await deployUtil.gameSystemDeploy(
       'GameRoot',
       contractGameRootAddress as string,
       systemContractName,
-      `${gameDeploy.systemIdPrefix}.${systemContractName}`
+      systemId
     );
 
     console.log(
