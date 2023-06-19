@@ -542,18 +542,18 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       const during = 60 * 60 * 24 * 1 + 1; // 1 days
       await ethers.provider.send('evm_increaseTime', [during]);
 
-      //get lottery bonus pool
-      const lotteryPool = await getTableRecord.LotteryGameBonusPoolTable(
-        gameRootContract,
-        lotteryGameId
-      );
-      // console.log('lotteryPool:', lotteryPool);
       //check active game
       await GameCollectionTable.LotteryGameActiveGameCollectionTable.values(
         gameRootContract
       ).then((res: any) => {
         expect(res[0]).to.equal(lotteryGameId);
         expect(res.length).to.equal(1);
+      });
+      // check lottery history
+      await GameCollectionTable.LotteryGameHistoryGameCollectionTable.length(
+        gameRootContract
+      ).then((res: any) => {
+        expect(res).to.equal(0);
       });
       // verify
       await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
@@ -566,10 +566,28 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           return true;
         });
 
+      //check active game
       await GameCollectionTable.LotteryGameActiveGameCollectionTable.values(
         gameRootContract
       ).then((res: any) => {
         expect(res.length).to.equal(0);
+      });
+
+      // check lottery history
+      const historyLength =
+        await GameCollectionTable.LotteryGameHistoryGameCollectionTable.length(
+          gameRootContract
+        ).then((res: any) => {
+          expect(res).to.equal(1);
+          return res;
+        });
+
+      //check lottery history
+      await GameCollectionTable.LotteryGameHistoryGameCollectionTable.at(
+        gameRootContract,
+        historyLength - 1
+      ).then((res: any) => {
+        expect(res).to.equal(lotteryGameId);
       });
 
       //check lottery game

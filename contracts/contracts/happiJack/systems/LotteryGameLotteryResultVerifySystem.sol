@@ -94,6 +94,8 @@ contract LotteryGameLotteryResultVerifySystem is
 
         //remove lottery game from active list
         LotteryGameActiveGameCollectionTable.remove(lotteryGameId_);
+        //add lottery game to history list
+        LotteryGameHistoryGameCollectionTable.add(lotteryGameId_);
 
         uint256 currentLuckyNumber = LotteryGameLuckyNumTable.getCurrentNumber(
             lotteryGameId_

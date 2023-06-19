@@ -69,7 +69,14 @@ contract LotteryGameSystemConfig is
         uint256 during_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         uint256 endTime_ = startTime_ + during_;
-        require(during_ >= 12 hours, "during is too short");
+        require(
+            startTime_ <= block.timestamp + 5 minutes,
+            "start time is in the past"
+        );
+        require(
+            during_ >= 12 hours && during_ <= 1 days,
+            "during is too short"
+        );
         require(endTime_ > block.timestamp, "end time is in the past");
 
         //set the lottery game info
