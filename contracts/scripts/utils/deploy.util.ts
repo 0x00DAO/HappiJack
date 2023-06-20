@@ -83,15 +83,24 @@ export async function deployUpgradeProxy(
  */
 export async function deployUpgradeUpdate(
   contractName: string,
-  contractAddress: string
+  contractAddress: string,
+  forceImport?: boolean
 ): Promise<Contract> {
   console.log('[deploy contract]:deploy [%s] upgrade ...', contractName);
   const DeployContractName = contractName;
   const DeployContract = await getContractFactory(DeployContractName);
-  const deployContract = await upgrades.upgradeProxy(
-    contractAddress,
-    DeployContract
-  );
+  let deployContract;
+  if (forceImport) {
+    deployContract = await upgrades.forceImport(
+      contractAddress,
+      DeployContract
+    );
+  } else {
+    deployContract = await upgrades.upgradeProxy(
+      contractAddress,
+      DeployContract
+    );
+  }
   return _deploy(DeployContractName, deployContract);
 }
 
@@ -207,7 +216,8 @@ async function gameSystemDeploy(
   GameSystemContractName: string,
   GameSystemId: string,
   GameSystemContractArgs?: any[],
-  opts?: DeployProxyOptions
+  opts?: DeployProxyOptions,
+  forceImport?: boolean
 ): Promise<Contract> {
   assert(GameRootContractAddress, 'GameRoot contract address is not set');
   const gameRootContract = await ethers.getContractAt(
@@ -238,7 +248,8 @@ async function gameSystemDeploy(
   } else {
     contract = await deployUpgradeUpdate(
       GameSystemContractName,
-      systemContractAddress
+      systemContractAddress,
+      forceImport
     );
 
     //grant system to write

@@ -77,11 +77,6 @@
       "kind": "uups"
     },
     {
-      "address": "0x4a7B2ad205745A53858b84028F4D2a21D7E96637",
-      "txHash": "0xdc4121d97c2f5bf5ce02b6c11a158d5da4926d69a587c1dcf217f6442775d17c",
-      "kind": "uups"
-    },
-    {
       "address": "0xFd5d10305E59A3e19E47A7F7B917a1E51081ebda",
       "txHash": "0x28e9cb28c7559de7a70998d9d482f359566cc66c9522afcc3a29a3c9ba18a51f",
       "kind": "uups"
@@ -127,11 +122,6 @@
       "kind": "uups"
     },
     {
-      "address": "0x08713e96bfD0Ec173c7c501e2704fB8177Fc77fE",
-      "txHash": "0x6b0b8aa0a126a06a6160eec795238eb27089936be176ff09499997fdc4a9099d",
-      "kind": "uups"
-    },
-    {
       "address": "0xb270803d029180C1C0785e4e25Cc8f008A659c00",
       "txHash": "0x80ce9c65d625a3da8f44e9c1848ef1fe36ac78b41a56c9d98703abe43697d4f8",
       "kind": "uups"
@@ -159,6 +149,19 @@
     {
       "address": "0x4816361ec31F2f4045c19b11c30642a6563A6af7",
       "txHash": "0xecf008c36cd665463e9dc691941f8fb3e1258bd19062e4c14f23def7fa6d193b",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4a7B2ad205745A53858b84028F4D2a21D7E96637",
+      "kind": "uups"
+    },
+    {
+      "address": "0x08713e96bfD0Ec173c7c501e2704fB8177Fc77fE",
+      "kind": "uups"
+    },
+    {
+      "address": "0xbc7F5694359963a33A0Ea167F7eEe351CBbB2486",
+      "txHash": "0x150d912383283ebb2432dab6c76071bca1e6b997af313d49cc56bd9c8eb983e9",
       "kind": "uups"
     }
   ],
@@ -5742,7 +5745,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -5750,7 +5753,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -5840,11 +5843,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -6206,7 +6209,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "52",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -6214,7 +6217,7 @@
             "label": "root",
             "offset": 1,
             "slot": "52",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -6420,11 +6423,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -9997,7 +10000,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -10005,7 +10008,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -10095,11 +10098,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -11182,7 +11185,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -11190,7 +11193,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -11270,7 +11273,7 @@
             "label": "luckNumbers",
             "offset": 0,
             "slot": "501",
-            "type": "t_mapping(t_uint256,t_struct(UintSet)5106_storage)",
+            "type": "t_mapping(t_uint256,t_struct(UintSet)6497_storage)",
             "contract": "LotteryGameLotteryCoreSystem",
             "src": "contracts/happiJack/systems/LotteryGameLotteryCoreSystem.sol:72"
           },
@@ -11320,11 +11323,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -11353,7 +11356,7 @@
             "label": "mapping(uint256 => mapping(uint256 => uint256[]))",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(UintSet)5106_storage)": {
+          "t_mapping(t_uint256,t_struct(UintSet)6497_storage)": {
             "label": "mapping(uint256 => struct EnumerableSetUpgradeable.UintSet)",
             "numberOfBytes": "32"
           },
@@ -11375,7 +11378,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(Set)4634_storage": {
+          "t_struct(Set)6025_storage": {
             "label": "struct EnumerableSetUpgradeable.Set",
             "members": [
               {
@@ -11393,12 +11396,12 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(UintSet)5106_storage": {
+          "t_struct(UintSet)6497_storage": {
             "label": "struct EnumerableSetUpgradeable.UintSet",
             "members": [
               {
                 "label": "_inner",
-                "type": "t_struct(Set)4634_storage",
+                "type": "t_struct(Set)6025_storage",
                 "offset": 0,
                 "slot": "0"
               }
@@ -11714,7 +11717,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -11722,7 +11725,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -11812,11 +11815,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -12160,7 +12163,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -12168,7 +12171,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -12258,11 +12261,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -12606,7 +12609,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -12614,7 +12617,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -12704,11 +12707,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -12829,7 +12832,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -12837,7 +12840,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -12927,11 +12930,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -13516,7 +13519,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "52",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -13524,7 +13527,7 @@
             "label": "root",
             "offset": 1,
             "slot": "52",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -13730,11 +13733,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -14160,7 +14163,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -14168,7 +14171,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -14240,7 +14243,7 @@
             "label": "ticketSoldByLotteryGameId",
             "offset": 0,
             "slot": "500",
-            "type": "t_mapping(t_uint256,t_struct(AddressSet)4949_storage)",
+            "type": "t_mapping(t_uint256,t_struct(AddressSet)6340_storage)",
             "contract": "LotteryGameSellSystem",
             "src": "contracts/happiJack/systems/LotteryGameSellSystem.sol:74"
           }
@@ -14270,11 +14273,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -14295,16 +14298,16 @@
             "label": "mapping(bytes32 => uint256)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(AddressSet)4949_storage)": {
+          "t_mapping(t_uint256,t_struct(AddressSet)6340_storage)": {
             "label": "mapping(uint256 => struct EnumerableSetUpgradeable.AddressSet)",
             "numberOfBytes": "32"
           },
-          "t_struct(AddressSet)4949_storage": {
+          "t_struct(AddressSet)6340_storage": {
             "label": "struct EnumerableSetUpgradeable.AddressSet",
             "members": [
               {
                 "label": "_inner",
-                "type": "t_struct(Set)4634_storage",
+                "type": "t_struct(Set)6025_storage",
                 "offset": 0,
                 "slot": "0"
               }
@@ -14329,7 +14332,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(Set)4634_storage": {
+          "t_struct(Set)6025_storage": {
             "label": "struct EnumerableSetUpgradeable.Set",
             "members": [
               {
@@ -14433,7 +14436,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -14441,7 +14444,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -14497,7 +14500,7 @@
             "label": "entityToValue",
             "offset": 0,
             "slot": "450",
-            "type": "t_mapping(t_uint256,t_struct(UintSet)5106_storage)",
+            "type": "t_mapping(t_uint256,t_struct(UintSet)6497_storage)",
             "contract": "GameStoreU256Set",
             "src": "contracts/eon/GameStoreU256Set.sol:17"
           },
@@ -14551,11 +14554,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -14576,7 +14579,7 @@
             "label": "mapping(bytes32 => uint256)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(UintSet)5106_storage)": {
+          "t_mapping(t_uint256,t_struct(UintSet)6497_storage)": {
             "label": "mapping(uint256 => struct EnumerableSetUpgradeable.UintSet)",
             "numberOfBytes": "32"
           },
@@ -14598,7 +14601,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(Set)4634_storage": {
+          "t_struct(Set)6025_storage": {
             "label": "struct EnumerableSetUpgradeable.Set",
             "members": [
               {
@@ -14616,12 +14619,12 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(UintSet)5106_storage": {
+          "t_struct(UintSet)6497_storage": {
             "label": "struct EnumerableSetUpgradeable.UintSet",
             "members": [
               {
                 "label": "_inner",
-                "type": "t_struct(Set)4634_storage",
+                "type": "t_struct(Set)6025_storage",
                 "offset": 0,
                 "slot": "0"
               }
@@ -14937,7 +14940,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)6939",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:17"
           },
@@ -14945,7 +14948,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5831",
+            "type": "t_contract(IRoot)8265",
             "contract": "BaseComponent",
             "src": "contracts/eon/BaseComponent.sol:18"
           },
@@ -15035,11 +15038,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5831": {
+          "t_contract(IRoot)8265": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -15263,6 +15266,673 @@
             "numberOfBytes": "20"
           },
           "t_enum(ComponentType)5364": {
+            "label": "enum ComponentType",
+            "members": [
+              "Unknown",
+              "GameRoot",
+              "System"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)34_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)34_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "cd097e1a295b3f1a66efb41937d32223ca10279607d10fc55a4007a43e81ad3a": {
+      "address": "0x7101f0B2168Eed19d87bE3c2291a6084891DF7Ec",
+      "layout": {
+        "solcVersion": "0.8.17",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_paused",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_bool",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:29"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:116"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "id",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:16"
+          },
+          {
+            "label": "componentType",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_enum(ComponentType)6939",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:17"
+          },
+          {
+            "label": "root",
+            "offset": 1,
+            "slot": "202",
+            "type": "t_contract(IRoot)8265",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:18"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "203",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:65"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "252",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "302",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)34_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:62"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "303",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "SystemAccessControl",
+            "src": "contracts/eon/SystemAccessControl.sol:41"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "401",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "System",
+            "src": "contracts/eon/System.sol:42"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "450",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "451",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IRoot)8265": {
+            "label": "contract IRoot",
+            "numberOfBytes": "20"
+          },
+          "t_enum(ComponentType)6939": {
+            "label": "enum ComponentType",
+            "members": [
+              "Unknown",
+              "GameRoot",
+              "System"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)34_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)34_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "c8a521ecbbf4dbca687e0cbefa86dd99c845b8f676ee689c92f65ef50ff46e92": {
+      "address": "0xF3fBd947fA1Fe6246abBDa842241Aea6b0f0ca8D",
+      "layout": {
+        "solcVersion": "0.8.17",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_paused",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_bool",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:29"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:116"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "id",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:16"
+          },
+          {
+            "label": "componentType",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_enum(ComponentType)6939",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:17"
+          },
+          {
+            "label": "root",
+            "offset": 1,
+            "slot": "202",
+            "type": "t_contract(IRoot)8265",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:18"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "203",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:65"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "252",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "302",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)34_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:62"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "303",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "SystemAccessControl",
+            "src": "contracts/eon/SystemAccessControl.sol:41"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "401",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "System",
+            "src": "contracts/eon/System.sol:42"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "450",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "451",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IRoot)8265": {
+            "label": "contract IRoot",
+            "numberOfBytes": "20"
+          },
+          "t_enum(ComponentType)6939": {
+            "label": "enum ComponentType",
+            "members": [
+              "Unknown",
+              "GameRoot",
+              "System"
+            ],
+            "numberOfBytes": "1"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)34_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)34_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        }
+      }
+    },
+    "0680578ebe8f469de19d3130294df63884717a4f22a3bd516be6ef65281f7cd9": {
+      "address": "0x5eC8d4C6C89F9d3b8A70c83eA093447a2F6a2976",
+      "txHash": "0x0862a0221ba296bd61aa4adcc0654bc80453748bb21accc07af446072e82a2ff",
+      "layout": {
+        "solcVersion": "0.8.17",
+        "storage": [
+          {
+            "label": "_initialized",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_uint8",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:63",
+            "retypedFrom": "bool"
+          },
+          {
+            "label": "_initializing",
+            "offset": 1,
+            "slot": "0",
+            "type": "t_bool",
+            "contract": "Initializable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:68"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ContextUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "label": "_paused",
+            "offset": 0,
+            "slot": "51",
+            "type": "t_bool",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:29"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "52",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "PausableUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:116"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "101",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC1967UpgradeUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:169"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "151",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "UUPSUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:111"
+          },
+          {
+            "label": "id",
+            "offset": 0,
+            "slot": "201",
+            "type": "t_uint256",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:16"
+          },
+          {
+            "label": "componentType",
+            "offset": 0,
+            "slot": "202",
+            "type": "t_enum(ComponentType)6939",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:17"
+          },
+          {
+            "label": "root",
+            "offset": 1,
+            "slot": "202",
+            "type": "t_contract(IRoot)8265",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:18"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "203",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "BaseComponent",
+            "src": "contracts/eon/BaseComponent.sol:65"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "252",
+            "type": "t_array(t_uint256)50_storage",
+            "contract": "ERC165Upgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:41"
+          },
+          {
+            "label": "_roles",
+            "offset": 0,
+            "slot": "302",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)34_storage)",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:62"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "303",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "AccessControlUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:260"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "352",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "SystemAccessControl",
+            "src": "contracts/eon/SystemAccessControl.sol:41"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "401",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "System",
+            "src": "contracts/eon/System.sol:42"
+          },
+          {
+            "label": "_status",
+            "offset": 0,
+            "slot": "450",
+            "type": "t_uint256",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "label": "__gap",
+            "offset": 0,
+            "slot": "451",
+            "type": "t_array(t_uint256)49_storage",
+            "contract": "ReentrancyGuardUpgradeable",
+            "src": "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:88"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]",
+            "numberOfBytes": "1568"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]",
+            "numberOfBytes": "1600"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_contract(IRoot)8265": {
+            "label": "contract IRoot",
+            "numberOfBytes": "20"
+          },
+          "t_enum(ComponentType)6939": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",

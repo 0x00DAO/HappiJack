@@ -25,7 +25,10 @@ async function main() {
       'GameRoot',
       contractGameRootAddress as string,
       systemContractName,
-      systemId
+      systemId,
+      undefined,
+      undefined,
+      false
     );
 
     console.log(
