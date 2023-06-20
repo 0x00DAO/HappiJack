@@ -5,11 +5,12 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameSellSystem', function () {
+describe('LotteryGameBonusPoolSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
   let lotteryGameBonusPoolSystem: Contract;
+  let lotteryGameBonusPoolWithdrawSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -32,6 +33,12 @@ describe('LotteryGameSellSystem', function () {
     lotteryGameBonusPoolSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameBonusPoolSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameBonusPoolWithdrawSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameBonusPoolWithdrawSystem',
       gameDeploy.systemIdPrefix
     );
   });
@@ -128,7 +135,7 @@ describe('LotteryGameSellSystem', function () {
       // withdraw bonus amount to wallet safe box
       const bonusAmount = lotteryGameBonusPoolData.BonusAmount;
 
-      await lotteryGameBonusPoolSystem.withdrawBonusAmountToWalletSafeBoxETH(
+      await lotteryGameBonusPoolWithdrawSystem.withdrawBonusAmountToWalletSafeBoxETH(
         lotteryGameId,
         owner.address,
         bonusAmount
@@ -142,7 +149,7 @@ describe('LotteryGameSellSystem', function () {
 
       // withdrawOwnerFeeAmountToWalletSafeBoxETH
       const ownerFeeAmount = lotteryGameBonusPoolData.OwnerFeeAmount;
-      await lotteryGameBonusPoolSystem.withdrawOwnerFeeAmountToWalletSafeBoxETH(
+      await lotteryGameBonusPoolWithdrawSystem.withdrawOwnerFeeAmountToWalletSafeBoxETH(
         lotteryGameId,
         owner.address,
         ownerFeeAmount
@@ -156,7 +163,7 @@ describe('LotteryGameSellSystem', function () {
 
       // withdrawDevelopFeeAmountToWalletSafeBoxETH
       const developFeeAmount = lotteryGameBonusPoolData.DevelopFeeAmount;
-      await lotteryGameBonusPoolSystem.withdrawDevelopFeeAmountToWalletSafeBoxETH(
+      await lotteryGameBonusPoolWithdrawSystem.withdrawDevelopFeeAmountToWalletSafeBoxETH(
         lotteryGameId,
         owner.address,
         developFeeAmount
@@ -170,7 +177,7 @@ describe('LotteryGameSellSystem', function () {
 
       //withdrawVerifyFeeAmountToWalletSafeBoxETH
       const verifyFeeAmount = lotteryGameBonusPoolData.VerifyFeeAmount;
-      await lotteryGameBonusPoolSystem.withdrawVerifyFeeAmountToWalletSafeBoxETH(
+      await lotteryGameBonusPoolWithdrawSystem.withdrawVerifyFeeAmountToWalletSafeBoxETH(
         lotteryGameId,
         owner.address,
         verifyFeeAmount

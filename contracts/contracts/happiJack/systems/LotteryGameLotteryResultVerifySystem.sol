@@ -13,6 +13,7 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
+import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 import {LotteryGameLotteryResultVerifyBonusPoolRefundSystem, ID as LotteryGameLotteryResultVerifyBonusPoolRefundSystemID} from "./LotteryGameLotteryResultVerifyBonusPoolRefundSystem.sol";
 
@@ -117,8 +118,8 @@ contract LotteryGameLotteryResultVerifySystem is
 
         if (ticketCount == 0) {
             //If no one buys a ticket, return all the prize pool to the lottery initiator
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
+            LotteryGameBonusPoolWithdrawSystem(
+                getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
                     lotteryGameId_,
                     LotteryGameConfigTable.getOwner(lotteryGameId_),
@@ -130,8 +131,8 @@ contract LotteryGameLotteryResultVerifySystem is
         } else {
             //If someone buys a ticket
             //distribute owner fee
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
+            LotteryGameBonusPoolWithdrawSystem(
+                getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawOwnerFeeAmountToWalletSafeBoxETH(
                     lotteryGameId_,
                     LotteryGameConfigTable.getOwner(lotteryGameId_),
@@ -143,8 +144,8 @@ contract LotteryGameLotteryResultVerifySystem is
             ).getDeveloperAddress();
             if (developAddress != address(0)) {
                 //distribute developer fee
-                LotteryGameBonusPoolSystem(
-                    getSystemAddress(LotteryGameBonusPoolSystemID)
+                LotteryGameBonusPoolWithdrawSystem(
+                    getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
                 ).withdrawDevelopFeeAmountToWalletSafeBoxETH(
                         lotteryGameId_,
                         developAddress,
@@ -155,8 +156,8 @@ contract LotteryGameLotteryResultVerifySystem is
             }
 
             // Distribute validator income
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
+            LotteryGameBonusPoolWithdrawSystem(
+                getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawVerifyFeeAmountToWalletSafeBoxETH(
                     lotteryGameId_,
                     _msgSender(),

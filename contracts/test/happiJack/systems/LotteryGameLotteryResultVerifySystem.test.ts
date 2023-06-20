@@ -150,9 +150,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       // verify
       await expect(
         lotteryGameLotteryResultVerifySystem.verify(lotteryGameId)
-      ).to.be.revertedWith(
-        'LotteryGameLotteryResultVerifySystem: Lottery game has not ended'
-      );
+      ).to.be.revertedWith('Lottery game has not ended');
     });
 
     it('success', async function () {

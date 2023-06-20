@@ -18,6 +18,7 @@ export const gameDeploy = {
     'LotteryGameTicketBonusRewardSystem',
     'LotteryGameLotteryNFTSystem',
     'LotteryGameLotteryResultVerifyBonusPoolRefundSystem',
+    'LotteryGameBonusPoolWithdrawSystem',
   ],
   //special system ids
   systemId: function (systemName: string) {

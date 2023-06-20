@@ -14,6 +14,7 @@ import "../tables/Tables.sol";
 
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
+import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 import {LotteryGameLotteryWalletSafeBoxSystem, ID as LotteryGameLotteryWalletSafeBoxSystemID} from "./LotteryGameLotteryWalletSafeBoxSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 
@@ -223,8 +224,8 @@ contract LotteryGameTicketBonusRewardSystem is
             );
 
             //send bonus from pool
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
+            LotteryGameBonusPoolWithdrawSystem(
+                getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
                     lotteryGameId,
                     _msgSender(),
@@ -242,8 +243,8 @@ contract LotteryGameTicketBonusRewardSystem is
             bonusReward - ticketOwnerBonusReward > 0
         ) {
             //send bonus from pool to developer
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
+            LotteryGameBonusPoolWithdrawSystem(
+                getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
                     lotteryGameId,
                     developAddress,

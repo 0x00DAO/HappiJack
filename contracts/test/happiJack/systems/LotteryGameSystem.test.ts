@@ -62,7 +62,7 @@ describe('LotteryGameSystem', function () {
   });
 
   describe('createLotteryGame', function () {
-    it.only('success', async function () {
+    it('success', async function () {
       const [owner] = await ethers.getSigners();
 
       const startTime = Math.floor(Date.now() / 1000); // current time

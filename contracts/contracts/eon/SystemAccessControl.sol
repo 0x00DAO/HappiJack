@@ -30,6 +30,10 @@ contract SystemAccessControl is BaseComponent, AccessControlUpgradeable {
         ) {
             return true;
         }
+        // check role from root
+        if (AccessControlUpgradeable(getRoot()).hasRole(role, account)) {
+            return true;
+        }
         return AccessControlUpgradeable.hasRole(role, account);
     }
 

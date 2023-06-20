@@ -14,6 +14,7 @@ import "../tables/Tables.sol";
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
+import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256(
@@ -129,8 +130,8 @@ contract LotteryGameLotteryResultVerifyBonusPoolRefundSystem is
 
         if (bonusPoolRefundPercent != 0) {
             //Refund pool
-            LotteryGameBonusPoolSystem(
-                getSystemAddress(LotteryGameBonusPoolSystemID)
+            LotteryGameBonusPoolWithdrawSystem(
+                getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
                     lotteryGameId_,
                     LotteryGameConfigTable.getOwner(lotteryGameId_),
