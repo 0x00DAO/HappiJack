@@ -210,6 +210,17 @@ async function gameSystemGrantInternalRole(
   }
 }
 
+async function gameSystemAddress(
+  gameRootContract: Contract,
+  GameSystemId: string
+): Promise<string> {
+  const systemContractId = ethers.utils.id(`${GameSystemId}`);
+  const systemContractAddress = await gameRootContract.getSystemAddress(
+    systemContractId
+  );
+  return systemContractAddress;
+}
+
 async function gameSystemDeploy(
   GameRootContractName = 'GameRoot',
   GameRootContractAddress: string,
@@ -225,9 +236,9 @@ async function gameSystemDeploy(
     GameRootContractAddress
   );
 
-  const systemContractId = ethers.utils.id(`${GameSystemId}`);
-  const systemContractAddress = await gameRootContract.getSystemAddress(
-    systemContractId
+  const systemContractAddress = await gameSystemAddress(
+    gameRootContract,
+    GameSystemId
   );
 
   console.log(
@@ -266,4 +277,5 @@ export const deployUtil = {
   gameSystemGrantInternalRole: gameSystemGrantInternalRole,
   gameRegisterSystem: gameRegisterSystem,
   gameSystemDeploy: gameSystemDeploy,
+  gameSystemAddress: gameSystemAddress,
 };
