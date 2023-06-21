@@ -3,6 +3,9 @@
     "LotteryGameSystem": {
       "address": "0x4a7B2ad205745A53858b84028F4D2a21D7E96637",
       "startBlock": 36749816
+    },
+    "LotteryGameSellSystem": {
+      "address": "0x4991bd9EaCF82D4cE4728D8a5575C5A8ec8B0d89"
     }
   }
 }

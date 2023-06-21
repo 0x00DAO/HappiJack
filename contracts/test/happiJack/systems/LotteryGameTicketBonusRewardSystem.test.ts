@@ -193,6 +193,11 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
       // claim reward for all ticket
       let addressIndex = 0;
       let claimAmount = ethers.BigNumber.from(0);
+      let ticketClaimAmount = ethers.BigNumber.from(0);
+      //ticketRewardTimestamp is block.timestamp
+      const currentBlock = await ethers.provider.getBlock('latest');
+      let ticketRewardTimestamp = currentBlock.timestamp;
+
       for (let [ticketId, luckyNumber] of ticketIds) {
         const order =
           await lotteryGameLotteryCoreSystem.getLotteryLuckNumberOrder(
@@ -224,13 +229,33 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
             lotteryGameId,
             luckyNumber,
             (x: any) => {
-              const originalAmount = x.mul(100).div(ticketData.BonusPercent);
+              ticketClaimAmount = x;
+              const originalAmount = ticketClaimAmount
+                .mul(100)
+                .div(ticketData.BonusPercent);
               claimAmount = claimAmount.add(originalAmount);
-              console.log('amount:', x);
+              console.log('amount:', ticketClaimAmount);
               return true;
             },
             order
           );
+
+        //check ticket reward
+        await getTableRecord
+          .LotteryTicketBonusRewardTable(
+            gameRootContract,
+            BigNumber.from(ticketId)
+          )
+          .then((x: any) => {
+            expect(x.LotteryGameId).to.be.equal(lotteryGameId);
+            expect(x.IsRewardBonus).to.be.true;
+            expect(x.RewardTime).to.be.gte(ticketRewardTimestamp);
+            expect(x.RewardLevel).to.be.equal(order);
+            expect(x.RewardAmount).to.be.equal(ticketClaimAmount);
+            return x;
+          });
+
+        // console.log('ticketReward:', ticketReward);
         addressIndex++;
       }
 

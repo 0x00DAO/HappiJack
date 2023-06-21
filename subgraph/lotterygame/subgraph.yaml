@@ -6,7 +6,7 @@ dataSources:
     name: LotteryGameSystem
     network: mumbai
     source:
-      address: "0x4a7B2ad205745A53858b84028F4D2a21D7E96637"
+      address: '0x4a7B2ad205745A53858b84028F4D2a21D7E96637'
       abi: LotteryGameSystem
       startBlock: 36749816
     mapping:
@@ -49,3 +49,50 @@ dataSources:
         - event: Upgraded(indexed address)
           handler: handleUpgraded
       file: ./src/lottery-game-system.ts
+  - kind: ethereum
+    name: LotteryGameSellSystem
+    network: mumbai
+    source:
+      address: '0x4991bd9EaCF82D4cE4728D8a5575C5A8ec8B0d89'
+      abi: LotteryGameSellSystem
+      startBlock: 36749816
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LotteryGameSellSystemAdminChanged
+        - LotteryGameSellSystemBeaconUpgraded
+        - LotteryGameSellSystemInitialized
+        - LotteryTicketBuy
+        - LotteryGameSellSystemPaused
+        - LotteryGameSellSystemRoleAdminChanged
+        - LotteryGameSellSystemRoleGranted
+        - LotteryGameSellSystemRoleRevoked
+        - LotteryGameSellSystemUnpaused
+        - LotteryGameSellSystemUpgraded
+      abis:
+        - name: LotteryGameSellSystem
+          file: ./abis/LotteryGameSellSystem.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: LotteryTicketBuy(indexed uint256,indexed address,indexed uint256,uint256)
+          handler: handleLotteryTicketBuy
+        - event: Paused(address)
+          handler: handlePaused
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/lottery-game-sell-system.ts
