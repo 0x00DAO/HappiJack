@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
+import "../../core/contract-upgradeable/VersionUpgradeable.sol";
 import {SystemAccessControl} from "../../eon/SystemAccessControl.sol";
 import {ComponentType} from "../../eon/ComponentType.sol";
 
@@ -21,7 +22,8 @@ contract LotteryGameLotteryNFTSystem is
     ERC721EnumerableUpgradeable,
     PausableUpgradeable,
     SystemAccessControl,
-    UUPSUpgradeable
+    UUPSUpgradeable,
+    VersionUpgradeable
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
