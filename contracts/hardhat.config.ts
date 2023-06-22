@@ -8,7 +8,7 @@ import '@openzeppelin/hardhat-defender';
 import '@openzeppelin/hardhat-upgrades';
 import 'hardhat-abi-exporter';
 
-require('./contracts/tasks/eno.hardhat.task');
+require('./tasks/eno.hardhat.task');
 
 const {
   POLYGON_TESTNET_URL,
