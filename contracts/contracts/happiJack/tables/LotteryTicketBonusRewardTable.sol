@@ -103,7 +103,12 @@ library LotteryTicketBonusRewardTable {
         );
         if (_blob.length == 0) return false;
 
-        return abi.decode(_blob, (bool));
+        bool output;
+        assembly {
+            output := mload(add(add(_blob, 0x20), 0))
+        }
+
+        return output;
     }
 
     /** Set  */
