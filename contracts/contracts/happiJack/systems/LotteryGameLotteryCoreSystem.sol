@@ -26,8 +26,7 @@ contract LotteryGameLotteryCoreSystem is
     PausableUpgradeable,
     UUPSUpgradeable,
     System,
-    ReentrancyGuardUpgradeable,
-    VersionUpgradeable
+    ReentrancyGuardUpgradeable
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");

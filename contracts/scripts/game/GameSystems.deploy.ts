@@ -73,7 +73,16 @@ async function deployExistRegisterSystem(
   deployedNewSystem: string[],
   gameRootContract: Contract
 ) {
-  for (let i = 0; i < systems.length; i++) {
+  //pause game root before deploy
+  process.stdout.write('Pause game root before deploy ... ');
+  await gameRootContract.paused().then(async (paused: any) => {
+    if (!paused) {
+      await gameRootContract.pause();
+    }
+  });
+  console.log('done!');
+
+  for (let i = 15; i < systems.length; i++) {
     const systemContractName = systems[i];
     console.log(`Deploy ${i + 1}/${systems.length}, ${systemContractName}`);
 
@@ -103,6 +112,15 @@ async function deployExistRegisterSystem(
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   console.log('Deploy exist system done');
+
+  //unpause game root after deploy
+  process.stdout.write('Unpause game root after deploy ... ');
+  await gameRootContract.paused().then(async (paused: any) => {
+    if (paused) {
+      await gameRootContract.unpause();
+    }
+  });
+  console.log('done!');
 }
 
 async function main() {
