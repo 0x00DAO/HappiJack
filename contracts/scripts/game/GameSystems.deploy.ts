@@ -4,23 +4,28 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 // const hre = require("hardhat");
+import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
 import { ContractDeployAddress } from '../consts/deploy.address.const';
 import { gameDeploy } from '../consts/deploy.game.const';
-import { deployUtil } from '../utils/deploy.util';
+import { deployUpgradeProxy, deployUtil } from '../utils/deploy.util';
 
-const DeployContractName = 'GameRoot';
+const GameRootContractName = 'GameRoot';
 const contractGameRootAddress = ContractDeployAddress.GameRoot;
 
-async function main() {
-  const systems = gameDeploy.systems;
-
-  const GameRootContractName = 'GameRoot';
+async function getGameRootAddress(): Promise<string> {
   const GameRootContractAddress = contractGameRootAddress;
-  const gameRootContract = await ethers.getContractAt(
-    GameRootContractName,
-    GameRootContractAddress as string
-  );
+  if (GameRootContractAddress) {
+    return GameRootContractAddress;
+  }
+  const contract = await deployUpgradeProxy(GameRootContractName);
+  return contract.address;
+}
+
+async function deployNewRegisterSystem(
+  systems: string[],
+  gameRootContract: Contract
+): Promise<string[]> {
   // const systemContractName = 'LotteryGameLuckyNumberSystem';
   const deployedNewSystem: string[] = [];
   // step 1. Deploy new register system
@@ -38,7 +43,7 @@ async function main() {
       deployedNewSystem.push(systemContractName);
       await deployUtil.gameSystemDeploy(
         GameRootContractName,
-        contractGameRootAddress as string,
+        gameRootContract.address,
         systemContractName,
         systemId,
         undefined,
@@ -60,8 +65,14 @@ async function main() {
     // console.log(`Deploy next ${i + 1}/${systems.length}`);
   }
   console.log('Deploy new system done', deployedNewSystem);
-  // step 2. Deploy exist register system
+  return deployedNewSystem;
+}
 
+async function deployExistRegisterSystem(
+  systems: string[],
+  deployedNewSystem: string[],
+  gameRootContract: Contract
+) {
   for (let i = 0; i < systems.length; i++) {
     const systemContractName = systems[i];
     console.log(`Deploy ${i + 1}/${systems.length}, ${systemContractName}`);
@@ -70,7 +81,7 @@ async function main() {
       const systemId = gameDeploy.systemId(systemContractName);
       await deployUtil.gameSystemDeploy(
         GameRootContractName,
-        contractGameRootAddress as string,
+        gameRootContract.address,
         systemContractName,
         systemId,
         undefined,
@@ -92,6 +103,23 @@ async function main() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
   console.log('Deploy exist system done');
+}
+
+async function main() {
+  const systems = gameDeploy.systems;
+
+  const GameRootContractAddress = await getGameRootAddress();
+  const gameRootContract = await ethers.getContractAt(
+    GameRootContractName,
+    GameRootContractAddress
+  );
+  // step 1. Deploy new register system
+  const deployedNewSystem: string[] = await deployNewRegisterSystem(
+    systems,
+    gameRootContract
+  );
+  // step 2. Deploy exist register system
+  await deployExistRegisterSystem(systems, deployedNewSystem, gameRootContract);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
