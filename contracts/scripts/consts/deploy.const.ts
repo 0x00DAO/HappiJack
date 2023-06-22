@@ -5,4 +5,5 @@ export enum deployNetwork {
   polygon_mainnet = 'polygon_mainnet',
   eth_testnet = 'eth_testnet',
   eth_mainnet = 'eth_mainnet',
+  hardhat = 'hardhat',
 }
