@@ -72,6 +72,7 @@ contract LotteryGameSellSystem is
     );
 
     using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
+
     mapping(uint256 => EnumerableSetUpgradeable.AddressSet)
         internal ticketSoldByLotteryGameId;
 
@@ -146,7 +147,7 @@ contract LotteryGameSellSystem is
 
         _updateTicketSoldCount(lotteryGameId, ticketId);
 
-        ticketSoldByLotteryGameId[lotteryGameId].add(_msgSender());
+        LotteryGameTicketSoldCollectionTable.add(lotteryGameId, _msgSender());
 
         // send ETH to bonus pool
         LotteryGameBonusPoolSystem(
@@ -217,6 +218,6 @@ contract LotteryGameSellSystem is
         uint256 lotteryGameId_,
         address owner_
     ) public view returns (bool) {
-        return ticketSoldByLotteryGameId[lotteryGameId_].contains(owner_);
+        return LotteryGameTicketSoldCollectionTable.has(lotteryGameId_, owner_);
     }
 }

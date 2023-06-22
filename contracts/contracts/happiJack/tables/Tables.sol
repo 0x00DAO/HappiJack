@@ -21,3 +21,4 @@ import {LotteryGameWalletSafeBoxTable, LotteryGameWalletSafeBoxTableId} from "./
 //below are collections
 import {LotteryGameActiveGameCollectionTable, LotteryGameActiveGameCollectionTableId} from "./LotteryGameActiveGameCollectionTable.sol";
 import {LotteryGameHistoryGameCollectionTable, LotteryGameHistoryGameCollectionTableId} from "./LotteryGameHistoryGameCollectionTable.sol";
+import {LotteryGameTicketSoldCollectionTable, LotteryGameTicketSoldCollectionTableId} from "./LotteryGameTicketSoldCollectionTable.sol";
