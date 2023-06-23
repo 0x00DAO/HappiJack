@@ -4,9 +4,9 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {ComponentType} from "./ComponentType.sol";
-import {IComponent} from "./interface/IComponent.sol";
+import {IComponent} from "../interface/IComponent.sol";
 
-import {IRoot} from "./interface/IRoot.sol";
+import {IRoot} from "../interface/IRoot.sol";
 
 abstract contract BaseComponent is
     Initializable,

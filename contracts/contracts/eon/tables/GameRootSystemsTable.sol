@@ -2,10 +2,10 @@
 pragma solidity ^0.8.9;
 
 import {IStore} from "../interface/IStore.sol";
-import {System} from "..//System.sol";
-import {StoreDelegate} from "../StoreDelegate.sol";
+import {System} from "../systems/System.sol";
+import {StoreDelegate} from "../store/StoreDelegate.sol";
 
-import {addressToEntity, entityToAddress} from "../utils.sol";
+import {addressToEntity, entityToAddress} from "../utils/Utils.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(abi.encodePacked("tableId", "eon", "GameRootSystemsTable"))

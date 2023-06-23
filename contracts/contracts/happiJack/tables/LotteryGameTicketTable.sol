@@ -2,9 +2,9 @@
 pragma solidity ^0.8.9;
 
 import {IStore} from "../../eon/interface/IStore.sol";
-import {System} from "../../eon/System.sol";
-import {StoreDelegate} from "../../eon/StoreDelegate.sol";
-import {addressToEntity, entityToAddress} from "../../eon/utils.sol";
+import {System} from "../../eon/systems/System.sol";
+import {StoreDelegate} from "../../eon/store/StoreDelegate.sol";
+import {addressToEntity, entityToAddress} from "../../eon/utils/Utils.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(

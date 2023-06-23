@@ -2,7 +2,7 @@
 pragma solidity ^0.8.9;
 
 import {IStoreU256Set} from "../../../eon/interface/IStore.sol";
-import {StoreU256SetSystemDelegate} from "../../../eon/StoreU256SetSystemDelegate.sol";
+import {StoreU256SetSystemDelegate} from "../../../eon/store/StoreU256SetSystemDelegate.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(abi.encodePacked("tableId", "MiniGameBonusListTable"))

@@ -5,10 +5,10 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import {System} from "../../../eon/System.sol";
+import {System} from "../../../eon/systems/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import {addressToEntity, entityToAddress} from "../../../eon/utils.sol";
+import {addressToEntity, entityToAddress} from "../../../eon/utils/Utils.sol";
 
 import {MiniGameBonusTable} from "../tables/MiniGameBonusTable.sol";
 

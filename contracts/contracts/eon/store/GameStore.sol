@@ -5,9 +5,9 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-import {IRoot} from "./interface/IRoot.sol";
-import {BaseComponent} from "./BaseComponent.sol";
-import {ComponentType} from "./ComponentType.sol";
+import {IRoot} from "../interface/IRoot.sol";
+import {BaseComponent} from "../component/BaseComponent.sol";
+import {ComponentType} from "../component/ComponentType.sol";
 
 uint256 constant ID = uint256(keccak256("game.gamestore.GameStore"));
 uint256 constant SLOT = uint256(keccak256("game.gamestore.slot"));

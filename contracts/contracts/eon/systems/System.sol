@@ -5,11 +5,11 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-import {ComponentType} from "./ComponentType.sol";
-import {BaseComponent} from "./BaseComponent.sol";
+import {ComponentType} from "../component/ComponentType.sol";
+import {BaseComponent} from "../component/BaseComponent.sol";
 import {SystemAccessControl} from "./SystemAccessControl.sol";
 
-import {IRoot} from "./interface/IRoot.sol";
+import {IRoot} from "../interface/IRoot.sol";
 
 contract System is
     Initializable,

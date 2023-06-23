@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {IStore} from "./interface/IStore.sol";
-import {IComponent} from "./interface/IComponent.sol";
-import {IRoot} from "./interface/IRoot.sol";
+import {IStore} from "../interface/IStore.sol";
+import {IComponent} from "../interface/IComponent.sol";
+import {IRoot} from "../interface/IRoot.sol";
 
 library StoreDelegate {
     function Store() internal view returns (IStore) {

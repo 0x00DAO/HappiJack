@@ -4,16 +4,16 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "./utils/VersionUpgradeable.sol";
+
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import "../core/contract-upgradeable/VersionUpgradeable.sol";
 import {IRoot} from "./interface/IRoot.sol";
 import {IStore} from "./interface/IStore.sol";
 
-import {GameStore} from "./GameStore.sol";
-import {BaseComponent} from "./BaseComponent.sol";
+import {GameStore} from "./store/GameStore.sol";
 import {IComponent} from "./interface/IComponent.sol";
-
-import {ComponentType} from "./ComponentType.sol";
+import {BaseComponent} from "./component/BaseComponent.sol";
+import {ComponentType} from "./component/ComponentType.sol";
 
 import {GameRootSystemsTable} from "./tables/GameRootSystemsTable.sol";
 import {GameRootSystemsIndexTable} from "./tables/GameRootSystemsIndexTable.sol";

@@ -6,9 +6,9 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
-import "../../core/contract-upgradeable/VersionUpgradeable.sol";
-import {System} from "../System.sol";
-import {GameStoreU256Set} from "../GameStoreU256Set.sol";
+import "../utils/VersionUpgradeable.sol";
+import {System} from "./System.sol";
+import {GameStoreU256Set} from "../store/GameStoreU256Set.sol";
 import {IStoreU256SetWrite} from "../interface/IStore.sol";
 
 uint256 constant ID = uint256(keccak256("eno.systems.StoreU256SetSystem"));

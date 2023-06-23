@@ -229,7 +229,10 @@ describe('MiniGameBonusSystem', function () {
 
     it('fail: should not be able to addBonusAddressList use StoreU256SetSystem', async function () {
       await expect(
-        storeU256SetSystem.add([ethers.utils.hexZeroPad('0x01', 32)], 1)
+        storeU256SetSystem['add(bytes32[],uint256)'](
+          [ethers.utils.hexZeroPad('0x01', 32)],
+          1
+        )
       ).to.be.revertedWith(
         'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7'
       );

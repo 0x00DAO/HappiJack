@@ -5,7 +5,7 @@ import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-import {BaseComponent} from "./BaseComponent.sol";
+import {BaseComponent} from "../component/BaseComponent.sol";
 
 bytes32 constant SYSTEM_INTERNAL_ROLE_ = keccak256("SYSTEM_INTERNAL_ROLE");
 

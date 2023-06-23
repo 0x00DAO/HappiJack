@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
-import {IStoreU256SetRead} from "./interface/IStore.sol";
+import {IStoreU256SetRead} from "../interface/IStore.sol";
 
 abstract contract GameStoreU256Set is
     Initializable,

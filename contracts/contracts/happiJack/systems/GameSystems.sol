@@ -2,8 +2,8 @@
 pragma solidity ^0.8.9;
 
 import {IStore} from "../../eon/interface/IStore.sol";
-import {System} from "../../eon/System.sol";
-import {StoreDelegate} from "../../eon/StoreDelegate.sol";
+import {System} from "../../eon/systems/System.sol";
+import {StoreDelegate} from "../../eon/store/StoreDelegate.sol";
 
 import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 

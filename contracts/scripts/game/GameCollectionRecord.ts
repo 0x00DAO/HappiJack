@@ -17,7 +17,7 @@ async function LotteryGameActiveGameCollectionTableValues(
 ): Promise<BigNumber[]> {
   const [tableId, Key] = LotteryGameActiveGameCollectionTable();
   const store = await storeU256SetSystem(gameRoot);
-  return store.values([tableId, Key]);
+  return store['values(bytes32[])']([tableId, Key]);
 }
 async function LotteryGameActiveGameCollectionTableLength(
   gameRoot: Contract
