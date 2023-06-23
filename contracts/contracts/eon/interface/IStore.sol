@@ -55,6 +55,10 @@ interface IStoreU256SetRead {
         bytes32[] calldata key
     ) external view returns (uint256[] memory);
 
+    function values(
+        bytes32[][] calldata key
+    ) external view returns (uint256[][] memory);
+
     function valuesAsAddress(
         bytes32[] calldata key
     ) external view returns (address[] memory);
@@ -69,11 +73,19 @@ interface IStoreU256SetWrite {
     // add data to last index
     function add(bytes32[] calldata key, uint256 value) external returns (bool);
 
-    // remove data from index
+    function add(
+        bytes32[] calldata key,
+        uint256[] calldata values
+    ) external returns (bool);
+
+    // remove data from key
     function remove(
         bytes32[] calldata key,
         uint256 value
     ) external returns (bool);
+
+    // remove all data from key
+    function removeAll(bytes32[] calldata key) external;
 }
 
 interface IStoreU256Set is IStoreU256SetRead, IStoreU256SetWrite {}

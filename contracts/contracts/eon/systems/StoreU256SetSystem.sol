@@ -64,10 +64,23 @@ contract StoreU256SetSystem is
         return _add(key, value);
     }
 
+    function add(
+        bytes32[] calldata key,
+        uint256[] calldata values
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) returns (bool) {
+        return _add(key, values);
+    }
+
     function remove(
         bytes32[] calldata key,
         uint256 value
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) returns (bool) {
         return _remove(key, value);
+    }
+
+    function removeAll(
+        bytes32[] calldata key
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        _removeAll(key);
     }
 }

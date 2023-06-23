@@ -76,7 +76,7 @@ contract LotteryGameLotteryCoreSystem is
     // LotteryResult
     // LotteryGameId=>Order=>LuckNumbers
     // 1=>1=>[111111, 200000]
-    mapping(uint256 => mapping(uint256 => uint256[])) internal lotteryResults;
+    // LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable
 
     //lotteryResultsTicketIds
     // LotteryGameId=>Order=>[TicketId]
@@ -195,6 +195,10 @@ contract LotteryGameLotteryCoreSystem is
         return result;
     }
 
+    ///@dev Compute the lottery result,writes the result to the lotteryResults
+    ///@param lotteryGameId_ LotteryGameId
+    ///@param luckNumber_ The number of the lottery
+    ///@param topNumber_ The number of the winning number, the default is 3,means the top 3:(0:1st,1:2nd,2:3rd)
     function _computeLotteryResult(
         uint256 lotteryGameId_,
         uint256 luckNumber_,
@@ -212,49 +216,84 @@ contract LotteryGameLotteryCoreSystem is
         );
 
         uint256[] memory uniqueLuckNumbers_ = getLuckNumbers(lotteryGameId_);
+        uint256 uniqueLuckNumbersLength_ = uniqueLuckNumbers_.length;
 
         for (uint256 i = 0; i < result.length; i++) {
             uint256[] memory temp = result[i];
             //remove exist order
-            lotteryResults[lotteryGameId_][i] = new uint256[](0);
+            LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable.removeAll(
+                lotteryGameId_,
+                i
+            );
 
-            for (uint256 j = 0; j < temp.length; j++) {
-                // add luckNumber to order
-                lotteryResults[lotteryGameId_][i].push(temp[j]);
-            }
+            // add luckNumber to order
+            LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable.add(
+                lotteryGameId_,
+                i,
+                temp
+            );
 
             //remove exist luckNumber
             for (uint256 j = 0; j < temp.length; j++) {
                 for (uint256 k = 0; k < uniqueLuckNumbers_.length; k++) {
                     if (temp[j] == uniqueLuckNumbers_[k]) {
                         uniqueLuckNumbers_[k] = 0;
+                        uniqueLuckNumbersLength_--;
                         break;
                     }
                 }
             }
         }
-
-        //add the remaining numbers to the last order
+        //filter remaining numbers
+        uint256[] memory remainingNumbers_ = new uint256[](
+            uniqueLuckNumbersLength_
+        );
+        uint256 remainingNumbersIndex_ = 0;
         for (uint256 i = 0; i < uniqueLuckNumbers_.length; i++) {
             if (uniqueLuckNumbers_[i] > 0) {
-                lotteryResults[lotteryGameId_][topNumber_].push(
-                    uniqueLuckNumbers_[i]
-                );
+                remainingNumbers_[remainingNumbersIndex_] = uniqueLuckNumbers_[
+                    i
+                ];
+                remainingNumbersIndex_++;
             }
         }
 
+        //add remaining numbers to the last order
+        LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable.add(
+            lotteryGameId_,
+            topNumber_,
+            remainingNumbers_
+        );
+
         //add ticketId to order
         for (uint256 i = 0; i <= topNumber_; i++) {
-            uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
-            for (uint256 j = 0; j < luckNumbers_.length; j++) {
-                uint256[]
-                    memory ticketIds_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
-                        .values(lotteryGameId_, luckNumbers_[j]);
+            uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
+                lotteryGameId_,
+                i
+            );
+            _buildTicketIdWithWinOrderAndLuckyNumber(
+                lotteryGameId_,
+                i,
+                luckNumbers_
+            );
+        }
+    }
 
-                for (uint256 k = 0; k < ticketIds_.length; k++) {
-                    uint256 ticketId_ = ticketIds_[k];
-                    lotteryResultsTicketIds[lotteryGameId_][i].push(ticketId_);
-                }
+    function _buildTicketIdWithWinOrderAndLuckyNumber(
+        uint256 lotteryGameId_,
+        uint256 topNumber_,
+        uint256[] memory luckNumbers_
+    ) internal {
+        uint256[][]
+            memory ticketIdsArray_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
+                .values(lotteryGameId_, luckNumbers_);
+
+        for (uint256 i = 0; i < ticketIdsArray_.length; i++) {
+            for (uint256 j = 0; j < ticketIdsArray_[i].length; j++) {
+                uint256 ticketId_ = ticketIdsArray_[i][j];
+                lotteryResultsTicketIds[lotteryGameId_][topNumber_].push(
+                    ticketId_
+                );
             }
         }
     }
@@ -282,7 +321,10 @@ contract LotteryGameLotteryCoreSystem is
         );
         // uint256 maxOrder_ = 4;
         for (uint256 i = 0; i < maxOrder_; i++) {
-            uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
+            uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
+                lotteryGameId_,
+                i
+            );
             for (uint256 j = 0; j < luckNumbers_.length; j++) {
                 if (luckNumbers_[j] == luckNumber_) {
                     return i;
@@ -297,7 +339,11 @@ contract LotteryGameLotteryCoreSystem is
         uint256 lotteryGameId_,
         uint256 order_
     ) public view returns (uint256[] memory) {
-        return lotteryResults[lotteryGameId_][order_];
+        return
+            LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable.values(
+                lotteryGameId_,
+                order_
+            );
     }
 
     ///@dev Get the lottery ticket ID of the specified order and number

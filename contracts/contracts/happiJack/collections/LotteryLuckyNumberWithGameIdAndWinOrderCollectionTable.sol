@@ -10,13 +10,13 @@ bytes32 constant _tableId = bytes32(
         abi.encodePacked(
             "tableId",
             "HappiJack",
-            "LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable"
+            "LotteryLuckyNumberWithGameIdAndWinOrderCollectionTableTable"
         )
     )
 );
-bytes32 constant LotteryTicketIdWithGameIdAndLuckyNumberCollectionTableId = _tableId;
+bytes32 constant LotteryLuckyNumberWithGameIdAndWinOrderCollectionTableId = _tableId;
 
-library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
+library LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable {
     /** Get the table's metadata */
     function getMetadata()
         internal
@@ -24,21 +24,21 @@ library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
         returns (string memory, string[] memory)
     {
         string[] memory _fieldNames = new string[](1);
-        _fieldNames[0] = "LotteryGameId"; // uint256
+        _fieldNames[0] = "luckyNumber"; // uint256
         return (
-            "LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable",
+            "LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable",
             _fieldNames
         );
     }
 
     function entityKeys(
         uint256 lotteryGameId,
-        uint256 luckyNumber
+        uint256 winOrder
     ) internal pure returns (bytes32[] memory) {
         bytes32[] memory _keyTuple = new bytes32[](3);
         _keyTuple[0] = _tableId;
         _keyTuple[1] = bytes32(lotteryGameId);
-        _keyTuple[2] = bytes32(luckyNumber);
+        _keyTuple[2] = bytes32(winOrder);
 
         return _keyTuple;
     }
@@ -49,64 +49,67 @@ library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
 
     function add(
         uint256 lotteryGameId,
-        uint256 luckyNumber,
-        uint256 ticketId
+        uint256 winOrder,
+        uint256[] memory datums
     ) internal returns (bool) {
-        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
-        return store().add(_keyTuple, ticketId);
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
+        return store().add(_keyTuple, datums);
+    }
+
+    function add(
+        uint256 lotteryGameId,
+        uint256 winOrder,
+        uint256 value
+    ) internal returns (bool) {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
+        return store().add(_keyTuple, value);
     }
 
     function remove(
         uint256 lotteryGameId,
-        uint256 luckyNumber,
-        uint256 ticketId
+        uint256 winOrder,
+        uint256 value
     ) internal returns (bool) {
-        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
-        return store().remove(_keyTuple, ticketId);
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
+        return store().remove(_keyTuple, value);
+    }
+
+    function removeAll(uint256 lotteryGameId, uint256 winOrder) internal {
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
+        return store().removeAll(_keyTuple);
     }
 
     function at(
         uint256 lotteryGameId,
-        uint256 luckyNumber,
+        uint256 winOrder,
         uint256 index
     ) internal view returns (uint256) {
-        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
         return store().at(_keyTuple, index);
     }
 
     function values(
         uint256 lotteryGameId,
-        uint256 luckyNumber
+        uint256 winOrder
     ) internal view returns (uint256[] memory) {
-        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
         return store().values(_keyTuple);
-    }
-
-    function values(
-        uint256 lotteryGameId,
-        uint256[] memory luckyNumbers
-    ) internal view returns (uint256[][] memory) {
-        bytes32[][] memory _keyTuples = new bytes32[][](luckyNumbers.length);
-        for (uint256 i = 0; i < luckyNumbers.length; i++) {
-            _keyTuples[i] = entityKeys(lotteryGameId, luckyNumbers[i]);
-        }
-        return store().values(_keyTuples);
     }
 
     function has(
         uint256 lotteryGameId,
-        uint256 luckyNumber,
-        uint256 ticketId
+        uint256 winOrder,
+        uint256 value
     ) internal view returns (bool) {
-        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
-        return store().has(_keyTuple, ticketId);
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
+        return store().has(_keyTuple, value);
     }
 
     function length(
         uint256 lotteryGameId,
-        uint256 luckyNumber
+        uint256 winOrder
     ) internal view returns (uint256) {
-        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
+        bytes32[] memory _keyTuple = entityKeys(lotteryGameId, winOrder);
         return store().length(_keyTuple);
     }
 }

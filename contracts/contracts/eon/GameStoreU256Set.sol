@@ -36,6 +36,20 @@ abstract contract GameStoreU256Set is
         return entityToValue[getEntityId(key)].add(value);
     }
 
+    function _add(
+        bytes32[] calldata key,
+        uint256[] calldata datums
+    ) internal virtual returns (bool) {
+        // Store the entity's value;
+        EnumerableSetUpgradeable.UintSet storage set = entityToValue[
+            getEntityId(key)
+        ];
+        for (uint256 i = 0; i < datums.length; i++) {
+            set.add(datums[i]);
+        }
+        return true;
+    }
+
     /**
      * Remove the given entity from this component.
      * Registers the update in the World contract.
@@ -48,6 +62,11 @@ abstract contract GameStoreU256Set is
     ) internal virtual returns (bool) {
         // Remove the entity from the mapping
         return entityToValue[getEntityId(key)].remove(value);
+    }
+
+    /// @dev clears the value for the given entity.
+    function _removeAll(bytes32[] calldata key) internal virtual {
+        delete entityToValue[getEntityId(key)];
     }
 
     function has(
@@ -74,6 +93,16 @@ abstract contract GameStoreU256Set is
         bytes32[] calldata key
     ) public view virtual returns (uint256[] memory) {
         return entityToValue[getEntityId(key)].values();
+    }
+
+    function values(
+        bytes32[][] calldata key
+    ) public view virtual returns (uint256[][] memory) {
+        uint256[][] memory store = new uint256[][](key.length);
+        for (uint256 i = 0; i < key.length; i++) {
+            store[i] = values(key[i]);
+        }
+        return store;
     }
 
     function valuesAsAddress(

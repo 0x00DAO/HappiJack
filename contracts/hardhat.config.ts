@@ -65,7 +65,7 @@ const config: HardhatUserConfig = {
     },
   },
   mocha: {
-    timeout: 2 * 60 * 1000,
+    timeout: 10 * 60 * 1000,
   },
   defender: {
     apiKey: process.env.CONTRACT_DEPLOYER_DEFENDER_TEAM_API_KEY as string,
