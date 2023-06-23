@@ -67,7 +67,7 @@ contract LotteryGameLotteryCoreSystem is
     // LotteryGameId=>LuckNumber=>[TicketId], LuckNumber is a unique number
     // 1=>111111=>[1, 2, 3]
     // 1=>200000=>[4, 5, 6]
-    // LotteryGameLuckyNumberWithTicketIdCollectionTable
+    // LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
 
     // LotteryGameId=>Set<LuckNumber>, Set is a list of unique numbers
     // 1=>[111111, 200000]
@@ -89,7 +89,7 @@ contract LotteryGameLotteryCoreSystem is
         uint256 luckNumber_,
         uint256 ticketId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-        LotteryGameLuckyNumberWithTicketIdCollectionTable.add(
+        LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable.add(
             lotteryGameId_,
             luckNumber_,
             ticketId_
@@ -105,7 +105,7 @@ contract LotteryGameLotteryCoreSystem is
         uint256 luckNumber_
     ) public view returns (uint256) {
         return
-            LotteryGameLuckyNumberWithTicketIdCollectionTable.length(
+            LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable.length(
                 lotteryGameId_,
                 luckNumber_
             );
@@ -246,7 +246,7 @@ contract LotteryGameLotteryCoreSystem is
             uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
             for (uint256 j = 0; j < luckNumbers_.length; j++) {
                 uint256[]
-                    memory ticketIds_ = LotteryGameLuckyNumberWithTicketIdCollectionTable
+                    memory ticketIds_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
                         .values(lotteryGameId_, luckNumbers_[j]);
 
                 for (uint256 k = 0; k < ticketIds_.length; k++) {

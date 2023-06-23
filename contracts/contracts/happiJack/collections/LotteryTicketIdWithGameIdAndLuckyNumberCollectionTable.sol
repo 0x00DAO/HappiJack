@@ -10,13 +10,13 @@ bytes32 constant _tableId = bytes32(
         abi.encodePacked(
             "tableId",
             "HappiJack",
-            "LotteryGameLuckyNumberWithTicketIdCollectionTable"
+            "LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable"
         )
     )
 );
-bytes32 constant LotteryGameLuckyNumberWithTicketIdCollectionTableId = _tableId;
+bytes32 constant LotteryTicketIdWithGameIdAndLuckyNumberCollectionTableId = _tableId;
 
-library LotteryGameLuckyNumberWithTicketIdCollectionTable {
+library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
     /** Get the table's metadata */
     function getMetadata()
         internal
@@ -26,7 +26,7 @@ library LotteryGameLuckyNumberWithTicketIdCollectionTable {
         string[] memory _fieldNames = new string[](1);
         _fieldNames[0] = "LotteryGameId"; // uint256
         return (
-            "LotteryGameLuckyNumberWithTicketIdCollectionTable",
+            "LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable",
             _fieldNames
         );
     }
