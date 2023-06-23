@@ -16,6 +16,7 @@ import {ArraySort} from "../libraries/ArraySort.sol";
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
+import "../collections/CollectionTables.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameLotteryCoreSystem")
@@ -66,8 +67,7 @@ contract LotteryGameLotteryCoreSystem is
     // LotteryGameId=>LuckNumber=>[TicketId], LuckNumber is a unique number
     // 1=>111111=>[1, 2, 3]
     // 1=>200000=>[4, 5, 6]
-    mapping(uint256 => mapping(uint256 => uint256[]))
-        internal luckNumberWithTicketIds;
+    // LotteryGameLuckyNumberWithTicketIdCollectionTable
 
     // LotteryGameId=>Set<LuckNumber>, Set is a list of unique numbers
     // 1=>[111111, 200000]
@@ -89,7 +89,11 @@ contract LotteryGameLotteryCoreSystem is
         uint256 luckNumber_,
         uint256 ticketId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-        luckNumberWithTicketIds[lotteryGameId_][luckNumber_].push(ticketId_);
+        LotteryGameLuckyNumberWithTicketIdCollectionTable.add(
+            lotteryGameId_,
+            luckNumber_,
+            ticketId_
+        );
 
         if (!luckNumbers[lotteryGameId_].contains(luckNumber_)) {
             luckNumbers[lotteryGameId_].add(luckNumber_);
@@ -100,7 +104,11 @@ contract LotteryGameLotteryCoreSystem is
         uint256 lotteryGameId_,
         uint256 luckNumber_
     ) public view returns (uint256) {
-        return luckNumberWithTicketIds[lotteryGameId_][luckNumber_].length;
+        return
+            LotteryGameLuckyNumberWithTicketIdCollectionTable.length(
+                lotteryGameId_,
+                luckNumber_
+            );
     }
 
     function getLuckNumbers(
@@ -237,9 +245,9 @@ contract LotteryGameLotteryCoreSystem is
         for (uint256 i = 0; i <= topNumber_; i++) {
             uint256[] memory luckNumbers_ = lotteryResults[lotteryGameId_][i];
             for (uint256 j = 0; j < luckNumbers_.length; j++) {
-                uint256[] memory ticketIds_ = luckNumberWithTicketIds[
-                    lotteryGameId_
-                ][luckNumbers_[j]];
+                uint256[]
+                    memory ticketIds_ = LotteryGameLuckyNumberWithTicketIdCollectionTable
+                        .values(lotteryGameId_, luckNumbers_[j]);
 
                 for (uint256 k = 0; k < ticketIds_.length; k++) {
                     uint256 ticketId_ = ticketIds_[k];
