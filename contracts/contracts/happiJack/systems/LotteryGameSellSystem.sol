@@ -9,7 +9,6 @@ import "../../core/contract-upgradeable/VersionUpgradeable.sol";
 import {System} from "../../eon/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
@@ -29,7 +28,8 @@ contract LotteryGameSellSystem is
     PausableUpgradeable,
     UUPSUpgradeable,
     System,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    VersionUpgradeable
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -70,11 +70,6 @@ contract LotteryGameSellSystem is
         uint256 indexed lotteryTicketId,
         uint256 luckyNumber
     );
-
-    using EnumerableSetUpgradeable for EnumerableSetUpgradeable.AddressSet;
-
-    mapping(uint256 => EnumerableSetUpgradeable.AddressSet)
-        internal ticketSoldByLotteryGameId;
 
     function buyLotteryTicketETH(
         uint256 lotteryGameId,
