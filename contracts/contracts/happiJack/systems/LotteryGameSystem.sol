@@ -13,6 +13,7 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
+import "../collections/CollectionTables.sol";
 
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
