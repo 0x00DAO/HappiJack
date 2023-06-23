@@ -71,7 +71,7 @@ contract LotteryGameLotteryCoreSystem is
 
     // LotteryGameId=>Set<LuckNumber>, Set is a list of unique numbers
     // 1=>[111111, 200000]
-    mapping(uint256 => EnumerableSetUpgradeable.UintSet) internal luckNumbers;
+    // LotteryLuckyNumberWithGameIdCollectionTable
 
     // LotteryResult
     // LotteryGameId=>Order=>LuckNumbers
@@ -95,9 +95,10 @@ contract LotteryGameLotteryCoreSystem is
             ticketId_
         );
 
-        if (!luckNumbers[lotteryGameId_].contains(luckNumber_)) {
-            luckNumbers[lotteryGameId_].add(luckNumber_);
-        }
+        LotteryLuckyNumberWithGameIdCollectionTable.add(
+            lotteryGameId_,
+            luckNumber_
+        );
     }
 
     function getLuckNumberCount(
@@ -114,13 +115,15 @@ contract LotteryGameLotteryCoreSystem is
     function getLuckNumbers(
         uint256 lotteryGameId_
     ) public view returns (uint256[] memory) {
-        return luckNumbers[lotteryGameId_].values();
+        return
+            LotteryLuckyNumberWithGameIdCollectionTable.values(lotteryGameId_);
     }
 
     function getLuckNumbersWithSort(
         uint256 lotteryGameId_
     ) public view returns (uint256[] memory) {
-        uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
+        uint256[] memory luckNumbers_ = getLuckNumbers(lotteryGameId_);
+
         return ArraySort.sort(luckNumbers_);
     }
 
@@ -146,7 +149,7 @@ contract LotteryGameLotteryCoreSystem is
             "LotteryGameLotteryCoreSystem: topNumber_ must be greater than 0"
         );
 
-        uint256[] memory luckNumbers_ = luckNumbers[lotteryGameId_].values();
+        uint256[] memory luckNumbers_ = getLuckNumbers(lotteryGameId_);
         uint256[][] memory result = new uint256[][](topNumber_);
 
         //Get the proximity of all numbers to the specified number
@@ -208,8 +211,7 @@ contract LotteryGameLotteryCoreSystem is
             topNumber_
         );
 
-        uint256[] memory uniqueLuckNumbers_ = luckNumbers[lotteryGameId_]
-            .values();
+        uint256[] memory uniqueLuckNumbers_ = getLuckNumbers(lotteryGameId_);
 
         for (uint256 i = 0; i < result.length; i++) {
             uint256[] memory temp = result[i];

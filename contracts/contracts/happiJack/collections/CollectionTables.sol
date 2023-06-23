@@ -5,3 +5,4 @@ import {LotteryGameActiveGameCollectionTable, LotteryGameActiveGameCollectionTab
 import {LotteryGameHistoryGameCollectionTable, LotteryGameHistoryGameCollectionTableId} from "./LotteryGameHistoryGameCollectionTable.sol";
 import {LotteryGameTicketSoldCollectionTable, LotteryGameTicketSoldCollectionTableId} from "./LotteryGameTicketSoldCollectionTable.sol";
 import {LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable, LotteryTicketIdWithGameIdAndLuckyNumberCollectionTableId} from "./LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable.sol";
+import {LotteryLuckyNumberWithGameIdCollectionTable, LotteryLuckyNumberWithGameIdCollectionTableId} from "./LotteryLuckyNumberWithGameIdCollectionTable.sol";

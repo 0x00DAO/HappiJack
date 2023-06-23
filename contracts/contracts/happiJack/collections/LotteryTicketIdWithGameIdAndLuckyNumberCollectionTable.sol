@@ -58,10 +58,11 @@ library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
 
     function remove(
         uint256 lotteryGameId,
-        uint256 luckyNumber
+        uint256 luckyNumber,
+        uint256 ticketId
     ) internal returns (bool) {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
-        return store().remove(_keyTuple, luckyNumber);
+        return store().remove(_keyTuple, ticketId);
     }
 
     function at(
@@ -83,10 +84,11 @@ library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
 
     function has(
         uint256 lotteryGameId,
-        uint256 luckyNumber
+        uint256 luckyNumber,
+        uint256 ticketId
     ) internal view returns (bool) {
         bytes32[] memory _keyTuple = entityKeys(lotteryGameId, luckyNumber);
-        return store().has(_keyTuple, luckyNumber);
+        return store().has(_keyTuple, ticketId);
     }
 
     function length(
