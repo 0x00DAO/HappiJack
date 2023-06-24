@@ -328,12 +328,12 @@ describe('LotteryGameLotteryCoreSystem', function () {
     const lotteryGameId = ethers.BigNumber.from(1999999999);
     it('success', async function () {
       //add 300 random luck numbers, luck number range is 1-999999
-      const luckNumbers = [];
+      const luckNumbers: number[] = [];
       for (let i = 0; i < 300; i++) {
         luckNumbers.push(Math.floor(Math.random() * 999999));
       }
 
-      for (let i = 0; i < 300; i++) {
+      for (let i = 0; i < luckNumbers.length; i++) {
         await lotteryGameLotteryCoreSystem.addLotteryGameLuckyNumber(
           lotteryGameId,
           luckNumbers[i],
@@ -344,7 +344,8 @@ describe('LotteryGameLotteryCoreSystem', function () {
       const luckNumber = 100000;
 
       // winnerLuckNumbers=>[[],[],[]]
-      const winnerLuckNumbers = [[]];
+      const winnerLuckNumbers: number[][] = [[], [], [], []];
+      const winnerLuckNumbersFlat: number[] = [];
 
       // getLuckNumberByClosest
       await lotteryGameLotteryCoreSystem
@@ -352,9 +353,20 @@ describe('LotteryGameLotteryCoreSystem', function () {
         .then((res: any) => {
           expect(res.length).to.equal(3);
           for (let i = 0; i < 3; i++) {
-            winnerLuckNumbers[i] = res[i];
+            // winnerLuckNumbers[i] = res[i];
+            res[i].forEach((item: BigNumber) => {
+              winnerLuckNumbers[i].push(item.toNumber());
+              winnerLuckNumbersFlat.push(item.toNumber());
+            });
           }
         });
+
+      //add rest luck numbers to winnerLuckNumbers
+      for (let i = 0; i < luckNumbers.length; i++) {
+        if (!winnerLuckNumbersFlat.includes(luckNumbers[i])) {
+          winnerLuckNumbers[3].push(luckNumbers[i]);
+        }
+      }
 
       //compute lottery result
       await lotteryGameLotteryCoreSystem.computeLotteryResult(
@@ -362,7 +374,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
         luckNumber
       );
 
-      console.log('winnerLuckNumbers', winnerLuckNumbers);
+      // console.log('winnerLuckNumbers', winnerLuckNumbers);
 
       //get lottery result ticket order
 
@@ -372,7 +384,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
             .getLotteryLuckNumberOrder(
               lotteryGameId,
               winnerLuckNumbers[i][j],
-              4
+              3
             )
             .then((res: any) => {
               expect(res).to.equal(i);
@@ -387,6 +399,26 @@ describe('LotteryGameLotteryCoreSystem', function () {
         .then((res: any) => {
           expect(res).to.equal(4);
         });
+
+      //get luck number at order
+      for (let i = 0; i < 4; i++) {
+        await lotteryGameLotteryCoreSystem
+          .getLotteryLuckNumbersAtOrder(lotteryGameId, i)
+          .then((res: any) => {
+            for (let j = 0; j < res.length; j++) {
+              expect(winnerLuckNumbers[i].includes(res[j].toNumber())).to.true;
+            }
+          });
+      }
+
+      //get getLotteryTicketsAtOrder
+      for (let i = 0; i < 4; i++) {
+        await lotteryGameLotteryCoreSystem
+          .getLotteryTicketsAtOrder(lotteryGameId, i)
+          .then((res: any) => {
+            expect(res.length).to.equal(winnerLuckNumbers[i].length);
+          });
+      }
     });
   });
 });

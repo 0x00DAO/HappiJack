@@ -12,7 +12,8 @@ import {System} from "../../eon/systems/System.sol";
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
-import {ArraySort} from "../libraries/ArraySort.sol";
+import {ArrayU256Utils} from "../../eon/utils/ArrayU256Utils.sol";
+
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
@@ -78,17 +79,20 @@ contract LotteryGameLotteryCoreSystem is
     // 1=>1=>[111111, 200000]
     // LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable
 
-    //lotteryResultsTicketIds
+    // lotteryResultsTicketIds
     // LotteryGameId=>Order=>[TicketId]
     // 1=>1=>[1, 2, 3, 4, 5, 6]
-    mapping(uint256 => mapping(uint256 => uint256[]))
-        internal lotteryResultsTicketIds;
+    // LotteryTicketIdWithGameIdAndWinOrderCollectionTable
+    // mapping(uint256 => mapping(uint256 => uint256[]))
+    // internal lotteryResultsTicketIds;
 
     function addLotteryGameLuckyNumber(
         uint256 lotteryGameId_,
         uint256 luckNumber_,
         uint256 ticketId_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        LotteryTicketIdWithGameIdCollectionTable.add(lotteryGameId_, ticketId_);
+
         LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable.add(
             lotteryGameId_,
             luckNumber_,
@@ -124,7 +128,7 @@ contract LotteryGameLotteryCoreSystem is
     ) public view returns (uint256[] memory) {
         uint256[] memory luckNumbers_ = getLuckNumbers(lotteryGameId_);
 
-        return ArraySort.sort(luckNumbers_);
+        return ArrayU256Utils.sort(luckNumbers_);
     }
 
     function getDistance(
@@ -159,13 +163,15 @@ contract LotteryGameLotteryCoreSystem is
         }
 
         //copy
-        uint256[] memory distanceCopy = ArraySort.clone(distanceOrigin);
+        uint256[] memory distanceCopy = ArrayU256Utils.clone(distanceOrigin);
 
         //Sort by proximity
-        uint256[] memory distanceSort = ArraySort.sort(distanceCopy);
+        uint256[] memory distanceSort = ArrayU256Utils.sort(distanceCopy);
 
         //uniqueness
-        uint256[] memory distanceSortUnique = ArraySort.unique(distanceSort);
+        uint256[] memory distanceSortUnique = ArrayU256Utils.unique(
+            distanceSort
+        );
         //[1,2,3,4,5,6,7,8,9,10]
 
         //Get the proximity of all numbers to the specified number
@@ -266,37 +272,31 @@ contract LotteryGameLotteryCoreSystem is
         );
 
         //add ticketId to order
-        for (uint256 i = 0; i <= topNumber_; i++) {
-            uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
-                lotteryGameId_,
-                i
-            );
-            _buildTicketIdWithWinOrderAndLuckyNumber(
-                lotteryGameId_,
-                i,
-                luckNumbers_
-            );
-        }
+        // for (uint256 i = 0; i < topNumber_; i++) {
+        // _buildTicketIdWithWinOrderAndLuckyNumber(lotteryGameId_, i);
+        // }
     }
 
-    function _buildTicketIdWithWinOrderAndLuckyNumber(
-        uint256 lotteryGameId_,
-        uint256 topNumber_,
-        uint256[] memory luckNumbers_
-    ) internal {
-        uint256[][]
-            memory ticketIdsArray_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
-                .values(lotteryGameId_, luckNumbers_);
+    // function _buildTicketIdWithWinOrderAndLuckyNumber(
+    //     uint256 lotteryGameId_,
+    //     uint256 topNumber_
+    // ) internal {
+    //     uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
+    //         lotteryGameId_,
+    //         topNumber_
+    //     );
+    //     uint256[][]
+    //         memory ticketIdsArray_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
+    //             .values(lotteryGameId_, luckNumbers_);
 
-        for (uint256 i = 0; i < ticketIdsArray_.length; i++) {
-            for (uint256 j = 0; j < ticketIdsArray_[i].length; j++) {
-                uint256 ticketId_ = ticketIdsArray_[i][j];
-                lotteryResultsTicketIds[lotteryGameId_][topNumber_].push(
-                    ticketId_
-                );
-            }
-        }
-    }
+    //     uint256[] memory ticketIds_ = ArrayU256Utils.append(ticketIdsArray_);
+
+    //     LotteryTicketIdWithGameIdAndWinOrderCollectionTable.add(
+    //         lotteryGameId_,
+    //         topNumber_,
+    //         ticketIds_
+    //     );
+    // }
 
     function computeLotteryResult(
         uint256 lotteryGameId_,
@@ -304,6 +304,15 @@ contract LotteryGameLotteryCoreSystem is
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         _computeLotteryResult(lotteryGameId_, luckNumber_, 3);
     }
+
+    // function buildTicketIdWithWinOrderAndLuckyNumber(
+    //     uint256 lotteryGameId_
+    // ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+    //     //add ticketId to order
+    //     for (uint256 i = 0; i <= 3; i++) {
+    //         _buildTicketIdWithWinOrderAndLuckyNumber(lotteryGameId_, i);
+    //     }
+    // }
 
     /// @dev Get the order of the lottery ticket in the lottery results
     function getLotteryLuckNumberOrder(
@@ -351,6 +360,20 @@ contract LotteryGameLotteryCoreSystem is
         uint256 lotteryGameId_,
         uint256 order_
     ) public view returns (uint256[] memory) {
-        return lotteryResultsTicketIds[lotteryGameId_][order_];
+        uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
+            lotteryGameId_,
+            order_
+        );
+        uint256[][]
+            memory ticketIdsArray_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
+                .values(lotteryGameId_, luckNumbers_);
+
+        return ArrayU256Utils.append(ticketIdsArray_);
+
+        // return
+        //     LotteryTicketIdWithGameIdAndWinOrderCollectionTable.values(
+        //         lotteryGameId_,
+        //         order_
+        //     );
     }
 }

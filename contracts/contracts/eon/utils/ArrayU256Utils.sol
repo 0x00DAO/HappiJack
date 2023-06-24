@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-library ArraySort {
+library ArrayU256Utils {
     function clone(
         uint256[] memory data
     ) internal pure returns (uint256[] memory) {
@@ -58,6 +58,40 @@ library ArraySort {
         uint256[] memory result = new uint256[](j + 1);
         for (uint256 i = 0; i < j + 1; i++) {
             result[i] = data[i];
+        }
+        return result;
+    }
+
+    function append(
+        uint256[] memory data,
+        uint256[] memory appendData
+    ) internal pure returns (uint256[] memory) {
+        uint256[] memory result = new uint256[](
+            data.length + appendData.length
+        );
+        for (uint256 i = 0; i < data.length; i++) {
+            result[i] = data[i];
+        }
+        for (uint256 i = 0; i < appendData.length; i++) {
+            result[data.length + i] = appendData[i];
+        }
+        return result;
+    }
+
+    function append(
+        uint256[][] memory data
+    ) internal pure returns (uint256[] memory) {
+        uint256 length = 0;
+        for (uint256 i = 0; i < data.length; i++) {
+            length += data[i].length;
+        }
+        uint256[] memory result = new uint256[](length);
+        uint256 index = 0;
+        for (uint256 i = 0; i < data.length; i++) {
+            for (uint256 j = 0; j < data[i].length; j++) {
+                result[index] = data[i][j];
+                index++;
+            }
         }
         return result;
     }

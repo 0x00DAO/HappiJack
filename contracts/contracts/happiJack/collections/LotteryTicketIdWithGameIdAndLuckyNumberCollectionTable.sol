@@ -24,7 +24,7 @@ library LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable {
         returns (string memory, string[] memory)
     {
         string[] memory _fieldNames = new string[](1);
-        _fieldNames[0] = "LotteryGameId"; // uint256
+        _fieldNames[0] = "LotteryTicketId"; // uint256
         return (
             "LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable",
             _fieldNames
