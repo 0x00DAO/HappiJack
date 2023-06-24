@@ -10,7 +10,6 @@ import "../../eon/utils/VersionUpgradeable.sol";
 import {System} from "../../eon/systems/System.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 
 import {ArrayU256Utils} from "../../eon/utils/ArrayU256Utils.sol";
 
@@ -28,7 +27,8 @@ contract LotteryGameLotteryCoreSystem is
     PausableUpgradeable,
     UUPSUpgradeable,
     System,
-    ReentrancyGuardUpgradeable
+    ReentrancyGuardUpgradeable,
+    VersionUpgradeable
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -63,8 +63,6 @@ contract LotteryGameLotteryCoreSystem is
 
     /// custom logic here
 
-    using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
-
     // LotteryGameId=>LuckNumber=>[TicketId], LuckNumber is a unique number
     // 1=>111111=>[1, 2, 3]
     // 1=>200000=>[4, 5, 6]
@@ -83,8 +81,6 @@ contract LotteryGameLotteryCoreSystem is
     // LotteryGameId=>Order=>[TicketId]
     // 1=>1=>[1, 2, 3, 4, 5, 6]
     // LotteryTicketIdWithGameIdAndWinOrderCollectionTable
-    // mapping(uint256 => mapping(uint256 => uint256[]))
-    // internal lotteryResultsTicketIds;
 
     function addLotteryGameLuckyNumber(
         uint256 lotteryGameId_,
@@ -270,33 +266,7 @@ contract LotteryGameLotteryCoreSystem is
             topNumber_,
             remainingNumbers_
         );
-
-        //add ticketId to order
-        // for (uint256 i = 0; i < topNumber_; i++) {
-        // _buildTicketIdWithWinOrderAndLuckyNumber(lotteryGameId_, i);
-        // }
     }
-
-    // function _buildTicketIdWithWinOrderAndLuckyNumber(
-    //     uint256 lotteryGameId_,
-    //     uint256 topNumber_
-    // ) internal {
-    //     uint256[] memory luckNumbers_ = getLotteryLuckNumbersAtOrder(
-    //         lotteryGameId_,
-    //         topNumber_
-    //     );
-    //     uint256[][]
-    //         memory ticketIdsArray_ = LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable
-    //             .values(lotteryGameId_, luckNumbers_);
-
-    //     uint256[] memory ticketIds_ = ArrayU256Utils.append(ticketIdsArray_);
-
-    //     LotteryTicketIdWithGameIdAndWinOrderCollectionTable.add(
-    //         lotteryGameId_,
-    //         topNumber_,
-    //         ticketIds_
-    //     );
-    // }
 
     function computeLotteryResult(
         uint256 lotteryGameId_,
@@ -304,15 +274,6 @@ contract LotteryGameLotteryCoreSystem is
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
         _computeLotteryResult(lotteryGameId_, luckNumber_, 3);
     }
-
-    // function buildTicketIdWithWinOrderAndLuckyNumber(
-    //     uint256 lotteryGameId_
-    // ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-    //     //add ticketId to order
-    //     for (uint256 i = 0; i <= 3; i++) {
-    //         _buildTicketIdWithWinOrderAndLuckyNumber(lotteryGameId_, i);
-    //     }
-    // }
 
     /// @dev Get the order of the lottery ticket in the lottery results
     function getLotteryLuckNumberOrder(
@@ -369,11 +330,5 @@ contract LotteryGameLotteryCoreSystem is
                 .values(lotteryGameId_, luckNumbers_);
 
         return ArrayU256Utils.append(ticketIdsArray_);
-
-        // return
-        //     LotteryTicketIdWithGameIdAndWinOrderCollectionTable.values(
-        //         lotteryGameId_,
-        //         order_
-        //     );
     }
 }
