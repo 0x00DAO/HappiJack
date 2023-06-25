@@ -9,7 +9,7 @@ interface ContractDeployAddressInterface {
 const ContractDeployAddress_Hardhat: ContractDeployAddressInterface = {};
 
 const ContractDeployAddress_PolygonTestNet: ContractDeployAddressInterface = {
-  GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
+  GameRoot: '0xa652FcC9ee53b0A85414d0c5f4F041e2D556409E',
 };
 
 const ContractDeployAddress_PolygonMainNet: ContractDeployAddressInterface = {};
