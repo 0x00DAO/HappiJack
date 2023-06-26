@@ -6,9 +6,9 @@ dataSources:
     name: LotteryGameSystem
     network: mumbai
     source:
-      address: '0x4a7B2ad205745A53858b84028F4D2a21D7E96637'
+      address: '0x28F8F343c6484142EaFB6460AF52756daee43b87'
       abi: LotteryGameSystem
-      startBlock: 36749816
+      startBlock: 37254754
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -53,9 +53,9 @@ dataSources:
     name: LotteryGameSellSystem
     network: mumbai
     source:
-      address: '0x4991bd9EaCF82D4cE4728D8a5575C5A8ec8B0d89'
+      address: '0xbABe8530aF9c67aFd20d3504bCeB6aCA6176761f'
       abi: LotteryGameSellSystem
-      startBlock: 36749816
+      startBlock: 37254754
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
