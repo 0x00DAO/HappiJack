@@ -10,35 +10,46 @@ uint256 constant IdConfigDeveloperAddress = uint256(
     keccak256("happiJack.systems.config.DeveloperAddress")
 );
 
-function getConfigDeveloperAddress() view returns (address) {
-    return
-        entityToAddress(
-            ContractUint256VariableTable.get(IdConfigDeveloperAddress)
-        );
-}
-
-///@dev This is a setting for the initial pool amount of the prize pool.
+///@dev This is a setting for the initial pool amount of the prize pool. default is 0.005 ether
 uint256 constant IdConfigWinPrizeInitialPoolAmount = uint256(
     keccak256("happiJack.systems.config.WinPrizeInitialPoolAmount")
 );
 
-function getConfigWinPrizeInitialPoolAmount() view returns (uint256) {
-    return
-        ContractUint256VariableTable.get(
-            IdConfigWinPrizeInitialPoolAmount,
-            0.005 ether
-        );
-}
-
-///@dev This is a setting for the initial ticket price of the prize pool.
+///@dev This is a setting for the initial ticket price of the prize pool. default is 0.0005 ether
 uint256 constant IdConfigWinPrizeInitialTicketPrice = uint256(
     keccak256("happiJack.systems.config.WinPrizeInitialTicketPrice")
 );
 
-function getConfigWinPrizeInitialTicketPrice() view returns (uint256) {
-    return
-        ContractUint256VariableTable.get(
-            IdConfigWinPrizeInitialTicketPrice,
-            0.0005 ether
-        );
+/// @dev This is a setting for win prize develop fee. default is 10%
+uint256 constant IdConfigWinPrizeDevelopFee = uint256(
+    keccak256("happiJack.systems.config.WinPrizeDevelopFee")
+);
+
+library LotteryGameSystemConfigSetting {
+    function DeveloperAddress() internal view returns (address) {
+        return
+            entityToAddress(
+                ContractUint256VariableTable.get(IdConfigDeveloperAddress)
+            );
+    }
+
+    function WinPrizeInitialPoolAmount() internal view returns (uint256) {
+        return
+            ContractUint256VariableTable.get(
+                IdConfigWinPrizeInitialPoolAmount,
+                0.005 ether
+            );
+    }
+
+    function WinPrizeInitialTicketPrice() internal view returns (uint256) {
+        return
+            ContractUint256VariableTable.get(
+                IdConfigWinPrizeInitialTicketPrice,
+                0.0005 ether
+            );
+    }
+
+    function WinPrizeDevelopFee() internal view returns (uint256) {
+        return ContractUint256VariableTable.get(IdConfigWinPrizeDevelopFee, 10);
+    }
 }

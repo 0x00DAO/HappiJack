@@ -17,7 +17,7 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 import "../collections/CollectionTables.sol";
 
-import "../libraries/LotteryGameSystemConfigSetting.sol";
+import {LotteryGameSystemConfigSetting} from "../libraries/LotteryGameSystemConfigSetting.sol";
 
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
@@ -108,8 +108,10 @@ contract LotteryGameSystem is
             uint256(LotteryGameStatus.Active)
         );
 
-        uint256 initialPoolAmount = getConfigWinPrizeInitialPoolAmount();
-        uint256 initialTicketPrice = getConfigWinPrizeInitialTicketPrice();
+        uint256 initialPoolAmount = LotteryGameSystemConfigSetting
+            .WinPrizeInitialPoolAmount();
+        uint256 initialTicketPrice = LotteryGameSystemConfigSetting
+            .WinPrizeInitialTicketPrice();
 
         //set the lottery game info
         GameSystems.getLotteryGameSystemConfig().configGame(
@@ -125,7 +127,7 @@ contract LotteryGameSystem is
         GameSystems.getLotteryGameSystemConfig().configGameFee(
             lotteryGameId,
             10,
-            10,
+            LotteryGameSystemConfigSetting.WinPrizeDevelopFee(),
             1
         );
         //set the lottery game bonus pool info
