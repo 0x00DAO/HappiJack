@@ -6,7 +6,7 @@ import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameSystem', function () {
+describe.only('LotteryGameSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameBonusPoolSystem: Contract;

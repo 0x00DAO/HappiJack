@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.
 import "../../eon/utils/VersionUpgradeable.sol";
 
 import {System} from "../../eon/systems/System.sol";
+import {GameSystems} from "./GameSystems.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 
@@ -16,10 +17,11 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 import "../collections/CollectionTables.sol";
 
+import "../libraries/LotteryGameSystemConfigSetting.sol";
+
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
-import {LotteryGameSystemConfig, ID as LotteryGameSystemConfigID} from "./LotteryGameSystemConfig.sol";
 import {LotteryGameLotteryNFTSystem, ID as LotteryGameLotteryNFTSystemID} from "./LotteryGameLotteryNFTSystem.sol";
 
 uint256 constant ID = uint256(keccak256("happiJack.systems.LotteryGameSystem"));
@@ -80,11 +82,6 @@ contract LotteryGameSystem is
         uint256 startTime_,
         uint256 during_
     ) external payable nonReentrant whenNotPaused returns (uint256) {
-        require(
-            AddressUpgradeable.isContract(_msgSender()) == false,
-            "sender is contract"
-        );
-
         // uint256 endTime_ = startTime_ + during_;
         // require(during_ >= 12 hours, "during is too short");
         // require(endTime_ > block.timestamp, "end time is in the past");
@@ -111,34 +108,43 @@ contract LotteryGameSystem is
             uint256(LotteryGameStatus.Active)
         );
 
-        uint256 initialPoolAmount = 0.005 ether;
-        uint256 initialTicketPrice = 0.0005 ether;
+        uint256 initialPoolAmount = getConfigWinPrizeInitialPoolAmount();
+        uint256 initialTicketPrice = getConfigWinPrizeInitialTicketPrice();
 
         //set the lottery game info
-        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
-            .configGame(lotteryGameId, owner, ad_, startTime_, during_);
+        GameSystems.getLotteryGameSystemConfig().configGame(
+            lotteryGameId,
+            owner,
+            ad_,
+            startTime_,
+            during_
+        );
+        // LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
+        // .configGame(lotteryGameId, owner, ad_, startTime_, during_);
         //set the lottery game fee info
-        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
-            .configGameFee(lotteryGameId, 10, 10, 1);
+        GameSystems.getLotteryGameSystemConfig().configGameFee(
+            lotteryGameId,
+            10,
+            10,
+            1
+        );
         //set the lottery game bonus pool info
-        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
-            .configGameBonusPool(
-                lotteryGameId,
-                TokenType.ETH,
-                address(0),
-                initialPoolAmount
-            );
+        GameSystems.getLotteryGameSystemConfig().configGameBonusPool(
+            lotteryGameId,
+            TokenType.ETH,
+            address(0),
+            initialPoolAmount
+        );
 
         //set the lottery game ticket info
-        LotteryGameSystemConfig(getSystemAddress(LotteryGameSystemConfigID))
-            .configGameTicket(
-                lotteryGameId,
-                TokenType.ETH,
-                address(0),
-                initialTicketPrice,
-                300,
-                1
-            );
+        GameSystems.getLotteryGameSystemConfig().configGameTicket(
+            lotteryGameId,
+            TokenType.ETH,
+            address(0),
+            initialTicketPrice,
+            300,
+            1
+        );
 
         //create the lottery game pool
         LotteryGameBonusPoolSystem(

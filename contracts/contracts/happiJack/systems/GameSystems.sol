@@ -5,6 +5,7 @@ import {IStore} from "../../eon/interface/IStore.sol";
 import {System} from "../../eon/systems/System.sol";
 import {StoreDelegate} from "../../eon/store/StoreDelegate.sol";
 
+import {LotteryGameSystemConfig, ID as LotteryGameSystemConfigID} from "./LotteryGameSystemConfig.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 
@@ -34,6 +35,17 @@ library GameSystems {
         return
             LotteryGameConstantVariableSystem(
                 getSystemAddress(LotteryGameConstantVariableSystemID)
+            );
+    }
+
+    function getLotteryGameSystemConfig()
+        internal
+        view
+        returns (LotteryGameSystemConfig)
+    {
+        return
+            LotteryGameSystemConfig(
+                getSystemAddress(LotteryGameSystemConfigID)
             );
     }
 }

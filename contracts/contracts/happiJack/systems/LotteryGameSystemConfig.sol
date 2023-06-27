@@ -95,8 +95,8 @@ contract LotteryGameSystemConfig is
         uint256 developFeeRate_,
         uint256 verifyFeeRate_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-        require(ownerFeeRate_ <= 30, "owner fee rate is too high");
-        require(developFeeRate_ <= 10, "develop fee rate is too high");
+        require(ownerFeeRate_ <= 20, "owner fee rate is too high");
+        require(developFeeRate_ <= 20, "develop fee rate is too high");
         require(verifyFeeRate_ <= 5, "verify fee rate is too high");
 
         //set the lottery game fee info
