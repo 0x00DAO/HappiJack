@@ -18,7 +18,6 @@ import "../collections/CollectionTables.sol";
 import {GameSystems} from "./GameSystems.sol";
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
-import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 import {LotteryGameLotteryResultVerifyBonusPoolRefundSystem, ID as LotteryGameLotteryResultVerifyBonusPoolRefundSystemID} from "./LotteryGameLotteryResultVerifyBonusPoolRefundSystem.sol";
 
 uint256 constant ID = uint256(
@@ -144,9 +143,9 @@ contract LotteryGameLotteryResultVerifySystem is
                     LotteryGameBonusPoolTable.getOwnerFeeAmount(lotteryGameId_)
                 );
 
-            address developAddress = LotteryGameConstantVariableSystem(
-                getSystemAddress(LotteryGameConstantVariableSystemID)
-            ).getDeveloperAddress();
+            address developAddress = GameSystems
+                .getLotteryGameConstantVariableSystem()
+                .getDeveloperAddress();
             if (developAddress != address(0)) {
                 //distribute developer fee
                 GameSystems

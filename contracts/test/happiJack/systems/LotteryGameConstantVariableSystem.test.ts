@@ -69,7 +69,7 @@ describe('LotteryGameConstantVariableSystem', function () {
     return lotteryGameId;
   }
 
-  describe.only('setGameConfig', function () {
+  describe('setGameConfig', function () {
     const configId = ethers.utils.id('lotteryGame');
     it('should set game config', async function () {
       await lotteryGameConstantVariableSystem.setGameConfig(configId, 1, 0);
@@ -93,6 +93,16 @@ describe('LotteryGameConstantVariableSystem', function () {
       await expect(
         lotteryGameConstantVariableSystem.setGameConfig(configId, 2, 0)
       ).to.be.revertedWith('old value is not equal to current value');
+    });
+  });
+
+  describe('configKey', function () {
+    it('should return config key', async function () {
+      const configId = ethers.utils.id('lotteryGame');
+      const configKey = await lotteryGameConstantVariableSystem.configKey(
+        'lotteryGame'
+      );
+      expect(configKey).to.equal(configId);
     });
   });
 });

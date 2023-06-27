@@ -64,27 +64,6 @@ contract LotteryGameConstantVariableSystem is
     uint256 public constant ID_LotteryGameConfigDeveloperAddress =
         IdConfigDeveloperAddress;
 
-    function setGameDeveloperAddress(
-        address developerAddress_
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        require(developerAddress_ != address(0), "developer address is zero");
-
-        address oldDeveloperAddress = getDeveloperAddress();
-        //set the lottery game developer address
-        _setGameConfig(
-            ID_LotteryGameConfigDeveloperAddress,
-            addressToEntity(developerAddress_),
-            addressToEntity(oldDeveloperAddress)
-        );
-    }
-
-    function getDeveloperAddress() public view returns (address) {
-        return
-            entityToAddress(
-                getGameConfig(ID_LotteryGameConfigDeveloperAddress)
-            );
-    }
-
     function _setGameConfig(
         uint256 key_,
         uint256 value_,
@@ -115,6 +94,31 @@ contract LotteryGameConstantVariableSystem is
 
     function getGameConfig(uint256 key_) public view returns (uint256) {
         return ContractUint256VariableTable.get(key_);
+    }
+
+    function configKey(string memory key_) public pure returns (uint256) {
+        return uint256(keccak256(abi.encodePacked(key_)));
+    }
+
+    function setGameDeveloperAddress(
+        address developerAddress_
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(developerAddress_ != address(0), "developer address is zero");
+
+        address oldDeveloperAddress = getDeveloperAddress();
+        //set the lottery game developer address
+        _setGameConfig(
+            ID_LotteryGameConfigDeveloperAddress,
+            addressToEntity(developerAddress_),
+            addressToEntity(oldDeveloperAddress)
+        );
+    }
+
+    function getDeveloperAddress() public view returns (address) {
+        return
+            entityToAddress(
+                getGameConfig(ID_LotteryGameConfigDeveloperAddress)
+            );
     }
 
     function getBonusRewardPercent(
