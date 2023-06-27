@@ -25,11 +25,6 @@ contract SystemAccessControl is BaseComponent, AccessControlUpgradeable {
         bytes32 role,
         address account
     ) public view virtual override returns (bool) {
-        if (
-            role == SYSTEM_INTERNAL_ROLE && _getRoot().isSystemAddress(account)
-        ) {
-            return true;
-        }
         // check role from root
         if (AccessControlUpgradeable(getRoot()).hasRole(role, account)) {
             return true;

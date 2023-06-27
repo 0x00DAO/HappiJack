@@ -18,6 +18,8 @@ import {ComponentType} from "./component/ComponentType.sol";
 import {GameRootSystemsTable} from "./tables/GameRootSystemsTable.sol";
 import {GameRootSystemsIndexTable} from "./tables/GameRootSystemsIndexTable.sol";
 
+import {SYSTEM_INTERNAL_ROLE_} from "./systems/SystemAccessControl.sol";
+
 uint256 constant ID = uint256(keccak256("game.root.id"));
 
 contract GameRoot is
@@ -32,6 +34,7 @@ contract GameRoot is
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
     bytes32 public constant ROOT_SYSTEM_ROLE = keccak256("ROOT_SYSTEM_ROLE");
+    bytes32 public constant SYSTEM_INTERNAL_ROLE = SYSTEM_INTERNAL_ROLE_;
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
@@ -70,7 +73,7 @@ contract GameRoot is
     function __initailize() internal {}
 
     function _version() internal pure override returns (uint256) {
-        return 3;
+        return 4;
     }
 
     /// system management
@@ -92,6 +95,9 @@ contract GameRoot is
 
         GameRootSystemsTable.set(systemId, systemAddress);
         GameRootSystemsIndexTable.set(systemAddress, systemId);
+
+        //grant system internal role
+        _grantRole(SYSTEM_INTERNAL_ROLE, systemAddress);
     }
 
     function getSystemAddress(
@@ -128,6 +134,9 @@ contract GameRoot is
 
         GameRootSystemsTable.deleteRecord(systemId);
         GameRootSystemsIndexTable.deleteRecord(systemAddress);
+
+        //revoke system internal role
+        _revokeRole(SYSTEM_INTERNAL_ROLE, systemAddress);
     }
 
     function setField(
