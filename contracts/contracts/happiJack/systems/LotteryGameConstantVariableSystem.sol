@@ -14,6 +14,7 @@ import {addressToEntity, entityToAddress} from "../../eon/utils/Utils.sol";
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
+import {IdConfigDeveloperAddress} from "../libraries/LotteryGameSystemConfigSetting.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameConstantVariableSystem")
@@ -61,7 +62,7 @@ contract LotteryGameConstantVariableSystem is
     /// custom logic here
 
     uint256 public constant ID_LotteryGameConfigDeveloperAddress =
-        uint256(keccak256("ID_LotteryGameConfigDeveloperAddress"));
+        IdConfigDeveloperAddress;
 
     function setGameDeveloperAddress(
         address developerAddress_
@@ -84,6 +85,24 @@ contract LotteryGameConstantVariableSystem is
             );
     }
 
+    function setGameConfig(
+        uint256 key_,
+        uint256 value_
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        ContractUint256VariableTable.set(key_, value_);
+    }
+
+    function setGameConfig(
+        uint256 key_,
+        address value_
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        ContractUint256VariableTable.set(key_, addressToEntity(value_));
+    }
+
+    function getGameConfig(uint256 key_) external view returns (uint256) {
+        return ContractUint256VariableTable.get(key_);
+    }
+
     function getBonusRewardPercent(
         uint256 winnerLevel_
     ) public pure returns (uint256) {
@@ -91,13 +110,13 @@ contract LotteryGameConstantVariableSystem is
             return 70;
         }
         if (winnerLevel_ == 1) {
-            return 20;
+            return 15;
         }
         if (winnerLevel_ == 2) {
             return 5;
         }
         if (winnerLevel_ == 3) {
-            return 5;
+            return 10;
         }
         return 0;
     }

@@ -7,7 +7,7 @@ import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameLotteryResultVerifySystem', function () {
+describe.only('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
@@ -394,7 +394,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
 
       expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
       // console.log('lotteryPoolAfter:', lotteryPoolAfter);
-      const bonusPoolRefund = lotteryPoolAfter.BonusAmount.mul(5 + 5).div(100);
+      const bonusPoolRefund = lotteryPoolAfter.BonusAmount.mul(5 + 10).div(100);
       expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
       expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
       expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
@@ -456,7 +456,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
 
       expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
       // console.log('lotteryPoolAfter:', lotteryPoolAfter);
-      const bonusPoolRefund = lotteryPoolAfter.BonusAmount.mul(5).div(100);
+      const bonusPoolRefund = lotteryPoolAfter.BonusAmount.mul(10).div(100);
       expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
       expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
       expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
