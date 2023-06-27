@@ -69,37 +69,51 @@ contract LotteryGameConstantVariableSystem is
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         require(developerAddress_ != address(0), "developer address is zero");
 
+        address oldDeveloperAddress = getDeveloperAddress();
         //set the lottery game developer address
-        ContractUint256VariableTable.set(
+        _setGameConfig(
             ID_LotteryGameConfigDeveloperAddress,
-            addressToEntity(developerAddress_)
+            addressToEntity(developerAddress_),
+            addressToEntity(oldDeveloperAddress)
         );
     }
 
     function getDeveloperAddress() public view returns (address) {
         return
             entityToAddress(
-                ContractUint256VariableTable.get(
-                    ID_LotteryGameConfigDeveloperAddress
-                )
+                getGameConfig(ID_LotteryGameConfigDeveloperAddress)
             );
     }
 
-    function setGameConfig(
+    function _setGameConfig(
         uint256 key_,
-        uint256 value_
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        uint256 value_,
+        uint256 oldValue_
+    ) internal {
+        //check the value is changed
+        if (value_ == oldValue_) {
+            return;
+        }
+        if (ContractUint256VariableTable.hasRecord(key_)) {
+            require(
+                ContractUint256VariableTable.get(key_) == oldValue_,
+                "old value is not equal to current value"
+            );
+        }
+
+        //set the lottery game config
         ContractUint256VariableTable.set(key_, value_);
     }
 
     function setGameConfig(
         uint256 key_,
-        address value_
+        uint256 value_,
+        uint256 oldValue_
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        ContractUint256VariableTable.set(key_, addressToEntity(value_));
+        _setGameConfig(key_, value_, oldValue_);
     }
 
-    function getGameConfig(uint256 key_) external view returns (uint256) {
+    function getGameConfig(uint256 key_) public view returns (uint256) {
         return ContractUint256VariableTable.get(key_);
     }
 
