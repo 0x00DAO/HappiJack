@@ -35,7 +35,7 @@ contract LotteryGameLotteryNFTSystem is
     }
 
     function initialize(address root_) public initializer {
-        __ERC721_init("HappiJackLottery", "HJL");
+        __ERC721_init("HappiAirdropLotteryGame", "HAL");
         __ERC721Enumerable_init();
         __Pausable_init();
         // __System_init(ID, root_);
