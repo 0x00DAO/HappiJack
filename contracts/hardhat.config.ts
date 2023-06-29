@@ -19,6 +19,10 @@ const {
   ETH_TESTNET_DEPLOYER_PRIVATE_KEY,
   ETH_MAINNET_URL,
   ETH_MAINNET_DEPLOYER_PRIVATE_KEY,
+  ARBITRUM_TESTNET_URL,
+  ARBITRUM_TESTNET_DEPLOYER_PRIVATE_KEY,
+  ARBITRUM_MAINNET_URL,
+  ARBITRUM_MAINNET_DEPLOYER_PRIVATE_KEY,
 } = process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -43,6 +47,9 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
 const config: HardhatUserConfig = {
   solidity: '0.8.17',
   networks: {
+    hardhat: {
+      chainId: 1337,
+    },
     polygon_testnet: {
       url: POLYGON_TESTNET_URL,
       chainId: 80001,
@@ -62,6 +69,15 @@ const config: HardhatUserConfig = {
     eth_mainnet: {
       url: ETH_MAINNET_URL,
       accounts: [`0x${ETH_MAINNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    arbitrum_testnet: {
+      url: ARBITRUM_TESTNET_URL,
+      chainId: 421613,
+      accounts: [`0x${ARBITRUM_TESTNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    arbitrum_mainnet: {
+      url: ARBITRUM_MAINNET_URL,
+      accounts: [`0x${ARBITRUM_MAINNET_DEPLOYER_PRIVATE_KEY}`],
     },
   },
   mocha: {

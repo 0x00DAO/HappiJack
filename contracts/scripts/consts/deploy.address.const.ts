@@ -18,6 +18,17 @@ const ContractDeployAddress_EthTestNet: ContractDeployAddressInterface = {};
 
 const ContractDeployAddress_EthMainNet: ContractDeployAddressInterface = {};
 
+const ContractDeployAddress_BscTestNet: ContractDeployAddressInterface = {};
+
+const ContractDeployAddress_BscMainNet: ContractDeployAddressInterface = {};
+
+const ContractDeployAddress_ArbitrumTestNet: ContractDeployAddressInterface = {
+  GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
+};
+
+const ContractDeployAddress_ArbitrumMainNet: ContractDeployAddressInterface =
+  {};
+
 export function getContractDeployAddress(
   network?: string
 ): ContractDeployAddressInterface {
@@ -39,6 +50,19 @@ export function getContractDeployAddress(
     case deployNetwork.eth_mainnet:
       _ContractDeployAddress = ContractDeployAddress_EthMainNet;
       break;
+    case deployNetwork.bsc_testnet:
+      _ContractDeployAddress = ContractDeployAddress_BscTestNet;
+      break;
+    case deployNetwork.bsc_mainnet:
+      _ContractDeployAddress = ContractDeployAddress_BscMainNet;
+      break;
+    case deployNetwork.arbitrum_testnet:
+      _ContractDeployAddress = ContractDeployAddress_ArbitrumTestNet;
+      break;
+    case deployNetwork.arbitrum_mainnet:
+      _ContractDeployAddress = ContractDeployAddress_ArbitrumMainNet;
+      break;
+
     default:
       _ContractDeployAddress = undefined as any;
       break;

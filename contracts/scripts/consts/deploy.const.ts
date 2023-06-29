@@ -6,4 +6,6 @@ export enum deployNetwork {
   eth_testnet = 'eth_testnet',
   eth_mainnet = 'eth_mainnet',
   hardhat = 'hardhat',
+  arbitrum_testnet = 'arbitrum_testnet',
+  arbitrum_mainnet = 'arbitrum_mainnet',
 }
