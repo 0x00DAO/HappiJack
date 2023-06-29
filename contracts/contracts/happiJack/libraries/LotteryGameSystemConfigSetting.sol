@@ -25,6 +25,11 @@ uint256 constant IdConfigWinPrizeDevelopFee = uint256(
     keccak256("happiJack.systems.config.WinPrizeDevelopFee")
 );
 
+/// @dev This is a setting for the duration of the create game process. default is 12 hours(43200 seconds)
+uint256 constant IdConfigCreateGameDurationMinSeconds = uint256(
+    keccak256("happiJack.systems.config.CreateGameDurationMinSeconds")
+);
+
 library LotteryGameSystemConfigSetting {
     function DeveloperAddress() internal view returns (address) {
         return
@@ -51,5 +56,13 @@ library LotteryGameSystemConfigSetting {
 
     function WinPrizeDevelopFee() internal view returns (uint256) {
         return ContractUint256VariableTable.get(IdConfigWinPrizeDevelopFee, 10);
+    }
+
+    function CreateGameDurationMinSeconds() internal view returns (uint256) {
+        return
+            ContractUint256VariableTable.get(
+                IdConfigCreateGameDurationMinSeconds,
+                43200
+            );
     }
 }

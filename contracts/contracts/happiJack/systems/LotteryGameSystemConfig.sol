@@ -15,6 +15,8 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 
 import "../tables/Tables.sol";
 
+import {LotteryGameSystemConfigSetting} from "../libraries/LotteryGameSystemConfigSetting.sol";
+
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
@@ -77,7 +79,9 @@ contract LotteryGameSystemConfig is
             "start time is in the past"
         );
         require(
-            during_ >= 12 hours && during_ <= 1 days,
+            during_ >=
+                LotteryGameSystemConfigSetting.CreateGameDurationMinSeconds() &&
+                during_ <= 1 days,
             "during is too short"
         );
         require(endTime_ > block.timestamp, "end time is in the past");
