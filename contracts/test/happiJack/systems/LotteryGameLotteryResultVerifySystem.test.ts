@@ -7,7 +7,7 @@ import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe('LotteryGameLotteryResultVerifySystem', function () {
+describe.only('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
@@ -15,7 +15,9 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
   let lotteryGameLotteryCoreSystem: Contract;
   let lotteryGameConstantVariableSystem: Contract;
 
-  beforeEach(async function () {
+  let snapshotIdLotteryGameLotteryResultVerifySystem: string;
+
+  this.beforeAll(async function () {
     //deploy GameRoot
     const GameRoot = await ethers.getContractFactory('GameRoot');
     gameRootContract = await upgrades.deployProxy(GameRoot, []);
@@ -50,6 +52,17 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
       'LotteryGameConstantVariableSystem',
       gameDeploy.systemIdPrefix
     );
+
+    snapshotIdLotteryGameLotteryResultVerifySystem = await ethers.provider.send(
+      'evm_snapshot',
+      []
+    );
+  });
+
+  this.afterEach(async function () {
+    await ethers.provider.send('evm_revert', [
+      snapshotIdLotteryGameLotteryResultVerifySystem,
+    ]);
   });
 
   async function createLotteryGame(): Promise<BigNumber> {
