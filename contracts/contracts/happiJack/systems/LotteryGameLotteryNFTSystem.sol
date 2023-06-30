@@ -50,7 +50,8 @@ contract LotteryGameLotteryNFTSystem is
     }
 
     function _baseURI() internal pure override returns (string memory) {
-        return "unknown";
+        return
+            "https://happijack.on.fleek.co/happiairdrop_lottery_pool_meta.json?tokenid=";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
