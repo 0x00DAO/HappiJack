@@ -105,24 +105,18 @@ describe.only('LotteryGameLotteryResultVerifySystem', function () {
   ): Promise<[BigNumber, BigNumber]> {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     const luckyNumber = ethers.BigNumber.from(randomInt(100000, 999999));
-    let ticketId = ethers.BigNumber.from(0);
-    await expect(
-      lotteryGameSellSystem
-        .connect(addr1)
-        .buyLotteryTicketETH(lotteryGameId, luckyNumber, {
-          value: ticketPrice,
-        })
-    )
-      .to.emit(lotteryGameSellSystem, 'LotteryTicketBuy')
-      .withArgs(
-        lotteryGameId,
-        addr1.address,
-        (x: any) => {
-          ticketId = x;
-          return true;
-        },
-        luckyNumber
-      );
+
+    const tx = await lotteryGameSellSystem
+      .connect(addr1)
+      .buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+        value: ticketPrice,
+      });
+    const receipt = await tx.wait();
+    const event = receipt.events?.find(
+      (x: any) => x.event === 'LotteryTicketBuy'
+    );
+    const ticketId = event?.args?.lotteryTicketId;
+
     return [ticketId, luckyNumber];
   }
 
