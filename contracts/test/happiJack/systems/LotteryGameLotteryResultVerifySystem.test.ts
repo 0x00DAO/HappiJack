@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { randomInt } from 'crypto';
-import { BigNumber, Contract } from 'ethers';
+import { BigNumber, Contract, Wallet } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
@@ -593,6 +593,91 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
         gameRootContract,
         lotteryGameId
       );
+      expect(lotteryGame.Status).to.be.equal(2);
+      expect(lotteryGame.Owner).to.be.equal(owner.address);
+    });
+
+    it.skip('success, sold 300 ticket', async function () {
+      const [owner] = await ethers.getSigners();
+      console.log('owner:', owner.address);
+
+      const addresses: Wallet[] = [];
+      for (let i = 0; i < 300; i++) {
+        const newWallet = ethers.Wallet.createRandom().connect(ethers.provider);
+        addresses.push(newWallet);
+      }
+
+      console.log('addresses: 5', addresses[5].address);
+
+      // transfer 1 eth to each wallet
+      for (let i = 0; i < addresses.length; i++) {
+        await owner.sendTransaction({
+          to: addresses[i].address,
+          value: ethers.utils.parseEther('1'),
+        });
+      }
+      // buy ticket
+      const ticketIds: Map<string, BigNumber> = new Map();
+      const ticketCount = 300;
+
+      const allPromises = [];
+      for (let i = 0; i < addresses.length, i < ticketCount; i++) {
+        const promise = buyTicket(lotteryGameId, addresses[i]).then(
+          (res: any) => {
+            const [ticketId, luckNumber] = res;
+            ticketIds.set(ticketId.toString(), luckNumber);
+          }
+        );
+        allPromises.push(promise);
+      }
+
+      console.log('buy ticket wait');
+
+      await Promise.all(allPromises);
+
+      console.log('buy ticket done');
+
+      // skip to end time
+      const during = 60 * 60 * 24 * 1 + 1; // 1 days
+      await ethers.provider.send('evm_increaseTime', [during]);
+
+      //get lottery bonus pool
+      const lotteryPool = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      console.log('lotteryPool:', lotteryPool);
+
+      // verify
+      await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
+        .to.be.emit(
+          lotteryGameLotteryResultVerifySystem,
+          'LotteryGameResultVerified'
+        )
+        .withArgs(lotteryGameId, (x: any) => {
+          console.log('luckyNumber:', x);
+          return true;
+        });
+
+      // check lottery bonus pool
+      const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
+        gameRootContract,
+        lotteryGameId
+      );
+
+      expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
+      console.log('lotteryPoolAfter:', lotteryPoolAfter);
+      expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
+      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(0);
+
+      //check lottery game
+      const lotteryGame = await getTableRecord.LotteryGameTable(
+        gameRootContract,
+        lotteryGameId
+      );
+      console.log('lotteryGame:', lotteryGame);
       expect(lotteryGame.Status).to.be.equal(2);
       expect(lotteryGame.Owner).to.be.equal(owner.address);
     });
