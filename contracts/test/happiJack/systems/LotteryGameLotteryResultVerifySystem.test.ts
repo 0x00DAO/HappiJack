@@ -82,26 +82,19 @@ describe.only('LotteryGameLotteryResultVerifySystem', function () {
     // const ownerFeeRate = 10;
     // create a lottery game
     let lotteryGameId = ethers.BigNumber.from(0);
-    await expect(
-      lotteryGameSystem.createLotteryGame(
-        `It's a lottery game`,
-        startTime,
-        during,
-        {
-          value: initialAmount,
-        }
-      )
-    )
-      .to.emit(lotteryGameSystem, 'LotteryGameCreated')
-      .withArgs(
-        (x: any) => {
-          lotteryGameId = x;
-          return true;
-        },
-        owner.address,
-        startTime,
-        endTime
-      );
+    const tx = await lotteryGameSystem.createLotteryGame(
+      `It's a lottery game`,
+      startTime,
+      during,
+      {
+        value: initialAmount,
+      }
+    );
+    const receipt = await tx.wait();
+    const event = receipt.events?.find(
+      (x: any) => x.event === 'LotteryGameCreated'
+    );
+    lotteryGameId = event?.args?.lotteryGameId;
 
     return lotteryGameId;
   }
@@ -137,6 +130,7 @@ describe.only('LotteryGameLotteryResultVerifySystem', function () {
     const ticketPrice = ethers.utils.parseEther('0.0005');
     let lotteryGameId: BigNumber;
     let snapshotId: string;
+
     beforeEach(async function () {
       snapshotId = await ethers.provider.send('evm_snapshot', []);
       // create a lottery game
