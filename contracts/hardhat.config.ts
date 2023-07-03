@@ -27,6 +27,10 @@ const {
   ZKSYNC_ERA_TESTNET_DEPLOYER_PRIVATE_KEY,
   ZKSYNC_ERA_MAINNET_URL,
   ZKSYNC_ERA_MAINNET_DEPLOYER_PRIVATE_KEY,
+  POLYGON_ZKEVM_TESTNET_URL,
+  POLYGON_ZKEVM_TESTNET_DEPLOYER_PRIVATE_KEY,
+  POLYGON_ZKEVM_MAINNET_URL,
+  POLYGON_ZKEVM_MAINNET_DEPLOYER_PRIVATE_KEY,
 } = process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -91,6 +95,16 @@ const config: HardhatUserConfig = {
     zksync_era_mainnet: {
       url: ZKSYNC_ERA_MAINNET_URL,
       accounts: [`0x${ZKSYNC_ERA_MAINNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    polygon_zkevm_testnet: {
+      url: POLYGON_ZKEVM_TESTNET_URL,
+      chainId: 1442,
+      accounts: [`0x${POLYGON_ZKEVM_TESTNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    polygon_zkevm_mainnet: {
+      url: POLYGON_ZKEVM_MAINNET_URL,
+      chainId: 1101,
+      accounts: [`0x${POLYGON_ZKEVM_MAINNET_DEPLOYER_PRIVATE_KEY}`],
     },
   },
   mocha: {

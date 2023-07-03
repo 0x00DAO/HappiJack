@@ -36,6 +36,12 @@ const ContractDeployAddress_ZkSyncEraTestNet: ContractDeployAddressInterface = {
 const ContractDeployAddress_ZkSyncEraMainNet: ContractDeployAddressInterface =
   {};
 
+const ContractDeployAddress_PolygonZkEvmTestNet: ContractDeployAddressInterface =
+  {};
+
+const ContractDeployAddress_PolygonZkEvmMainNet: ContractDeployAddressInterface =
+  {};
+
 export function getContractDeployAddress(
   network?: string
 ): ContractDeployAddressInterface {
@@ -75,6 +81,12 @@ export function getContractDeployAddress(
       break;
     case deployNetwork.zksync_era_mainnet:
       _ContractDeployAddress = ContractDeployAddress_ZkSyncEraMainNet;
+      break;
+    case deployNetwork.polygon_zkevm_testnet:
+      _ContractDeployAddress = ContractDeployAddress_PolygonZkEvmTestNet;
+      break;
+    case deployNetwork.polygon_zkevm_mainnet:
+      _ContractDeployAddress = ContractDeployAddress_PolygonZkEvmMainNet;
       break;
 
     default:

@@ -10,4 +10,6 @@ export enum deployNetwork {
   arbitrum_mainnet = 'arbitrum_mainnet',
   zksync_era_testnet = 'zksync_era_testnet',
   zksync_era_mainnet = 'zksync_era_mainnet',
+  polygon_zkevm_testnet = 'polygon_zkevm_testnet',
+  polygon_zkevm_mainnet = 'polygon_zkevm_mainnet',
 }
