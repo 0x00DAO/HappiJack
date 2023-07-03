@@ -8,4 +8,6 @@ export enum deployNetwork {
   hardhat = 'hardhat',
   arbitrum_testnet = 'arbitrum_testnet',
   arbitrum_mainnet = 'arbitrum_mainnet',
+  zksync_era_testnet = 'zksync_era_testnet',
+  zksync_era_mainnet = 'zksync_era_mainnet',
 }

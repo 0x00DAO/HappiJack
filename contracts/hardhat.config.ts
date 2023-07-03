@@ -23,6 +23,10 @@ const {
   ARBITRUM_TESTNET_DEPLOYER_PRIVATE_KEY,
   ARBITRUM_MAINNET_URL,
   ARBITRUM_MAINNET_DEPLOYER_PRIVATE_KEY,
+  ZKSYNC_ERA_TESTNET_URL,
+  ZKSYNC_ERA_TESTNET_DEPLOYER_PRIVATE_KEY,
+  ZKSYNC_ERA_MAINNET_URL,
+  ZKSYNC_ERA_MAINNET_DEPLOYER_PRIVATE_KEY,
 } = process.env;
 
 // This is a sample Hardhat task. To learn how to create your own go to
@@ -78,6 +82,15 @@ const config: HardhatUserConfig = {
     arbitrum_mainnet: {
       url: ARBITRUM_MAINNET_URL,
       accounts: [`0x${ARBITRUM_MAINNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    zksync_era_testnet: {
+      url: ZKSYNC_ERA_TESTNET_URL,
+      chainId: 280,
+      accounts: [`0x${ZKSYNC_ERA_TESTNET_DEPLOYER_PRIVATE_KEY}`],
+    },
+    zksync_era_mainnet: {
+      url: ZKSYNC_ERA_MAINNET_URL,
+      accounts: [`0x${ZKSYNC_ERA_MAINNET_DEPLOYER_PRIVATE_KEY}`],
     },
   },
   mocha: {

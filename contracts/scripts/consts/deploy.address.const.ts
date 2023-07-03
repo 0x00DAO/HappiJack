@@ -29,6 +29,13 @@ const ContractDeployAddress_ArbitrumTestNet: ContractDeployAddressInterface = {
 const ContractDeployAddress_ArbitrumMainNet: ContractDeployAddressInterface =
   {};
 
+const ContractDeployAddress_ZkSyncEraTestNet: ContractDeployAddressInterface = {
+  GameRoot: null,
+};
+
+const ContractDeployAddress_ZkSyncEraMainNet: ContractDeployAddressInterface =
+  {};
+
 export function getContractDeployAddress(
   network?: string
 ): ContractDeployAddressInterface {
@@ -61,6 +68,13 @@ export function getContractDeployAddress(
       break;
     case deployNetwork.arbitrum_mainnet:
       _ContractDeployAddress = ContractDeployAddress_ArbitrumMainNet;
+      break;
+
+    case deployNetwork.zksync_era_testnet:
+      _ContractDeployAddress = ContractDeployAddress_ZkSyncEraTestNet;
+      break;
+    case deployNetwork.zksync_era_mainnet:
+      _ContractDeployAddress = ContractDeployAddress_ZkSyncEraMainNet;
       break;
 
     default:
