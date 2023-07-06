@@ -106,21 +106,21 @@ contract LotteryGameTicketBonusRewardSystem is
     }
 
     /// @dev claim reward
-    /// @return winnerLevel, bonusReward
+    /// @return winnerLevel, ticketOwnerBonusReward,developBonusReward
     function getClaimRewardAmount(
         uint256 ticketId
-    ) public view returns (uint256, uint256) {
+    ) public view returns (uint256, uint256, uint256) {
         (
             uint256 winnerLevel,
             uint256 ticketOwnerBonusReward,
-
+            uint256 developBonusReward
         ) = _getClaimRewardAmount(ticketId);
         //get ticket bonus percent, if user is last buyer, get 80% bonus
-        return (winnerLevel, ticketOwnerBonusReward);
+        return (winnerLevel, ticketOwnerBonusReward, developBonusReward);
     }
 
     /// @dev claim reward
-    /// @return winnerLevel, ticketOwnerBonusReward, lastBuyerBonusReward
+    /// @return winnerLevel, ticketOwnerBonusReward, developBonusReward
     function _getClaimRewardAmount(
         uint256 ticketId
     ) internal view returns (uint256, uint256, uint256) {

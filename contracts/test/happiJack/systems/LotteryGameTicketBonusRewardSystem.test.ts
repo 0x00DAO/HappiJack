@@ -6,7 +6,7 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe.only('LotteryGameTicketBonusRewardSystem', function () {
+describe('LotteryGameTicketBonusRewardSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
@@ -211,16 +211,16 @@ describe.only('LotteryGameTicketBonusRewardSystem', function () {
           BigNumber.from(ticketId)
         );
         // console.log(ticketId, luckyNumber, order);
-        console.log(
-          `claim reward! order:${order} ticketId:${ticketId} luckyNumber:${luckyNumber} ticketBonusPercent:${ticketData.BonusPercent.toString()}`
-        );
+        // console.log(
+        //   `claim reward! order:${order} ticketId:${ticketId} luckyNumber:${luckyNumber} ticketBonusPercent:${ticketData.BonusPercent.toString()}`
+        // );
 
         const rewardData =
           await lotteryGameTicketBonusRewardSystem.getClaimRewardAmount(
             ticketId
           );
 
-        console.log('rewardData:', rewardData);
+        // console.log('rewardData:', rewardData);
 
         await expect(
           lotteryGameTicketBonusRewardSystem
@@ -237,6 +237,9 @@ describe.only('LotteryGameTicketBonusRewardSystem', function () {
             luckyNumber,
             (x: any) => {
               ticketClaimAmount = x;
+
+              expect(x).to.be.equal(rewardData[1]);
+
               const originalAmount = ticketClaimAmount
                 .mul(100)
                 .div(ticketData.BonusPercent);
