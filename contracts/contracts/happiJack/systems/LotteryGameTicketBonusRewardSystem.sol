@@ -73,6 +73,10 @@ contract LotteryGameTicketBonusRewardSystem is
         uint256 winnerLevel
     );
 
+    function _version() internal pure override returns (uint256) {
+        return 2;
+    }
+
     function claimTicketReward(
         uint256 ticketId
     ) external nonReentrant whenNotPaused {
