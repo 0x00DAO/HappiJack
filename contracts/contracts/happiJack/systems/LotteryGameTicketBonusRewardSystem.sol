@@ -121,7 +121,9 @@ contract LotteryGameTicketBonusRewardSystem is
     function getClaimRewardAmount(
         uint256 ticketId
     ) public view returns (uint256) {
-        uint256 bonusReward = _getClaimRewardAmount(ticketId);
+        (uint256 winnerLevel, uint256 bonusReward) = _getClaimRewardAmount(
+            ticketId
+        );
         //get ticket bonus percent, if user is last buyer, get 80% bonus
         uint256 bonusRewardPercent = LotteryTicketTable.getBonusPercent(
             ticketId
@@ -129,9 +131,11 @@ contract LotteryGameTicketBonusRewardSystem is
         return (bonusReward * bonusRewardPercent) / 100;
     }
 
+    /// @dev claim reward
+    /// @return winnerLevel, bonusReward
     function _getClaimRewardAmount(
         uint256 ticketId
-    ) internal view returns (uint256) {
+    ) internal view returns (uint256, uint256) {
         require(
             LotteryTicketBonusRewardTable.hasRecord(ticketId) == false,
             "LotteryGameTicketBonusRewardSystem: ticket already claimed"
@@ -180,7 +184,7 @@ contract LotteryGameTicketBonusRewardSystem is
         );
 
         bonusReward = bonusReward / winnersCount;
-        return bonusReward;
+        return (winnerLevel, bonusReward);
     }
 
     function _claimReward(
@@ -189,7 +193,7 @@ contract LotteryGameTicketBonusRewardSystem is
         uint256 ticketLuckNumber,
         uint256 winnerLevel
     ) internal {
-        uint256 bonusReward = _getClaimRewardAmount(ticketId);
+        (, uint256 bonusReward) = _getClaimRewardAmount(ticketId);
         require(
             bonusReward > 0,
             "LotteryGameTicketBonusRewardSystem: bonus reward is zero"
