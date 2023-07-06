@@ -215,6 +215,13 @@ describe.only('LotteryGameTicketBonusRewardSystem', function () {
           `claim reward! order:${order} ticketId:${ticketId} luckyNumber:${luckyNumber} ticketBonusPercent:${ticketData.BonusPercent.toString()}`
         );
 
+        const rewardData =
+          await lotteryGameTicketBonusRewardSystem.getClaimRewardAmount(
+            ticketId
+          );
+
+        console.log('rewardData:', rewardData);
+
         await expect(
           lotteryGameTicketBonusRewardSystem
             .connect(addresses[addressIndex])

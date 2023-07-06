@@ -106,24 +106,24 @@ contract LotteryGameTicketBonusRewardSystem is
     }
 
     /// @dev claim reward
+    /// @return winnerLevel, bonusReward
     function getClaimRewardAmount(
         uint256 ticketId
-    ) public view returns (uint256) {
-        (uint256 winnerLevel, uint256 bonusReward) = _getClaimRewardAmount(
-            ticketId
-        );
+    ) public view returns (uint256, uint256) {
+        (
+            uint256 winnerLevel,
+            uint256 ticketOwnerBonusReward,
+
+        ) = _getClaimRewardAmount(ticketId);
         //get ticket bonus percent, if user is last buyer, get 80% bonus
-        uint256 bonusRewardPercent = LotteryTicketTable.getBonusPercent(
-            ticketId
-        );
-        return (bonusReward * bonusRewardPercent) / 100;
+        return (winnerLevel, ticketOwnerBonusReward);
     }
 
     /// @dev claim reward
-    /// @return winnerLevel, bonusReward
+    /// @return winnerLevel, ticketOwnerBonusReward, lastBuyerBonusReward
     function _getClaimRewardAmount(
         uint256 ticketId
-    ) internal view returns (uint256, uint256) {
+    ) internal view returns (uint256, uint256, uint256) {
         require(
             LotteryTicketBonusRewardTable.hasRecord(ticketId) == false,
             "LotteryGameTicketBonusRewardSystem: ticket already claimed"
@@ -172,7 +172,28 @@ contract LotteryGameTicketBonusRewardSystem is
         );
 
         bonusReward = bonusReward / winnersCount;
-        return (winnerLevel, bonusReward);
+
+        //compute bonus with ticket owner bonus percent
+        //get ticket bonus percent
+        uint256 ticketBonusRewardPercent = LotteryTicketTable.getBonusPercent(
+            ticketId
+        );
+
+        address developAddress = LotteryGameConstantVariableSystem(
+            getSystemAddress(LotteryGameConstantVariableSystemID)
+        ).getDeveloperAddress();
+
+        //get ticket bonus percent, if user is last buyer, get 80% bonus
+        uint256 ticketOwnerBonusReward = (bonusReward *
+            ticketBonusRewardPercent) / 100;
+        uint256 developBonusReward = bonusReward - ticketOwnerBonusReward;
+        //if not set developer address, all bonus reward to ticket owner
+        if (developAddress == address(0)) {
+            ticketOwnerBonusReward = bonusReward;
+            developBonusReward = 0;
+        }
+
+        return (winnerLevel, ticketOwnerBonusReward, developBonusReward);
     }
 
     function _claimReward(
@@ -180,28 +201,20 @@ contract LotteryGameTicketBonusRewardSystem is
         uint256 ticketId,
         uint256 ticketLuckNumber
     ) internal {
-        (uint256 winnerLevel, uint256 bonusReward) = _getClaimRewardAmount(
-            ticketId
-        );
+        (
+            uint256 winnerLevel,
+            uint256 ticketOwnerBonusReward,
+            uint256 developBonusReward
+        ) = _getClaimRewardAmount(ticketId);
         require(
-            bonusReward > 0,
+            ticketOwnerBonusReward > 0,
             "LotteryGameTicketBonusRewardSystem: bonus reward is zero"
         );
 
         //get ticket bonus percent
-        uint256 bonusRewardPercent = LotteryTicketTable.getBonusPercent(
-            ticketId
-        );
-
         address developAddress = LotteryGameConstantVariableSystem(
             getSystemAddress(LotteryGameConstantVariableSystemID)
         ).getDeveloperAddress();
-        uint256 ticketOwnerBonusReward = (bonusReward * bonusRewardPercent) /
-            100;
-        //if not set developer address, all bonus reward to ticket owner
-        if (developAddress == address(0)) {
-            ticketOwnerBonusReward = bonusReward;
-        }
 
         if (ticketOwnerBonusReward > 0) {
             //set bonus reward
@@ -235,17 +248,14 @@ contract LotteryGameTicketBonusRewardSystem is
             ).withdrawETH(_msgSender());
         }
 
-        if (
-            developAddress != address(0) &&
-            bonusReward - ticketOwnerBonusReward > 0
-        ) {
+        if (developAddress != address(0) && developBonusReward > 0) {
             //send bonus from pool to developer
             LotteryGameBonusPoolWithdrawSystem(
                 getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
                     lotteryGameId,
                     developAddress,
-                    bonusReward - ticketOwnerBonusReward
+                    developBonusReward
                 );
         }
 
