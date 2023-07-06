@@ -101,27 +101,28 @@ contract LotteryGameTicketBonusRewardSystem is
 
         uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
 
-        //查询彩票是否中奖
+        //check if the ticket is a winner
         uint256 winnerLevel = LotteryGameLotteryCoreSystem(
             getSystemAddress(LotteryGameLotteryCoreSystemID)
         ).getLotteryLuckNumberOrder(lotteryGameId, ticketLuckNumber, 3);
 
-        //0 一等奖 1 二等奖 2 三等奖
-        //计算奖金
+        //0 first prize 1 second prize 2 third prize
+        //calculate bonus
         require(
             winnerLevel <= 3,
             "LotteryGameTicketBonusRewardSystem: ticket is not a winner"
         );
 
-        //0:1,1:2,2:3,3:4等奖
+        //0:1,1:2,2:3,3:4 prize
         _claimReward(lotteryGameId, ticketId, ticketLuckNumber, winnerLevel);
     }
 
+    /// @dev claim reward
     function getClaimRewardAmount(
         uint256 ticketId
     ) public view returns (uint256) {
         uint256 bonusReward = _getClaimRewardAmount(ticketId);
-        //get ticket bonus percent
+        //get ticket bonus percent, if user is last buyer, get 80% bonus
         uint256 bonusRewardPercent = LotteryTicketTable.getBonusPercent(
             ticketId
         );
