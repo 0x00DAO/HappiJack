@@ -101,20 +101,8 @@ contract LotteryGameTicketBonusRewardSystem is
 
         uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
 
-        //check if the ticket is a winner
-        uint256 winnerLevel = LotteryGameLotteryCoreSystem(
-            getSystemAddress(LotteryGameLotteryCoreSystemID)
-        ).getLotteryLuckNumberOrder(lotteryGameId, ticketLuckNumber, 3);
-
-        //0 first prize 1 second prize 2 third prize
-        //calculate bonus
-        require(
-            winnerLevel <= 3,
-            "LotteryGameTicketBonusRewardSystem: ticket is not a winner"
-        );
-
         //0:1,1:2,2:3,3:4 prize
-        _claimReward(lotteryGameId, ticketId, ticketLuckNumber, winnerLevel);
+        _claimReward(lotteryGameId, ticketId, ticketLuckNumber);
     }
 
     /// @dev claim reward
@@ -190,10 +178,11 @@ contract LotteryGameTicketBonusRewardSystem is
     function _claimReward(
         uint256 lotteryGameId,
         uint256 ticketId,
-        uint256 ticketLuckNumber,
-        uint256 winnerLevel
+        uint256 ticketLuckNumber
     ) internal {
-        (, uint256 bonusReward) = _getClaimRewardAmount(ticketId);
+        (uint256 winnerLevel, uint256 bonusReward) = _getClaimRewardAmount(
+            ticketId
+        );
         require(
             bonusReward > 0,
             "LotteryGameTicketBonusRewardSystem: bonus reward is zero"
