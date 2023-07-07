@@ -37,7 +37,9 @@ const ContractDeployAddress_ZkSyncEraMainNet: ContractDeployAddressInterface =
   {};
 
 const ContractDeployAddress_PolygonZkEvmTestNet: ContractDeployAddressInterface =
-  {};
+  {
+    GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
+  };
 
 const ContractDeployAddress_PolygonZkEvmMainNet: ContractDeployAddressInterface =
   {};
