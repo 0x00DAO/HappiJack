@@ -8,6 +8,7 @@ import {StoreDelegate} from "../../eon/store/StoreDelegate.sol";
 import {LotteryGameSystemConfig, ID as LotteryGameSystemConfigID} from "./LotteryGameSystemConfig.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
+import {LotteryGameTicketBonusRewardSystem, ID as LotteryGameTicketBonusRewardSystemID} from "./LotteryGameTicketBonusRewardSystem.sol";
 
 library GameSystems {
     function getSystemAddress(
@@ -46,6 +47,17 @@ library GameSystems {
         return
             LotteryGameSystemConfig(
                 getSystemAddress(LotteryGameSystemConfigID)
+            );
+    }
+
+    function getLotteryGameTicketBonusRewardSystem()
+        internal
+        view
+        returns (LotteryGameTicketBonusRewardSystem)
+    {
+        return
+            LotteryGameTicketBonusRewardSystem(
+                getSystemAddress(LotteryGameTicketBonusRewardSystemID)
             );
     }
 }
