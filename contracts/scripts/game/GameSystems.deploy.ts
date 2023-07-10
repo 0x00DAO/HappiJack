@@ -29,7 +29,7 @@ async function deployNewRegisterSystem(
   // const systemContractName = 'LotteryGameLuckyNumberSystem';
   const deployedNewSystem: string[] = [];
   // step 1. Deploy new register system
-  for (let i = 13; i < systems.length; i++) {
+  for (let i = 0; i < systems.length; i++) {
     const systemContractName = systems[i];
     console.log(`Check ${i + 1}/${systems.length}, ${systemContractName} ...`);
 
