@@ -63,6 +63,8 @@ contract LotteryGameTicketViewSystem is
     struct lotteryTicketInfo {
         uint256 lotteryGameId;
         uint256 lotteryGameStatus;
+        uint256 lotteryGameStartTime;
+        uint256 lotteryGameDuring;
         uint256 lotteryTicketId;
         uint256 luckyNumber;
         address owner;
@@ -90,6 +92,12 @@ contract LotteryGameTicketViewSystem is
         ticketInfo.lotteryGameStatus = LotteryGameTable.getStatus(
             ticketInfo.lotteryGameId
         );
+        ticketInfo.lotteryGameStartTime = LotteryGameConfigTable.getStartTime(
+            ticketInfo.lotteryGameId
+        );
+        ticketInfo.lotteryGameDuring = LotteryGameConfigTable.getDuring(
+            ticketInfo.lotteryGameId
+        );
         ticketInfo.luckyNumber = LotteryTicketTable.getLuckyNumber(
             lotteryTicketId
         );
@@ -107,11 +115,19 @@ contract LotteryGameTicketViewSystem is
             if (ticketInfo.isRewardBonus) {
                 ticketInfo.rewardTime = LotteryTicketBonusRewardTable
                     .getRewardTime(lotteryTicketId);
-            }
+                ticketInfo.rewardLevel = LotteryTicketBonusRewardTable
+                    .getRewardLevel(lotteryTicketId);
+                ticketInfo.rewardAmount = LotteryTicketBonusRewardTable
+                    .getRewardAmount(lotteryTicketId);
+            } else {
+                (
+                    ticketInfo.rewardLevel,
+                    ticketInfo.rewardAmount,
 
-            (ticketInfo.rewardLevel, ticketInfo.rewardAmount, ) = GameSystems
-                .getLotteryGameTicketBonusRewardSystem()
-                .getClaimRewardAmount(lotteryTicketId);
+                ) = GameSystems
+                    .getLotteryGameTicketBonusRewardSystem()
+                    .getClaimRewardAmount(lotteryTicketId);
+            }
         }
 
         return ticketInfo;

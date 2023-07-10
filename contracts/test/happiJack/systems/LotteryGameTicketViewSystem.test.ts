@@ -6,13 +6,14 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
-describe.only('LotteryGameTicketViewSystem', function () {
+describe('LotteryGameTicketViewSystem', function () {
   let gameRootContract: Contract;
   let lotteryGameSystem: Contract;
   let lotteryGameSellSystem: Contract;
   let lotteryGameLotteryResultVerifySystem: Contract;
   let lotteryGameConstantVariableSystem: Contract;
   let lotteryGameTicketViewSystem: Contract;
+  let lotteryGameTicketBonusRewardSystem: Contract;
 
   let snapshotIdLotteryGameLotteryResultVerifySystem: string;
 
@@ -49,6 +50,12 @@ describe.only('LotteryGameTicketViewSystem', function () {
     lotteryGameTicketViewSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameTicketViewSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameTicketBonusRewardSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameTicketBonusRewardSystem',
       gameDeploy.systemIdPrefix
     );
 
@@ -163,6 +170,8 @@ describe.only('LotteryGameTicketViewSystem', function () {
           expect(ticketInfo).to.be.not.null;
           expect(ticketInfo.lotteryGameId).to.be.equal(lotteryGameId);
           expect(ticketInfo.lotteryGameStatus).to.be.equal(1);
+          expect(ticketInfo.lotteryGameStartTime).to.be.gt(0);
+          expect(ticketInfo.lotteryGameDuring).to.be.equal(60 * 60 * 24 * 1);
           expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
           expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
           expect(ticketInfo.owner).to.be.equal(addresses[0].address);
@@ -178,13 +187,6 @@ describe.only('LotteryGameTicketViewSystem', function () {
       const during = 60 * 60 * 24 * 1 + 1; // 1 days
       await ethers.provider.send('evm_increaseTime', [during]);
 
-      //get lottery bonus pool
-      const lotteryPool = await getTableRecord.LotteryGameBonusPoolTable(
-        gameRootContract,
-        lotteryGameId
-      );
-      // console.log('lotteryPool:', lotteryPool);
-
       // verify
       await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
         .to.be.emit(
@@ -196,22 +198,6 @@ describe.only('LotteryGameTicketViewSystem', function () {
           return true;
         });
 
-      // check lottery bonus pool
-      const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
-        gameRootContract,
-        lotteryGameId
-      );
-
-      expect(lotteryPoolAfter.BonusAmount).to.be.equal(lotteryPool.BonusAmount);
-      // console.log('lotteryPoolAfter:', lotteryPoolAfter);
-      const bonusPoolRefund = lotteryPoolAfter.BonusAmount.mul(20 + 5 + 5).div(
-        100
-      );
-      expect(lotteryPoolAfter.OwnerFeeAmount).to.be.equal(0);
-      expect(lotteryPoolAfter.DevelopFeeAmount).to.be.equal(0);
-      expect(lotteryPoolAfter.VerifyFeeAmount).to.be.equal(0);
-      expect(lotteryPoolAfter.BonusAmountWithdraw).to.be.equal(bonusPoolRefund);
-
       //check lottery game
       const lotteryGame = await getTableRecord.LotteryGameTable(
         gameRootContract,
@@ -220,6 +206,51 @@ describe.only('LotteryGameTicketViewSystem', function () {
       // console.log('lotteryGame:', lotteryGame);
       expect(lotteryGame.Status).to.be.equal(2);
       expect(lotteryGame.Owner).to.be.equal(owner.address);
+
+      //get ticket info before reward claim
+      await lotteryGameTicketViewSystem
+        .getLotteryTicketInfo(ticketId)
+        .then((ticketInfo: any) => {
+          expect(ticketInfo).to.be.not.null;
+          expect(ticketInfo.lotteryGameId).to.be.equal(lotteryGameId);
+          expect(ticketInfo.lotteryGameStatus).to.be.equal(2);
+          expect(ticketInfo.lotteryGameStartTime).to.be.gt(0);
+          expect(ticketInfo.lotteryGameDuring).to.be.equal(60 * 60 * 24 * 1);
+          expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
+          expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
+          expect(ticketInfo.owner).to.be.equal(addresses[0].address);
+          expect(ticketInfo.buyTime).to.be.not.null;
+          expect(ticketInfo.bonusPercent).to.be.equal(80);
+          expect(ticketInfo.isRewardBonus).to.be.false;
+          expect(ticketInfo.rewardTime).to.be.equal(0);
+          expect(ticketInfo.rewardLevel).to.be.equal(0);
+          expect(ticketInfo.rewardAmount).to.be.gt(0);
+        });
+
+      //claim reward
+      await lotteryGameTicketBonusRewardSystem
+        .connect(addresses[0])
+        .claimTicketReward(ticketId);
+
+      //get ticket info after reward claim
+      await lotteryGameTicketViewSystem
+        .getLotteryTicketInfo(ticketId)
+        .then((ticketInfo: any) => {
+          expect(ticketInfo).to.be.not.null;
+          expect(ticketInfo.lotteryGameId).to.be.equal(lotteryGameId);
+          expect(ticketInfo.lotteryGameStatus).to.be.equal(2);
+          expect(ticketInfo.lotteryGameStartTime).to.be.gt(0);
+          expect(ticketInfo.lotteryGameDuring).to.be.equal(60 * 60 * 24 * 1);
+          expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
+          expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
+          expect(ticketInfo.owner).to.be.equal(addresses[0].address);
+          expect(ticketInfo.buyTime).to.be.not.null;
+          expect(ticketInfo.bonusPercent).to.be.equal(80);
+          expect(ticketInfo.isRewardBonus).to.be.true;
+          expect(ticketInfo.rewardTime).to.be.gt(0);
+          expect(ticketInfo.rewardLevel).to.be.equal(0);
+          expect(ticketInfo.rewardAmount).to.be.gt(0);
+        });
     });
   });
 });
