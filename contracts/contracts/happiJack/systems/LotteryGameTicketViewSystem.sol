@@ -40,10 +40,6 @@ contract LotteryGameTicketViewSystem is
         __UUPSUpgradeable_init();
         __ReentrancyGuard_init();
         __System_init(ID, root_);
-
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(PAUSER_ROLE, msg.sender);
-        _grantRole(UPGRADER_ROLE, msg.sender);
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {

@@ -42,16 +42,11 @@ contract LotteryGameLotteryNFTSystem is
         __BaseComponent_init(ID, root_, ComponentType.System);
         __SystemAccessControl_init();
         __UUPSUpgradeable_init();
-
-        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(PAUSER_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
-        _grantRole(UPGRADER_ROLE, msg.sender);
     }
 
     function _baseURI() internal pure override returns (string memory) {
         return
-            "https://happijack.on.fleek.co/happiairdrop_lottery_pool_meta.json?tokenid=";
+            "https://happiairdrop.on.fleek.co/happiairdrop_lottery_pool_meta.json?tokenid=";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {
