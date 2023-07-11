@@ -89,18 +89,6 @@ contract GameStore is
         return entityToValue[entity];
     }
 
-    /** Not implemented in BareComponent */
-    function getEntities() public view virtual returns (uint256[] memory) {
-        revert GameStore__NotImplemented();
-    }
-
-    /** Not implemented in BareComponent */
-    function getEntitiesWithValue(
-        bytes memory
-    ) public view virtual returns (uint256[] memory) {
-        revert GameStore__NotImplemented();
-    }
-
     /**
      * Set the given component value for the given entity.
      * Registers the update in the World contract.
@@ -124,10 +112,6 @@ contract GameStore is
     function _remove(uint256 entity) internal virtual {
         // Remove the entity from the mapping
         delete entityToValue[entity];
-    }
-
-    function set(uint256 entity, uint256 value) public virtual {
-        set(entity, abi.encode(value));
     }
 
     // as record operations are not supported in bare component, we use a slot to store the tableId
