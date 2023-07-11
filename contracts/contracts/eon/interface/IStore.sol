@@ -1,6 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
+struct StoreRecordIndex {
+    bytes32 table;
+    bytes32[] key;
+    uint8 columnCountOrIndex;
+}
+
 interface IStoreRead {
     // Get partial data at schema index
     function getField(
@@ -16,6 +22,11 @@ interface IStoreRead {
         uint8 columnCount
     ) external view returns (bytes[] memory);
 
+    function getRecords(
+        StoreRecordIndex[] calldata recordIndices
+    ) external view returns (bytes[][] memory);
+
+    // Check if record exists
     function hasRecord(
         bytes32 table,
         bytes32[] calldata key

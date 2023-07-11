@@ -8,7 +8,7 @@ import "./utils/VersionUpgradeable.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import {IRoot} from "./interface/IRoot.sol";
-import {IStore} from "./interface/IStore.sol";
+import {IStore, StoreRecordIndex} from "./interface/IStore.sol";
 
 import {GameStore} from "./store/GameStore.sol";
 import {IComponent} from "./interface/IComponent.sol";
@@ -171,6 +171,12 @@ contract GameRoot is
         return _getRecord(tableId, key, columnCount);
     }
 
+    function getRecords(
+        StoreRecordIndex[] calldata recordIndices
+    ) public view returns (bytes[][] memory) {
+        return _getRecords(recordIndices);
+    }
+
     function deleteRecord(
         bytes32 tableId,
         bytes32[] memory key,
@@ -178,31 +184,4 @@ contract GameRoot is
     ) public whenNotPaused {
         _deleteRecord(tableId, key, columnCount);
     }
-
-    /// @dev call system
-    // function call(
-    //     uint256 systemId,
-    //     bytes calldata data
-    // ) external payable override returns (bytes memory) {
-    //     address systemAddress = GameRootSystemsTable.get(systemId);
-    //     require(systemAddress != address(0), "System not registered");
-
-    //     bytes memory result;
-    //     // If the user sent any ETH along with the function call, forward it to the systemAddress
-    //     if (msg.value > 0) {
-    //         result = AddressUpgradeable.functionCallWithValue(
-    //             systemAddress,
-    //             data,
-    //             msg.value,
-    //             "call system failed with value"
-    //         );
-    //     } else {
-    //         result = AddressUpgradeable.functionCall(
-    //             systemAddress,
-    //             data,
-    //             "call system failed"
-    //         );
-    //     }
-    //     return result;
-    // }
 }

@@ -8,6 +8,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {IRoot} from "../interface/IRoot.sol";
 import {BaseComponent} from "../component/BaseComponent.sol";
 import {ComponentType} from "../component/ComponentType.sol";
+import {StoreRecordIndex} from "../interface/IStore.sol";
 
 uint256 constant ID = uint256(keccak256("game.gamestore.GameStore"));
 uint256 constant SLOT = uint256(keccak256("game.gamestore.slot"));
@@ -158,6 +159,20 @@ contract GameStore is
         bytes[] memory result = new bytes[](columnCount);
         for (uint8 i = 0; i < columnCount; i++) {
             result[i] = _getField(tableId, key, i);
+        }
+        return result;
+    }
+
+    function _getRecords(
+        StoreRecordIndex[] calldata recordIndices
+    ) internal view returns (bytes[][] memory) {
+        bytes[][] memory result = new bytes[][](recordIndices.length);
+        for (uint256 i = 0; i < recordIndices.length; i++) {
+            result[i] = _getRecord(
+                recordIndices[i].table,
+                recordIndices[i].key,
+                recordIndices[i].columnCountOrIndex
+            );
         }
         return result;
     }
