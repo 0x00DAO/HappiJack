@@ -106,24 +106,39 @@ contract LotteryGameTicketBonusRewardSystem is
     }
 
     /// @dev claim reward
-    /// @return winnerLevel, ticketOwnerBonusReward,developBonusReward
+    /// @return winnerLevel ticketOwnerBonusReward developBonusReward
     function getClaimRewardAmount(
         uint256 ticketId
-    ) public view returns (uint256, uint256, uint256) {
-        (
+    )
+        public
+        view
+        returns (
             uint256 winnerLevel,
             uint256 ticketOwnerBonusReward,
             uint256 developBonusReward
-        ) = _getClaimRewardAmount(ticketId);
+        )
+    {
         //get ticket bonus percent, if user is last buyer, get 80% bonus
-        return (winnerLevel, ticketOwnerBonusReward, developBonusReward);
+        (
+            winnerLevel,
+            ticketOwnerBonusReward,
+            developBonusReward
+        ) = _getClaimRewardAmount(ticketId);
     }
 
     /// @dev claim reward
-    /// @return winnerLevel, ticketOwnerBonusReward, developBonusReward
+    /// @return winnerLevel ticketOwnerBonusReward developBonusReward
     function _getClaimRewardAmount(
         uint256 ticketId
-    ) internal view returns (uint256, uint256, uint256) {
+    )
+        internal
+        view
+        returns (
+            uint256 winnerLevel,
+            uint256 ticketOwnerBonusReward,
+            uint256 developBonusReward
+        )
+    {
         require(
             LotteryTicketBonusRewardTable.hasRecord(ticketId) == false,
             "LotteryGameTicketBonusRewardSystem: ticket already claimed"
@@ -137,7 +152,7 @@ contract LotteryGameTicketBonusRewardSystem is
         );
         uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
 
-        uint256 winnerLevel = LotteryGameLotteryCoreSystem(
+        winnerLevel = LotteryGameLotteryCoreSystem(
             getSystemAddress(LotteryGameLotteryCoreSystemID)
         ).getLotteryLuckNumberOrder(lotteryGameId, ticketLuckNumber, 3);
         require(
@@ -184,16 +199,15 @@ contract LotteryGameTicketBonusRewardSystem is
         ).getDeveloperAddress();
 
         //get ticket bonus percent, if user is last buyer, get 80% bonus
-        uint256 ticketOwnerBonusReward = (bonusReward *
-            ticketBonusRewardPercent) / 100;
-        uint256 developBonusReward = bonusReward - ticketOwnerBonusReward;
+        ticketOwnerBonusReward = (bonusReward * ticketBonusRewardPercent) / 100;
+        developBonusReward = bonusReward - ticketOwnerBonusReward;
         //if not set developer address, all bonus reward to ticket owner
         if (developAddress == address(0)) {
             ticketOwnerBonusReward = bonusReward;
             developBonusReward = 0;
         }
 
-        return (winnerLevel, ticketOwnerBonusReward, developBonusReward);
+        // return (winnerLevel, ticketOwnerBonusReward, developBonusReward);
     }
 
     function _claimReward(
