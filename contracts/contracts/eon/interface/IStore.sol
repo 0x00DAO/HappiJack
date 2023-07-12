@@ -66,6 +66,14 @@ interface IStoreU256SetRead {
         bytes32[] calldata key
     ) external view returns (uint256[] memory);
 
+    // Get all data at schema index, with pagination
+    function values(
+        bytes32[] calldata key,
+        uint256 start,
+        uint256 count
+    ) external view returns (uint256[] memory);
+
+    // Get all data at schema index, with multiple keys
     function values(
         bytes32[][] calldata key
     ) external view returns (uint256[][] memory);
