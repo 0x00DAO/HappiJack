@@ -107,14 +107,14 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
     }
 
     function withdrawETH(
-        address to,
+        address to_,
         uint256 amount_
     ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
-        _withdrawETH(to, amount_);
+        _withdrawETH(to_, amount_);
     }
 
-    function _withdrawETH(address to) internal {
-        address owner_ = to;
+    function _withdrawETH(address to_) internal {
+        address owner_ = to_;
         require(
             owner_ != address(0),
             "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
@@ -125,11 +125,11 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
             address(0)
         );
 
-        _withdrawETH(to, amount_);
+        _withdrawETH(to_, amount_);
     }
 
-    function _withdrawETH(address to, uint256 amount_) internal {
-        address owner_ = to;
+    function _withdrawETH(address to_, uint256 amount_) internal {
+        address owner_ = to_;
         require(
             owner_ != address(0),
             "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
@@ -197,7 +197,11 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
     }
 
     function withdrawERC20(IERC20Upgradeable token_) external {
-        address owner_ = _msgSender();
+        _withdrawERC20(token_, _msgSender());
+    }
+
+    function _withdrawERC20(IERC20Upgradeable token_, address to_) internal {
+        address owner_ = to_;
         require(
             owner_ != address(0),
             "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: owner_ must not be 0 address"
@@ -211,16 +215,44 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
             uint256(TokenType.ERC20),
             address(token_)
         );
+
+        _withdrawERC20(token_, owner_, amount_);
+    }
+
+    function _withdrawERC20(
+        IERC20Upgradeable token_,
+        address to_,
+        uint256 amount_
+    ) internal {
+        address owner_ = to_;
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: owner_ must not be 0 address"
+        );
+        require(
+            address(token_) != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: token_ must not be 0 address"
+        );
         require(
             amount_ > 0,
             "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: amount_ must be greater than 0"
+        );
+
+        uint256 balance = LotteryGameWalletSafeBoxTable.getAmount(
+            owner_,
+            uint256(TokenType.ERC20),
+            address(token_)
+        );
+        require(
+            balance >= amount_,
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawERC20: balance must be greater than amount_"
         );
 
         LotteryGameWalletSafeBoxTable.setAmount(
             owner_,
             uint256(TokenType.ERC20),
             address(token_),
-            0
+            balance - amount_
         );
 
         token_.transfer(owner_, amount_);
