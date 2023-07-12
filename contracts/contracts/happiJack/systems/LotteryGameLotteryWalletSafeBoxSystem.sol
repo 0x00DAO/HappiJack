@@ -106,29 +106,54 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
         _withdrawETH(to);
     }
 
+    function withdrawETH(
+        address to,
+        uint256 amount_
+    ) public onlyRole(SYSTEM_INTERNAL_ROLE) {
+        _withdrawETH(to, amount_);
+    }
+
     function _withdrawETH(address to) internal {
         address owner_ = to;
-
         require(
             owner_ != address(0),
             "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
         );
-
         uint256 amount_ = LotteryGameWalletSafeBoxTable.getAmount(
             owner_,
             uint256(TokenType.ETH),
             address(0)
+        );
+
+        _withdrawETH(to, amount_);
+    }
+
+    function _withdrawETH(address to, uint256 amount_) internal {
+        address owner_ = to;
+        require(
+            owner_ != address(0),
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: owner_ must not be 0 address"
         );
         require(
             amount_ > 0,
             "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: amount_ must be greater than 0"
         );
 
+        uint256 balance = LotteryGameWalletSafeBoxTable.getAmount(
+            owner_,
+            uint256(TokenType.ETH),
+            address(0)
+        );
+        require(
+            balance >= amount_,
+            "LotteryGameLotteryWalletSafeBoxSystem: withdrawETH: balance must be greater than amount_"
+        );
+
         LotteryGameWalletSafeBoxTable.setAmount(
             owner_,
             uint256(TokenType.ETH),
             address(0),
-            0
+            balance - amount_
         );
 
         AddressUpgradeable.sendValue(payable(owner_), amount_);
