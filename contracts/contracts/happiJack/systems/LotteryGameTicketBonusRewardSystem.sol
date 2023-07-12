@@ -66,13 +66,13 @@ contract LotteryGameTicketBonusRewardSystem is
     event TicketBonusRewardClaimed(
         uint256 indexed ticketId,
         uint256 indexed lotteryGameId,
-        uint256 indexed ticketLuckNumber,
-        uint256 amount,
-        uint256 winnerLevel
+        address indexed claimer,
+        uint256 winnerLevel,
+        uint256 amount
     );
 
     function _version() internal pure override returns (uint256) {
-        return 2;
+        return 3;
     }
 
     function claimTicketReward(
@@ -84,7 +84,8 @@ contract LotteryGameTicketBonusRewardSystem is
         );
 
         require(
-            LotteryTicketTable.getOwner(ticketId) == _msgSender(),
+            GameSystems.getLotteryGameTicketNFTSystem().ownerOf(ticketId) ==
+                _msgSender(),
             "LotteryGameTicketBonusRewardSystem: caller is not the owner of the ticket"
         );
 
@@ -101,10 +102,8 @@ contract LotteryGameTicketBonusRewardSystem is
             "LotteryGameTicketBonusRewardSystem: lottery game is not completed"
         );
 
-        uint256 ticketLuckNumber = LotteryTicketTable.getLuckyNumber(ticketId);
-
         //0:1,1:2,2:3,3:4 prize
-        _claimReward(lotteryGameId, ticketId, ticketLuckNumber);
+        _claimReward(lotteryGameId, ticketId, _msgSender());
     }
 
     /// @dev claim reward
@@ -215,7 +214,7 @@ contract LotteryGameTicketBonusRewardSystem is
     function _claimReward(
         uint256 lotteryGameId,
         uint256 ticketId,
-        uint256 ticketLuckNumber
+        address claimer_
     ) internal {
         (
             uint256 winnerLevel,
@@ -254,13 +253,13 @@ contract LotteryGameTicketBonusRewardSystem is
                 getSystemAddress(LotteryGameBonusPoolWithdrawSystemID)
             ).withdrawBonusAmountToWalletSafeBoxETH(
                     lotteryGameId,
-                    _msgSender(),
+                    claimer_,
                     ticketOwnerBonusReward
                 );
 
             // withdraw bonus to wallet EOA
             GameSystems.getLotteryGameLotteryWalletSafeBoxSystem().withdrawETH(
-                _msgSender(),
+                claimer_,
                 ticketOwnerBonusReward
             );
         }
@@ -280,9 +279,9 @@ contract LotteryGameTicketBonusRewardSystem is
         emit TicketBonusRewardClaimed(
             ticketId,
             lotteryGameId,
-            ticketLuckNumber,
-            ticketOwnerBonusReward,
-            winnerLevel
+            claimer_,
+            winnerLevel,
+            ticketOwnerBonusReward
         );
     }
 }

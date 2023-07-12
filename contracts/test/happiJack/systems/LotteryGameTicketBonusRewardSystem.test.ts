@@ -15,6 +15,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
   let lotteryGameConstantVariableSystem: Contract;
   let lotteryGameTicketBonusRewardSystem: Contract;
   let lotteryGameLotteryWalletSafeBoxSystem: Contract;
+  let lotteryGameTicketNFTSystem: Contract;
 
   beforeEach(async function () {
     //deploy GameRoot
@@ -61,6 +62,12 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
     lotteryGameLotteryWalletSafeBoxSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameLotteryWalletSafeBoxSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameTicketNFTSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameTicketNFTSystem',
       gameDeploy.systemIdPrefix
     );
   });
@@ -241,7 +248,8 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
           .withArgs(
             ticketId,
             lotteryGameId,
-            luckyNumber,
+            addresses[addressIndex].address,
+            order,
             (x: any) => {
               ticketClaimAmount = x;
 
@@ -253,8 +261,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
               claimAmount = claimAmount.add(originalAmount);
               console.log('amount:', ticketClaimAmount);
               return true;
-            },
-            order
+            }
           );
 
         //check ticket reward
@@ -378,6 +385,68 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
 
       // check ticket safe box balance
       await checkSafeBoxBalance();
+    });
+
+    it('success, transfer ticket', async function () {
+      const [owner] = await ethers.getSigners();
+
+      const balance = ethers.utils.parseEther('0.005');
+      // buy ticket
+      const addresses = await ethers.getSigners();
+      const ticketIds: Map<string, BigNumber> = new Map();
+      const addressCount = 1;
+      const addressStart = 1;
+      for (
+        let i = addressStart;
+        i < addresses.length, i < addressStart + addressCount;
+        i++
+      ) {
+        const [ticketId, luckNumber] = await buyTicket(
+          lotteryGameId,
+          addresses[i]
+        );
+        ticketIds.set(ticketId.toString(), luckNumber);
+      }
+
+      // console.log(ticketIds);
+
+      // skip to end time
+      const during = 60 * 60 * 24 * 1 + 1; // 1 days
+      await ethers.provider.send('evm_increaseTime', [during]);
+
+      // verify
+      await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
+        .to.be.emit(
+          lotteryGameLotteryResultVerifySystem,
+          'LotteryGameResultVerified'
+        )
+        .withArgs(lotteryGameId, (x: any) => {
+          // console.log('luckyNumber:', x);
+          return true;
+        });
+
+      //transfer ticket to owner
+      for (let [ticketId, luckyNumber] of ticketIds) {
+        await lotteryGameTicketNFTSystem
+          .connect(addresses[addressStart])
+          .transferFrom(
+            addresses[addressStart].address,
+            owner.address,
+            ticketId
+          );
+      }
+
+      // claim reward for all ticket
+      let addressIndex = addressStart;
+      //ticketRewardTimestamp is block.timestamp
+
+      for (let [ticketId, luckyNumber] of ticketIds) {
+        await lotteryGameTicketBonusRewardSystem
+          .connect(owner)
+          .claimTicketReward(ticketId);
+
+        addressIndex++;
+      }
     });
   });
 });

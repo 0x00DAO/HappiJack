@@ -14,6 +14,7 @@ describe('LotteryGameTicketViewSystem', function () {
   let lotteryGameConstantVariableSystem: Contract;
   let lotteryGameTicketViewSystem: Contract;
   let lotteryGameTicketBonusRewardSystem: Contract;
+  let lotteryGameTicketNFTSystem: Contract;
 
   let snapshotIdLotteryGameLotteryResultVerifySystem: string;
 
@@ -56,6 +57,12 @@ describe('LotteryGameTicketViewSystem', function () {
     lotteryGameTicketBonusRewardSystem = await eonTestUtil.getSystem(
       gameRootContract,
       'LotteryGameTicketBonusRewardSystem',
+      gameDeploy.systemIdPrefix
+    );
+
+    lotteryGameTicketNFTSystem = await eonTestUtil.getSystem(
+      gameRootContract,
+      'LotteryGameTicketNFTSystem',
       gameDeploy.systemIdPrefix
     );
 
@@ -220,6 +227,7 @@ describe('LotteryGameTicketViewSystem', function () {
           expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
           expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
           expect(ticketInfo.owner).to.be.equal(addresses[0].address);
+          expect(ticketInfo.buyer).to.be.equal(addresses[0].address);
           expect(ticketInfo.buyTime).to.be.not.null;
           expect(ticketInfo.bonusPercent).to.be.equal(80);
           expect(ticketInfo.isRewardBonus).to.be.false;
@@ -245,6 +253,33 @@ describe('LotteryGameTicketViewSystem', function () {
           expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
           expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
           expect(ticketInfo.owner).to.be.equal(addresses[0].address);
+          expect(ticketInfo.buyer).to.be.equal(addresses[0].address);
+          expect(ticketInfo.buyTime).to.be.not.null;
+          expect(ticketInfo.bonusPercent).to.be.equal(80);
+          expect(ticketInfo.isRewardBonus).to.be.true;
+          expect(ticketInfo.rewardTime).to.be.gt(0);
+          expect(ticketInfo.rewardLevel).to.be.equal(0);
+          expect(ticketInfo.rewardAmount).to.be.gt(0);
+        });
+
+      //transfer ticket
+      await lotteryGameTicketNFTSystem
+        .connect(addresses[0])
+        .transferFrom(addresses[0].address, addresses[1].address, ticketId);
+
+      //get ticket info after transfer
+      await lotteryGameTicketViewSystem
+        .getLotteryTicketInfo(ticketId)
+        .then((ticketInfo: any) => {
+          expect(ticketInfo).to.be.not.null;
+          expect(ticketInfo.lotteryGameId).to.be.equal(lotteryGameId);
+          expect(ticketInfo.lotteryGameStatus).to.be.equal(2);
+          expect(ticketInfo.lotteryGameStartTime).to.be.gt(0);
+          expect(ticketInfo.lotteryGameDuring).to.be.equal(60 * 60 * 24 * 1);
+          expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
+          expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
+          expect(ticketInfo.owner).to.be.equal(addresses[1].address);
+          expect(ticketInfo.buyer).to.be.equal(addresses[0].address);
           expect(ticketInfo.buyTime).to.be.not.null;
           expect(ticketInfo.bonusPercent).to.be.equal(80);
           expect(ticketInfo.isRewardBonus).to.be.true;
