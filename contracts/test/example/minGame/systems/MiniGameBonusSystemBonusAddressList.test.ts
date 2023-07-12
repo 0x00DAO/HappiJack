@@ -81,17 +81,6 @@ describe('MiniGameBonusSystemBonusAddressList', function () {
       });
     });
 
-    it('fail: should not be able to addBonusAddressList use StoreU256SetSystem', async function () {
-      await expect(
-        storeU256SetSystem['add(bytes32[],uint256)'](
-          [ethers.utils.hexZeroPad('0x01', 32)],
-          1
-        )
-      ).to.be.revertedWith(
-        'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7'
-      );
-    });
-
     it('success: should be able to addBonusAddressList use storeU256SetSystem', async function () {
       const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
       //test add 4 different address
@@ -111,6 +100,74 @@ describe('MiniGameBonusSystemBonusAddressList', function () {
         expect(res[1]).to.equal(addr2.address);
         expect(res[2]).to.equal(addr3.address);
         expect(res[3]).to.equal(addr4.address);
+      });
+    });
+  });
+
+  describe('StoreU256SetSystem', function () {
+    it('fail: should not be able to addBonusAddressList use StoreU256SetSystem', async function () {
+      await expect(
+        storeU256SetSystem['add(bytes32[],uint256)'](
+          [ethers.utils.hexZeroPad('0x01', 32)],
+          1
+        )
+      ).to.be.revertedWith(
+        'AccessControl: account 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 is missing role 0x7c36da28cc8d8517c2cb99d17e2a1aed66b5d8a36bf0b347bb1aebd692d0a3c7'
+      );
+    });
+
+    describe('values', function () {
+      it('success: values(bytes32[])', async function () {
+        const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+        //test add 4 different address
+        await miniGameBonusSystem.addBonusAddressList(addr1.address);
+        await miniGameBonusSystem.addBonusAddressList(addr2.address);
+        await miniGameBonusSystem.addBonusAddressList(addr3.address);
+        await miniGameBonusSystem.addBonusAddressList(addr4.address);
+
+        const tableId = ethers.utils.id('tableId' + 'MiniGameBonusListTable');
+        const Key = ethers.utils.id(
+          'game.systems.MiniGameBonusSystem.ID_BonusAddressList'
+        );
+        const query = [tableId, Key];
+
+        await storeU256SetSystem['values(bytes32[])'](query).then(
+          (res: any) => {
+            expect(res[0]).to.equal(addr1.address);
+            expect(res[1]).to.equal(addr2.address);
+            expect(res[2]).to.equal(addr3.address);
+            expect(res[3]).to.equal(addr4.address);
+          }
+        );
+      });
+
+      it('success: values(bytes32[][])', async function () {
+        const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+        //test add 4 different address
+        await miniGameBonusSystem.addBonusAddressList(addr1.address);
+        await miniGameBonusSystem.addBonusAddressList(addr2.address);
+        await miniGameBonusSystem.addBonusAddressList(addr3.address);
+        await miniGameBonusSystem.addBonusAddressList(addr4.address);
+
+        const tableId = ethers.utils.id('tableId' + 'MiniGameBonusListTable');
+        const Key = ethers.utils.id(
+          'game.systems.MiniGameBonusSystem.ID_BonusAddressList'
+        );
+        const query = [tableId, Key];
+
+        await storeU256SetSystem['values(bytes32[][])']([query, query]).then(
+          (res: any) => {
+            expect(res[0][0]).to.equal(addr1.address);
+            expect(res[0][1]).to.equal(addr2.address);
+            expect(res[0][2]).to.equal(addr3.address);
+            expect(res[0][3]).to.equal(addr4.address);
+
+            expect(res[1][0]).to.equal(addr1.address);
+            expect(res[1][1]).to.equal(addr2.address);
+            expect(res[1][2]).to.equal(addr3.address);
+            expect(res[1][3]).to.equal(addr4.address);
+          }
+        );
       });
     });
   });
