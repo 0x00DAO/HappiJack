@@ -169,6 +169,84 @@ describe('MiniGameBonusSystemBonusAddressList', function () {
           }
         );
       });
+
+      it('success: values(bytes32[],uint256,uint256)', async function () {
+        const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+        //test add 4 different address
+        await miniGameBonusSystem.addBonusAddressList(addr1.address);
+        await miniGameBonusSystem.addBonusAddressList(addr2.address);
+        await miniGameBonusSystem.addBonusAddressList(addr3.address);
+        await miniGameBonusSystem.addBonusAddressList(addr4.address);
+
+        const tableId = ethers.utils.id('tableId' + 'MiniGameBonusListTable');
+        const Key = ethers.utils.id(
+          'game.systems.MiniGameBonusSystem.ID_BonusAddressList'
+        );
+        const query = [tableId, Key];
+
+        //test get 2 address
+        await storeU256SetSystem['values(bytes32[],uint256,uint256)'](
+          query,
+          0,
+          2
+        ).then((res: any) => {
+          expect(res[0]).to.equal(addr1.address);
+          expect(res[1]).to.equal(addr2.address);
+        });
+
+        //test get 2 address
+        await storeU256SetSystem['values(bytes32[],uint256,uint256)'](
+          query,
+          2,
+          2
+        ).then((res: any) => {
+          expect(res[0]).to.equal(addr3.address);
+          expect(res[1]).to.equal(addr4.address);
+        });
+
+        //test get 1 address
+        await storeU256SetSystem['values(bytes32[],uint256,uint256)'](
+          query,
+          3,
+          2
+        ).then((res: any) => {
+          expect(res[0]).to.equal(addr4.address);
+        });
+
+        //test get 0 address
+        await storeU256SetSystem['values(bytes32[],uint256,uint256)'](
+          query,
+          4,
+          2
+        ).then((res: any) => {
+          expect(res.length).to.equal(0);
+        });
+
+        //test get 4 address
+        await storeU256SetSystem['values(bytes32[],uint256,uint256)'](
+          query,
+          0,
+          4
+        ).then((res: any) => {
+          expect(res[0]).to.equal(addr1.address);
+          expect(res[1]).to.equal(addr2.address);
+          expect(res[2]).to.equal(addr3.address);
+          expect(res[3]).to.equal(addr4.address);
+        });
+
+        //test get 5 address
+        await storeU256SetSystem['values(bytes32[],uint256,uint256)'](
+          query,
+          0,
+          5
+        ).then((res: any) => {
+          expect(res.length).to.equal(4);
+          expect(res[0]).to.equal(addr1.address);
+          expect(res[1]).to.equal(addr2.address);
+          expect(res[2]).to.equal(addr3.address);
+          expect(res[3]).to.equal(addr4.address);
+        });
+      });
     });
   });
 });
