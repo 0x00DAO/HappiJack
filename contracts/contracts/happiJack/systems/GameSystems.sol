@@ -10,6 +10,7 @@ import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSyst
 import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 import {LotteryGameTicketBonusRewardSystem, ID as LotteryGameTicketBonusRewardSystemID} from "./LotteryGameTicketBonusRewardSystem.sol";
 import {LotteryGameLotteryWalletSafeBoxSystem, ID as LotteryGameLotteryWalletSafeBoxSystemID} from "./LotteryGameLotteryWalletSafeBoxSystem.sol";
+import {LotteryGameTicketNFTSystem, ID as LotteryGameTicketNFTSystemID} from "./LotteryGameTicketNFTSystem.sol";
 
 library GameSystems {
     function getSystemAddress(
@@ -70,6 +71,17 @@ library GameSystems {
         return
             LotteryGameLotteryWalletSafeBoxSystem(
                 getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
+            );
+    }
+
+    function getLotteryGameTicketNFTSystem()
+        internal
+        view
+        returns (LotteryGameTicketNFTSystem)
+    {
+        return
+            LotteryGameTicketNFTSystem(
+                getSystemAddress(LotteryGameTicketNFTSystemID)
             );
     }
 }

@@ -64,6 +64,7 @@ contract LotteryGameTicketViewSystem is
         uint256 lotteryTicketId;
         uint256 luckyNumber;
         address owner;
+        address buyer;
         uint256 buyTime;
         uint256 bonusPercent;
         bool isRewardBonus;
@@ -97,7 +98,10 @@ contract LotteryGameTicketViewSystem is
         ticketInfo.luckyNumber = LotteryTicketTable.getLuckyNumber(
             lotteryTicketId
         );
-        ticketInfo.owner = LotteryTicketTable.getOwner(lotteryTicketId);
+        ticketInfo.owner = GameSystems.getLotteryGameTicketNFTSystem().ownerOf(
+            lotteryTicketId
+        );
+        ticketInfo.buyer = LotteryTicketTable.getOwner(lotteryTicketId);
         ticketInfo.buyTime = LotteryTicketTable.getBuyTime(lotteryTicketId);
         ticketInfo.bonusPercent = LotteryTicketTable.getBonusPercent(
             lotteryTicketId

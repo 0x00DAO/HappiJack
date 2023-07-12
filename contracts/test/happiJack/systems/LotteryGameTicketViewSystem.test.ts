@@ -175,6 +175,7 @@ describe('LotteryGameTicketViewSystem', function () {
           expect(ticketInfo.lotteryTicketId).to.be.equal(ticketId);
           expect(ticketInfo.luckyNumber).to.be.equal(ticketIds.get(ticketId));
           expect(ticketInfo.owner).to.be.equal(addresses[0].address);
+          expect(ticketInfo.buyer).to.be.equal(addresses[0].address);
           expect(ticketInfo.buyTime).to.be.not.null;
           expect(ticketInfo.bonusPercent).to.be.equal(80);
           expect(ticketInfo.isRewardBonus).to.be.false;
