@@ -72,6 +72,10 @@ contract LotteryGameLotteryWalletSafeBoxSystem is
         uint256 amount
     );
 
+    function _version() internal pure override returns (uint256) {
+        return 2;
+    }
+
     function depositETH(
         address owner_
     ) public payable onlyRole(SYSTEM_INTERNAL_ROLE) {

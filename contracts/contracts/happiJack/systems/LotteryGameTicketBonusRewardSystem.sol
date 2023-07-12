@@ -14,10 +14,12 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 
+import {GameSystems} from "./GameSystems.sol";
+
 import {LotteryGameLotteryCoreSystem, ID as LotteryGameLotteryCoreSystemID} from "./LotteryGameLotteryCoreSystem.sol";
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
-import {LotteryGameLotteryWalletSafeBoxSystem, ID as LotteryGameLotteryWalletSafeBoxSystemID} from "./LotteryGameLotteryWalletSafeBoxSystem.sol";
+// import {LotteryGameLotteryWalletSafeBoxSystem, ID as LotteryGameLotteryWalletSafeBoxSystemID} from "./LotteryGameLotteryWalletSafeBoxSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
 
 uint256 constant ID = uint256(
@@ -256,10 +258,11 @@ contract LotteryGameTicketBonusRewardSystem is
                     ticketOwnerBonusReward
                 );
 
-            // withdraw bonus to wallet
-            LotteryGameLotteryWalletSafeBoxSystem(
-                getSystemAddress(LotteryGameLotteryWalletSafeBoxSystemID)
-            ).withdrawETH(_msgSender());
+            // withdraw bonus to wallet EOA
+            GameSystems.getLotteryGameLotteryWalletSafeBoxSystem().withdrawETH(
+                _msgSender(),
+                ticketOwnerBonusReward
+            );
         }
 
         if (developAddress != address(0) && developBonusReward > 0) {
