@@ -5,9 +5,9 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
-import "../../eon/utils/VersionUpgradeable.sol";
+import "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol";
 
-import {System} from "../../eon/systems/System.sol";
+import {System} from "@zero-dao/eon/contracts/eon/systems/System.sol";
 import {GameSystems} from "./GameSystems.sol";
 
 import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";

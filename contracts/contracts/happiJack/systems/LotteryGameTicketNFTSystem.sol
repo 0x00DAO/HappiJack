@@ -8,9 +8,9 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-import "../../eon/utils/VersionUpgradeable.sol";
-import {SystemAccessControl} from "../../eon/systems/SystemAccessControl.sol";
-import {ComponentType} from "../../eon/component/ComponentType.sol";
+import "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol";
+import {SystemAccessControl} from "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol";
+import {ComponentType} from "@zero-dao/eon/contracts/eon/component/ComponentType.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameTicketNFTSystem")

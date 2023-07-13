@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {IStoreU256Set} from "../../eon/interface/IStore.sol";
-import {StoreU256SetSystemDelegate} from "../../eon/store/StoreU256SetSystemDelegate.sol";
-import {addressToEntity, entityToAddress} from "../../eon/utils/Utils.sol";
+import {IStoreU256Set} from "@zero-dao/eon/contracts/eon/interface/IStore.sol";
+import {StoreU256SetSystemDelegate} from "@zero-dao/eon/contracts/eon/store/StoreU256SetSystemDelegate.sol";
+import {addressToEntity, entityToAddress} from "@zero-dao/eon/contracts/eon/utils/Utils.sol";
 
 bytes32 constant _tableId = bytes32(
     keccak256(

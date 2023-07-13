@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {addressToEntity, entityToAddress} from "../../eon/utils/Utils.sol";
+import {addressToEntity, entityToAddress} from "@zero-dao/eon/contracts/eon/utils/Utils.sol";
 import {ContractUint256VariableTable} from "../tables/ContractUint256VariableTable.sol";
 
 ///@dev This is a library that contains the system config settings for the LotteryGame system.

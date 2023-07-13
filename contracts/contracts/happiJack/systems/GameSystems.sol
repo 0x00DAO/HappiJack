@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
-import {IStore} from "../../eon/interface/IStore.sol";
-import {System} from "../../eon/systems/System.sol";
-import {StoreDelegate} from "../../eon/store/StoreDelegate.sol";
+import {IStore} from "@zero-dao/eon/contracts/eon/interface/IStore.sol";
+import {System} from "@zero-dao/eon/contracts/eon/systems/System.sol";
+import {StoreDelegate} from "@zero-dao/eon/contracts/eon/store/StoreDelegate.sol";
 
 import {LotteryGameSystemConfig, ID as LotteryGameSystemConfigID} from "./LotteryGameSystemConfig.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
