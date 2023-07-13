@@ -29034,23 +29034,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -29058,7 +29058,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -29090,7 +29090,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -29098,7 +29098,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -29122,7 +29122,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -29146,11 +29146,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -31529,23 +31529,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -31553,7 +31553,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -31585,7 +31585,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -31593,7 +31593,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "entityToValue",
@@ -31601,7 +31601,7 @@
             "slot": "450",
             "type": "t_mapping(t_uint256,t_struct(UintSet)5106_storage)",
             "contract": "GameStoreU256Set",
-            "src": "contracts/eon/store/GameStoreU256Set.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/store/GameStoreU256Set.sol:17"
           },
           {
             "label": "__gap",
@@ -31609,7 +31609,7 @@
             "slot": "451",
             "type": "t_array(t_uint256)49_storage",
             "contract": "GameStoreU256Set",
-            "src": "contracts/eon/store/GameStoreU256Set.sol:159"
+            "src": "@zero-dao/eon/contracts/eon/store/GameStoreU256Set.sol:159"
           },
           {
             "label": "_status",
@@ -31633,7 +31633,7 @@
             "slot": "550",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -31661,11 +31661,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -31818,23 +31818,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -31842,7 +31842,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -31874,7 +31874,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -31882,7 +31882,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -31906,7 +31906,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -31930,11 +31930,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -32049,23 +32049,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -32073,7 +32073,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -32105,7 +32105,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -32113,7 +32113,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -32137,7 +32137,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -32161,11 +32161,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -32511,23 +32511,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -32535,7 +32535,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -32567,7 +32567,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -32575,7 +32575,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -32599,7 +32599,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -32623,11 +32623,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -32742,23 +32742,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -32766,7 +32766,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -32798,7 +32798,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -32806,7 +32806,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -32830,7 +32830,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -32854,11 +32854,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -32973,23 +32973,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -32997,7 +32997,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -33029,7 +33029,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -33037,7 +33037,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -33061,7 +33061,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -33085,11 +33085,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -33204,23 +33204,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -33228,7 +33228,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -33260,7 +33260,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -33268,7 +33268,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -33292,7 +33292,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -33316,11 +33316,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -33403,23 +33403,23 @@
             "slot": "51",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "52",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "52",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -33427,7 +33427,7 @@
             "slot": "53",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -33571,7 +33571,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -33595,7 +33595,7 @@
             "slot": "501",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -33631,11 +33631,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -33774,23 +33774,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -33798,7 +33798,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -33830,7 +33830,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -33838,7 +33838,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -33862,7 +33862,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -33886,11 +33886,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -34005,23 +34005,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -34029,7 +34029,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -34061,7 +34061,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -34069,7 +34069,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -34093,7 +34093,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -34117,11 +34117,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -34236,23 +34236,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -34260,7 +34260,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -34292,7 +34292,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -34300,7 +34300,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -34324,7 +34324,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -34348,11 +34348,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -34666,23 +34666,23 @@
             "slot": "51",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "52",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "52",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -34690,7 +34690,7 @@
             "slot": "53",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -34834,7 +34834,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -34858,7 +34858,7 @@
             "slot": "501",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -34894,11 +34894,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -35037,23 +35037,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -35061,7 +35061,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -35093,7 +35093,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -35101,7 +35101,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -35125,7 +35125,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -35149,11 +35149,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -35499,23 +35499,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -35523,7 +35523,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -35555,7 +35555,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -35563,7 +35563,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -35587,7 +35587,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -35611,11 +35611,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -35730,23 +35730,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -35754,7 +35754,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -35786,7 +35786,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -35794,7 +35794,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -35818,7 +35818,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -35842,11 +35842,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -35961,23 +35961,23 @@
             "slot": "201",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)5853",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)5911",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -35985,7 +35985,7 @@
             "slot": "203",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "__gap",
@@ -36017,7 +36017,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "SystemAccessControl",
-            "src": "contracts/eon/systems/SystemAccessControl.sol:40"
+            "src": "@zero-dao/eon/contracts/eon/systems/SystemAccessControl.sol:40"
           },
           {
             "label": "__gap",
@@ -36025,7 +36025,7 @@
             "slot": "401",
             "type": "t_array(t_uint256)49_storage",
             "contract": "System",
-            "src": "contracts/eon/systems/System.sol:42"
+            "src": "@zero-dao/eon/contracts/eon/systems/System.sol:42"
           },
           {
             "label": "_status",
@@ -36049,7 +36049,7 @@
             "slot": "500",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           }
         ],
         "types": {
@@ -36073,11 +36073,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)5911": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)5853": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
