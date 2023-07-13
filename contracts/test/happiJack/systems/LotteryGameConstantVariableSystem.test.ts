@@ -70,7 +70,8 @@ describe('LotteryGameConstantVariableSystem', function () {
   }
 
   describe('setGameConfig', function () {
-    const configId = ethers.utils.id('lotteryGame');
+    const configName = 'lotteryGame';
+    const configId = ethers.utils.id(configName);
     it('should set game config', async function () {
       await lotteryGameConstantVariableSystem[
         'setGameConfig(uint256,uint256,uint256)'
@@ -88,6 +89,32 @@ describe('LotteryGameConstantVariableSystem', function () {
       const gameConfig2 = await lotteryGameConstantVariableSystem[
         'getGameConfig(uint256)'
       ](configId);
+      expect(gameConfig2).to.equal(2);
+    });
+
+    it('should set game config with config name', async function () {
+      await lotteryGameConstantVariableSystem[
+        'setGameConfig(string,uint256,uint256)'
+      ](configName, 1, 0);
+
+      const gameConfig = await lotteryGameConstantVariableSystem[
+        'getGameConfig(string)'
+      ](configName);
+      expect(gameConfig).to.equal(1);
+
+      await lotteryGameConstantVariableSystem['getGameConfig(uint256)'](
+        configId
+      ).then((res: any) => {
+        expect(res).to.equal(1);
+      });
+
+      await lotteryGameConstantVariableSystem[
+        'setGameConfig(string,uint256,uint256)'
+      ](configName, 2, 1);
+
+      const gameConfig2 = await lotteryGameConstantVariableSystem[
+        'getGameConfig(string)'
+      ](configName);
       expect(gameConfig2).to.equal(2);
     });
 
