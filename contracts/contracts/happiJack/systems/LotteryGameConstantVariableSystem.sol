@@ -81,11 +81,23 @@ contract LotteryGameConstantVariableSystem is
     }
 
     function setGameConfig(
+        string memory key_,
+        uint256 value_,
+        uint256 oldValue_
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _setGameConfig(configKey(key_), value_, oldValue_);
+    }
+
+    function setGameConfig(
         uint256 key_,
         uint256 value_,
         uint256 oldValue_
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         _setGameConfig(key_, value_, oldValue_);
+    }
+
+    function getGameConfig(string memory key_) public view returns (uint256) {
+        return getGameConfig(configKey(key_));
     }
 
     function getGameConfig(uint256 key_) public view returns (uint256) {

@@ -72,26 +72,34 @@ describe('LotteryGameConstantVariableSystem', function () {
   describe('setGameConfig', function () {
     const configId = ethers.utils.id('lotteryGame');
     it('should set game config', async function () {
-      await lotteryGameConstantVariableSystem.setGameConfig(configId, 1, 0);
+      await lotteryGameConstantVariableSystem[
+        'setGameConfig(uint256,uint256,uint256)'
+      ](configId, 1, 0);
 
-      const gameConfig = await lotteryGameConstantVariableSystem.getGameConfig(
-        configId
-      );
+      const gameConfig = await lotteryGameConstantVariableSystem[
+        'getGameConfig(uint256)'
+      ](configId);
       expect(gameConfig).to.equal(1);
 
-      await lotteryGameConstantVariableSystem.setGameConfig(configId, 2, 1);
+      await lotteryGameConstantVariableSystem[
+        'setGameConfig(uint256,uint256,uint256)'
+      ](configId, 2, 1);
 
-      const gameConfig2 = await lotteryGameConstantVariableSystem.getGameConfig(
-        configId
-      );
+      const gameConfig2 = await lotteryGameConstantVariableSystem[
+        'getGameConfig(uint256)'
+      ](configId);
       expect(gameConfig2).to.equal(2);
     });
 
     it('fail: old value is not equal to current value', async function () {
-      await lotteryGameConstantVariableSystem.setGameConfig(configId, 1, 0);
+      await lotteryGameConstantVariableSystem[
+        'setGameConfig(uint256,uint256,uint256)'
+      ](configId, 1, 0);
 
       await expect(
-        lotteryGameConstantVariableSystem.setGameConfig(configId, 2, 0)
+        lotteryGameConstantVariableSystem[
+          'setGameConfig(uint256,uint256,uint256)'
+        ](configId, 2, 0)
       ).to.be.revertedWith('old value is not equal to current value');
     });
   });
