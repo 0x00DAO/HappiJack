@@ -398,13 +398,17 @@ describe('LotteryGameSystem', function () {
     const initialTicketPrice = utils.parseEther('0.001');
 
     //set lottery game config
-    await lotteryGameConstantVariableSystem.setGameConfig(
+    await lotteryGameConstantVariableSystem[
+      'setGameConfig(uint256,uint256,uint256)'
+    ](
       utils.id('happiJack.systems.config.WinPrizeInitialPoolAmount'),
       initialPoolAmount,
       0
     );
 
-    await lotteryGameConstantVariableSystem.setGameConfig(
+    await lotteryGameConstantVariableSystem[
+      'setGameConfig(uint256,uint256,uint256)'
+    ](
       utils.id('happiJack.systems.config.WinPrizeInitialTicketPrice'),
       initialTicketPrice,
       0
