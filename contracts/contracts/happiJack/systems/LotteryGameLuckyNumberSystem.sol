@@ -13,6 +13,7 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
+import {LotteryGameSystemConfigSetting} from "../libraries/LotteryGameSystemConfigSetting.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameLuckyNumberSystem")
@@ -95,7 +96,10 @@ contract LotteryGameLuckyNumberSystem is
 
         //check if lucky number is valid
         require(
-            ticketLuckyNumber_ > 0 && ticketLuckyNumber_ <= 999999,
+            ticketLuckyNumber_ >=
+                LotteryGameSystemConfigSetting.LuckyNumberMinValue() &&
+                ticketLuckyNumber_ <=
+                LotteryGameSystemConfigSetting.LuckyNumberMaxValue(),
             "LotteryGameLuckyNumberSystem: Lucky number is invalid"
         );
 
@@ -127,7 +131,7 @@ contract LotteryGameLuckyNumberSystem is
         uint256 blkTime,
         uint256 blkNumber,
         address lastLotteryOwner
-    ) public pure returns (uint256) {
+    ) public view returns (uint256) {
         uint256 luckyNumber = uint256(
             keccak256(
                 abi.encodePacked(
@@ -141,7 +145,10 @@ contract LotteryGameLuckyNumberSystem is
         );
 
         //lucky number must be between 1 and 999999
-        luckyNumber = (luckyNumber % 999999) + 1;
+        luckyNumber =
+            (luckyNumber %
+                LotteryGameSystemConfigSetting.LuckyNumberMaxValue()) +
+            1;
         return luckyNumber;
     }
 }

@@ -16,6 +16,8 @@ import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
 import "../collections/CollectionTables.sol";
 
+import {LotteryGameSystemConfigSetting} from "../libraries/LotteryGameSystemConfigSetting.sol";
+
 import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./LotteryGameBonusPoolSystem.sol";
 import {LotteryGameTicketSystem, ID as LotteryGameTicketSystemID} from "./LotteryGameTicketSystem.sol";
 import {LotteryGameLuckyNumberSystem, ID as LotteryGameLuckyNumberSystemID} from "./LotteryGameLuckyNumberSystem.sol";
@@ -98,7 +100,10 @@ contract LotteryGameSellSystem is
 
         // check if luckyNumber is valid
         require(
-            luckyNumber > 0 && luckyNumber <= 999999,
+            luckyNumber >=
+                LotteryGameSystemConfigSetting.LuckyNumberMinValue() &&
+                luckyNumber <=
+                LotteryGameSystemConfigSetting.LuckyNumberMaxValue(),
             "LotteryGameSellSystem: luckyNumber is not valid"
         );
 

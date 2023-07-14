@@ -13,6 +13,7 @@ import {AddressUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/Addr
 
 import {LotteryGameStatus, TokenType} from "../tables/LotteryGameEnums.sol";
 import "../tables/Tables.sol";
+import {LotteryGameSystemConfigSetting} from "../libraries/LotteryGameSystemConfigSetting.sol";
 
 import {LotteryGameTicketNFTSystem, ID as LotteryGameTicketNFTSystemID} from "./LotteryGameTicketNFTSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
@@ -100,7 +101,10 @@ contract LotteryGameTicketSystem is
         );
 
         require(
-            luckyNumber_ > 0 && luckyNumber_ < 999999,
+            luckyNumber_ >=
+                LotteryGameSystemConfigSetting.LuckyNumberMinValue() &&
+                luckyNumber_ <=
+                LotteryGameSystemConfigSetting.LuckyNumberMaxValue(),
             "LotteryGameTicketSystem: Invalid lucky number"
         );
 
