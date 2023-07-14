@@ -2,7 +2,9 @@ import { expect } from 'chai';
 import { BigNumber, Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
+import { gameCollection } from '../../../scripts/eno/GameCollection';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
 describe('LotteryGameSellSystem', function () {
@@ -367,6 +369,44 @@ describe('LotteryGameSellSystem', function () {
       expect(lotteryGameLuckyNumData.CurrentLuckyNumber)
         .to.gte(1)
         .and.lte(999999);
+    });
+
+    it('success, check address is brought with gameId and address', async function () {
+      // buy ticket
+      const [owner] = await ethers.getSigners();
+      const initialAmount = ethers.utils.parseEther('0.005');
+
+      const luckyNumber = 999888;
+      let ticketId = ethers.BigNumber.from(0);
+
+      await expect(
+        lotteryGameSellSystem.buyLotteryTicketETH(lotteryGameId, luckyNumber, {
+          value: ticketPrice,
+        })
+      )
+        .to.emit(lotteryGameSellSystem, 'LotteryTicketBuy')
+        .withArgs(
+          lotteryGameId,
+          owner.address,
+          (x: any) => {
+            ticketId = x;
+            return true;
+          },
+          luckyNumber
+        );
+      // check ticket 1 data
+      await gameCollection
+        .values(
+          gameRootContract,
+          GameCollectionTable.LotteryTicketIdWithGameIdAndBuyerAddressCollectionTable.keys(
+            lotteryGameId,
+            owner.address
+          )
+        )
+        .then((x: any) => {
+          expect(x).to.lengthOf(1);
+          expect(x[0]).to.equal(ticketId);
+        });
     });
   });
 });

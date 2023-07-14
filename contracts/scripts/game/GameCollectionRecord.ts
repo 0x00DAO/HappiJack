@@ -61,6 +61,22 @@ async function LotteryGameHistoryGameCollectionTableAt(
   return store.at([tableId, Key], index);
 }
 
+function LotteryTicketIdWithGameIdAndBuyerAddressCollectionTableKeys(
+  lotteryGameId: BigNumber,
+  buyerAddress: string
+): string[] {
+  const keys = [];
+  const tableId = ethers.utils.id(
+    'tableId' +
+      'HappiJack' +
+      'LotteryTicketIdWithGameIdAndBuyerAddressCollectionTable'
+  );
+  keys.push(tableId);
+  keys.push(ethers.utils.hexZeroPad(lotteryGameId.toHexString(), 32));
+  keys.push(ethers.utils.hexZeroPad(buyerAddress, 32));
+  return keys;
+}
+
 export const GameCollectionTable = {
   LotteryGameActiveGameCollectionTable: {
     values: LotteryGameActiveGameCollectionTableValues,
@@ -71,5 +87,9 @@ export const GameCollectionTable = {
     values: LotteryGameHistoryGameCollectionTableValues,
     length: LotteryGameHistoryGameCollectionTableLength,
     at: LotteryGameHistoryGameCollectionTableAt,
+  },
+
+  LotteryTicketIdWithGameIdAndBuyerAddressCollectionTable: {
+    keys: LotteryTicketIdWithGameIdAndBuyerAddressCollectionTableKeys,
   },
 };

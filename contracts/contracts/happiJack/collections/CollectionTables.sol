@@ -9,3 +9,4 @@ import {LotteryLuckyNumberWithGameIdAndWinOrderCollectionTable, LotteryLuckyNumb
 
 import {LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable, LotteryTicketIdWithGameIdAndLuckyNumberCollectionTableId} from "./LotteryTicketIdWithGameIdAndLuckyNumberCollectionTable.sol";
 import {LotteryTicketIdWithGameIdCollectionTable, LotteryTicketIdWithGameIdCollectionTableId} from "./LotteryTicketIdWithGameIdCollectionTable.sol";
+import {LotteryTicketIdWithGameIdAndBuyerAddressCollectionTable, LotteryTicketIdWithGameIdAndBuyerAddressCollectionTableId} from "./LotteryTicketIdWithGameIdAndBuyerAddressCollectionTable.sol";

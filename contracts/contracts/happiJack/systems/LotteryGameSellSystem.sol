@@ -140,7 +140,14 @@ contract LotteryGameSellSystem is
 
         _updateTicketSoldCount(lotteryGameId, ticketId);
 
+        // add lottery ticket id to lottery game
         LotteryGameTicketSoldCollectionTable.add(lotteryGameId, _msgSender());
+        // add lottery ticket id to buyer address
+        LotteryTicketIdWithGameIdAndBuyerAddressCollectionTable.add(
+            lotteryGameId,
+            _msgSender(),
+            ticketId
+        );
 
         // send ETH to bonus pool
         LotteryGameBonusPoolSystem(
