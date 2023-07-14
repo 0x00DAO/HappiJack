@@ -2,8 +2,8 @@ import { expect } from 'chai';
 import { BigNumber, Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
-import { gameCollection } from '../../../scripts/eno/GameCollection';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { gameCollection } from '../../../scripts/eno/gameCollection';
 import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
 
