@@ -186,10 +186,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check lottery bonus pool
       const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
@@ -255,10 +259,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check lottery bonus pool
       const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
@@ -318,10 +326,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check lottery bonus pool
       const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
@@ -382,10 +394,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check lottery bonus pool
       const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
@@ -444,10 +460,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check lottery bonus pool
       const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
@@ -506,10 +526,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check lottery bonus pool
       const lotteryPoolAfter = await getTableRecord.LotteryGameBonusPoolTable(
@@ -560,10 +584,14 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       //check active game
       await GameCollectionTable.LotteryGameActiveGameCollectionTable.values(

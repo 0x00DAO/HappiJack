@@ -63,7 +63,8 @@ contract LotteryGameLotteryResultVerifySystem is
 
     event LotteryGameResultVerified(
         uint256 indexed lotteryGameId,
-        uint256 indexed luckyNumber
+        uint256 indexed luckyNumber,
+        address indexed verifier
     );
 
     function verify(
@@ -173,6 +174,10 @@ contract LotteryGameLotteryResultVerifySystem is
         }
 
         //emit event
-        emit LotteryGameResultVerified(lotteryGameId_, currentLuckyNumber);
+        emit LotteryGameResultVerified(
+            lotteryGameId_,
+            currentLuckyNumber,
+            _msgSender()
+        );
     }
 }

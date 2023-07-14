@@ -201,10 +201,14 @@ describe('LotteryGameTicketViewSystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       //check lottery game
       const lotteryGame = await getTableRecord.LotteryGameTable(

@@ -192,10 +192,14 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check bonus pool
       // const lotteryPoolBefore = await getTableRecord.LotteryGameBonusPoolTable(
@@ -363,10 +367,14 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       // check ticket safe box balance
       await checkSafeBoxBalance();
@@ -420,10 +428,14 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
           lotteryGameLotteryResultVerifySystem,
           'LotteryGameResultVerified'
         )
-        .withArgs(lotteryGameId, (x: any) => {
-          // console.log('luckyNumber:', x);
-          return true;
-        });
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
 
       //transfer ticket to owner
       for (let [ticketId, luckyNumber] of ticketIds) {
