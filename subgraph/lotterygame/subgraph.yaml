@@ -6,7 +6,7 @@ dataSources:
     name: LotteryGameSystem
     network: mumbai
     source:
-      address: '0x28F8F343c6484142EaFB6460AF52756daee43b87'
+      address: "0x28F8F343c6484142EaFB6460AF52756daee43b87"
       abi: LotteryGameSystem
       startBlock: 37254754
     mapping:
@@ -53,7 +53,7 @@ dataSources:
     name: LotteryGameSellSystem
     network: mumbai
     source:
-      address: '0xbABe8530aF9c67aFd20d3504bCeB6aCA6176761f'
+      address: "0xbABe8530aF9c67aFd20d3504bCeB6aCA6176761f"
       abi: LotteryGameSellSystem
       startBlock: 37254754
     mapping:
@@ -96,3 +96,50 @@ dataSources:
         - event: Upgraded(indexed address)
           handler: handleUpgraded
       file: ./src/lottery-game-sell-system.ts
+  - kind: ethereum
+    name: LotteryGameLotteryResultVerifySystem
+    network: mumbai
+    source:
+      address: "0x68b5D735e913aD55854c5A53353e7b47AE25c26e"
+      abi: LotteryGameLotteryResultVerifySystem
+      startBlock: 37254881
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LotteryGameLotteryResultVerifySystemAdminChanged
+        - LotteryGameLotteryResultVerifySystemBeaconUpgraded
+        - LotteryGameLotteryResultVerifySystemInitialized
+        - LotteryGameResultVerified
+        - LotteryGameLotteryResultVerifySystemPaused
+        - LotteryGameLotteryResultVerifySystemRoleAdminChanged
+        - LotteryGameLotteryResultVerifySystemRoleGranted
+        - LotteryGameLotteryResultVerifySystemRoleRevoked
+        - LotteryGameLotteryResultVerifySystemUnpaused
+        - LotteryGameLotteryResultVerifySystemUpgraded
+      abis:
+        - name: LotteryGameLotteryResultVerifySystem
+          file: ./abis/LotteryGameLotteryResultVerifySystem.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: LotteryGameResultVerified(indexed uint256,indexed uint256)
+          handler: handleLotteryGameResultVerified
+        - event: Paused(address)
+          handler: handlePaused
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/lottery-game-lottery-result-verify-system.ts

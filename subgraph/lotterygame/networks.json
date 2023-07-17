@@ -7,6 +7,9 @@
     "LotteryGameSellSystem": {
       "address": "0xbABe8530aF9c67aFd20d3504bCeB6aCA6176761f",
       "startBlock": 37254754
+    },
+    "LotteryGameLotteryResultVerifySystem": {
+      "address": "0x68b5D735e913aD55854c5A53353e7b47AE25c26e"
     }
   }
 }
