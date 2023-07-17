@@ -8,7 +8,7 @@ import { ContractDeployAddress } from '../consts/deploy.address.const';
 import { deployUpgradeProxy, deployUpgradeUpdate } from '../utils/deploy.util';
 
 const DeployContractName = 'GameRoot';
-const contractAddress = ContractDeployAddress.GameRoot;
+const contractAddress = ContractDeployAddress()?.GameRoot;
 
 async function main() {
   if (contractAddress) {

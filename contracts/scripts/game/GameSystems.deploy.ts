@@ -11,7 +11,7 @@ import { gameDeploy } from '../consts/deploy.game.const';
 import { deployUpgradeProxy, deployUtil } from '../utils/deploy.util';
 
 const GameRootContractName = 'GameRoot';
-const contractGameRootAddress = ContractDeployAddress.GameRoot;
+const contractGameRootAddress = ContractDeployAddress()?.GameRoot;
 
 async function getGameRootAddress(): Promise<string> {
   const GameRootContractAddress = contractGameRootAddress;

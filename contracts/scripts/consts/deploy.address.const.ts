@@ -1,4 +1,4 @@
-import { hardhatArguments } from 'hardhat';
+import { HardhatArguments } from 'hardhat/types';
 import { deployNetwork } from './deploy.const';
 
 type ContractDeployAddress = string | null;
@@ -100,5 +100,13 @@ export function getContractDeployAddress(
   return _ContractDeployAddress;
 }
 
-export const ContractDeployAddress: ContractDeployAddressInterface =
-  getContractDeployAddress(hardhatArguments?.network) as any;
+export const ContractDeployAddress = (
+  hre?: HardhatArguments
+): ContractDeployAddressInterface | undefined => {
+  if (!hre) {
+    hre = require('hardhat').hardhatArguments;
+  }
+  return getContractDeployAddress(
+    hre?.network
+  ) as ContractDeployAddressInterface;
+};
