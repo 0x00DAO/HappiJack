@@ -66,6 +66,7 @@ const config: HardhatUserConfig = {
     },
     polygon_mainnet: {
       url: POLYGON_MAINNET_URL,
+      chainId: 137,
       accounts: [`0x${POLYGON_MAINNET_DEPLOYER_PRIVATE_KEY}`],
     },
     eth_testnet: {

@@ -12,7 +12,9 @@ const ContractDeployAddress_PolygonTestNet: ContractDeployAddressInterface = {
   GameRoot: '0xa652FcC9ee53b0A85414d0c5f4F041e2D556409E',
 };
 
-const ContractDeployAddress_PolygonMainNet: ContractDeployAddressInterface = {};
+const ContractDeployAddress_PolygonMainNet: ContractDeployAddressInterface = {
+  GameRoot: '0x9F732Bf84D2D29fDFbCA1de66A49812207F5a8De',
+};
 
 const ContractDeployAddress_EthTestNet: ContractDeployAddressInterface = {};
 

@@ -1,10 +1,14 @@
 import { task } from 'hardhat/config';
+import { ContractDeployAddress } from '../scripts/consts/deploy.address.const';
 import { gameDeploy } from '../scripts/consts/deploy.game.const';
 task(
   'game.systems',
   'Prints the list of game-system',
   async (taskArgs, hre) => {
     const systems = gameDeploy.systems;
+
+    const contractGameRootAddress = ContractDeployAddress.GameRoot;
+    console.log(`GameRootContractAddress: ${contractGameRootAddress}`);
 
     for (const system of systems) {
       const systemId = hre.ethers.utils.id(gameDeploy.systemId(system));
