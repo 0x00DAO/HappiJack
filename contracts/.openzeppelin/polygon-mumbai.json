@@ -31314,7 +31314,7 @@
             "slot": "201",
             "type": "t_array(t_uint256)49_storage",
             "contract": "VersionUpgradeable",
-            "src": "contracts/eon/utils/VersionUpgradeable.sol:33"
+            "src": "@zero-dao/eon/contracts/eon/utils/VersionUpgradeable.sol:33"
           },
           {
             "label": "__gap",
@@ -31346,23 +31346,23 @@
             "slot": "350",
             "type": "t_uint256",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:16"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:16"
           },
           {
             "label": "componentType",
             "offset": 0,
             "slot": "351",
-            "type": "t_enum(ComponentType)3560",
+            "type": "t_enum(ComponentType)8099",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:17"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
           {
             "label": "root",
             "offset": 1,
             "slot": "351",
-            "type": "t_contract(IRoot)3618",
+            "type": "t_contract(IRoot)8157",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:18"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
           {
             "label": "__gap",
@@ -31370,7 +31370,7 @@
             "slot": "352",
             "type": "t_array(t_uint256)49_storage",
             "contract": "BaseComponent",
-            "src": "contracts/eon/component/BaseComponent.sol:65"
+            "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:65"
           },
           {
             "label": "entityToValue",
@@ -31378,7 +31378,7 @@
             "slot": "401",
             "type": "t_mapping(t_uint256,t_bytes_storage)",
             "contract": "GameStore",
-            "src": "contracts/eon/store/GameStore.sol:32"
+            "src": "@zero-dao/eon/contracts/eon/store/GameStore.sol:32"
           }
         ],
         "types": {
@@ -31406,11 +31406,11 @@
             "label": "bytes",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)3618": {
+          "t_contract(IRoot)8157": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)3560": {
+          "t_enum(ComponentType)8099": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
