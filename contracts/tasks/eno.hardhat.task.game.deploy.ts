@@ -39,7 +39,7 @@ task(
 
     const systems = gameDeploy.systems;
     // step 1. Deploy new register system
-    for (let i = start; i < end; i++) {
+    for (let i = start; i <= end; i++) {
       const systemContractName = systems[i - 1];
       console.log(`Check ${i}/${systems.length}, ${systemContractName} ...`);
       await hre.run('deploy-systems-new-system', {

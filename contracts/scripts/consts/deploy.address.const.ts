@@ -28,8 +28,9 @@ const ContractDeployAddress_ArbitrumTestNet: ContractDeployAddressInterface = {
   GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
 };
 
-const ContractDeployAddress_ArbitrumMainNet: ContractDeployAddressInterface =
-  {};
+const ContractDeployAddress_ArbitrumMainNet: ContractDeployAddressInterface = {
+  GameRoot: '0xC1A53a055eF0662b96D9F65FA8bC72b57daa24D5',
+};
 
 const ContractDeployAddress_ZkSyncEraTestNet: ContractDeployAddressInterface = {
   GameRoot: null,
