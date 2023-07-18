@@ -26,7 +26,7 @@ task(
       console.log(`${system}  =>  ${systemIdAsNumber}`);
       if (gameRootContract) {
         const systemAddress = await gameRootContract.getSystemAddress(systemId);
-        console.log(`address: ${systemAddress}`);
+        console.log(`address: ${systemAddress} \n`);
       }
     }
   }
