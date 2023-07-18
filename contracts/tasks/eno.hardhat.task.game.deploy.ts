@@ -1,24 +1,17 @@
 import { subtask, task } from 'hardhat/config';
-import { deployUpgradeProxy } from '../scripts/utils/deploy.util';
+import { ContractDeployAddress } from '../scripts/consts/deploy.address.const';
+import {
+  deployUpgradeProxy,
+  deployUpgradeUpdate,
+} from '../scripts/utils/deploy.util';
 task(
   'game.deploy:game-root',
   'Deploys or upgrades the game-root contract'
 ).setAction(async (taskArgs, hre) => {
-  const contractNames = await hre.artifacts.getAllFullyQualifiedNames();
-  for (const contractFullName of contractNames) {
-    console.log(contractFullName);
-    const [contractSource, contractName] = contractFullName.split(':');
-    console.log(contractName);
-
-    const buildInfo = await hre.artifacts
-      .getBuildInfo(contractFullName)
-      .catch((e) => {
-        // console.log(e);
-      });
-    if (!buildInfo) continue;
-    console.log(buildInfo.output.contracts[contractSource][contractName]);
-    // const { abi, devdoc, userdoc } = buildInfo.output.contracts[source][name];
-  }
+  await hre.run('deploy-upgrade-proxy', {
+    contractName: 'GameRoot',
+    contractAddress: ContractDeployAddress()?.GameRoot,
+  });
 });
 
 subtask('deploy-upgrade-proxy', 'Deploys or upgrades a proxy contract')
@@ -29,6 +22,6 @@ subtask('deploy-upgrade-proxy', 'Deploys or upgrades a proxy contract')
     if (!contractAddress) {
       const contract = await deployUpgradeProxy(contractName);
     } else {
-      // const contract = await deployUpgradeUpdate(contractName, contractAddress);
+      const contract = await deployUpgradeUpdate(contractName, contractAddress);
     }
   });
