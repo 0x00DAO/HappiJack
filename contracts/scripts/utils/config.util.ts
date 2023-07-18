@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import { hardhatArguments } from 'hardhat';
 import { deployNetwork } from '../consts/deploy.const';
 
 export interface RuntimeConfig {
@@ -9,7 +8,7 @@ export interface RuntimeConfig {
 }
 
 export function getRuntimeConfig(): RuntimeConfig {
-  const network = hardhatArguments.network;
+  const network = require('hardhat').hardhatArguments.network;
   switch (network) {
     case deployNetwork.bsc_testnet:
       return getRuntimeConfigBscTestNet();

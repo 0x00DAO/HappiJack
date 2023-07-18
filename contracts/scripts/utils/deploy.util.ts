@@ -1,8 +1,13 @@
 import { DeployProxyOptions } from '@openzeppelin/hardhat-upgrades/dist/utils';
 import { assert } from 'console';
 import { Contract, ContractFactory, ContractTransaction } from 'ethers';
-import hre, { defender, ethers, upgrades } from 'hardhat';
+import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { getRuntimeConfig } from './config.util';
+
+function getHre() {
+  const hre = require('hardhat');
+  return hre;
+}
 
 /**
  *
@@ -12,7 +17,8 @@ import { getRuntimeConfig } from './config.util';
  */
 async function _deploy(
   DeployContractName: string,
-  deployContract: Contract
+  deployContract: Contract,
+  hre: HardhatRuntimeEnvironment
 ): Promise<Contract> {
   // We get the contract to deploy
   console.log('[deploy contract]:deploy [%s] start', DeployContractName);
@@ -32,7 +38,7 @@ async function _deploy(
   );
   console.log(
     '[deploy contract]:deploy gas fee',
-    ethers.utils.formatEther(deployerBalance.sub(deployerBalanceAfter))
+    hre.ethers.utils.formatEther(deployerBalance.sub(deployerBalanceAfter))
   );
   console.log(
     '[deploy contract]:deploy complete! contract: [%s] deployed to: %s',
@@ -51,11 +57,12 @@ export async function deployNormal(
   DeployContractName: string,
   ...args: any[]
 ): Promise<Contract> {
+  const hre = getHre();
   const DeployContract = await hre.ethers.getContractFactory(
     DeployContractName
   );
   const deployContract = await DeployContract.deploy(...args);
-  return _deploy(DeployContractName, deployContract);
+  return _deploy(DeployContractName, deployContract, hre);
 }
 
 /**
@@ -68,12 +75,17 @@ export async function deployUpgradeProxy(
   args?: unknown[],
   opts?: DeployProxyOptions
 ): Promise<Contract> {
+  const hre = getHre();
   const DeployContractName = contractName;
   const DeployContract = await hre.ethers.getContractFactory(
     DeployContractName
   );
-  const deployContract = await upgrades.deployProxy(DeployContract, args, opts);
-  return _deploy(DeployContractName, deployContract);
+  const deployContract = await hre.upgrades.deployProxy(
+    DeployContract,
+    args,
+    opts
+  );
+  return _deploy(DeployContractName, deployContract, hre);
 }
 /**
  * update upgradeable contract
@@ -86,22 +98,23 @@ export async function deployUpgradeUpdate(
   contractAddress: string,
   forceImport?: boolean
 ): Promise<Contract> {
+  const hre = getHre();
   console.log('[deploy contract]:deploy [%s] upgrade ...', contractName);
   const DeployContractName = contractName;
   const DeployContract = await getContractFactory(DeployContractName);
   let deployContract;
   if (forceImport) {
-    deployContract = await upgrades.forceImport(
+    deployContract = await hre.upgrades.forceImport(
       contractAddress,
       DeployContract
     );
   } else {
-    deployContract = await upgrades.upgradeProxy(
+    deployContract = await hre.upgrades.upgradeProxy(
       contractAddress,
       DeployContract
     );
   }
-  return _deploy(DeployContractName, deployContract);
+  return _deploy(DeployContractName, deployContract, hre);
 }
 
 /**
@@ -114,6 +127,7 @@ export async function deployUpgradeUpdateWithProposal(
   contractName: string,
   contractAddress: string
 ): Promise<void> {
+  const hre = getHre();
   console.log('[deploy contract]:deploy [%s] upgrade ...', contractName);
   const Contract = await getContractFactory(contractName);
   console.log('Preparing proposal...');
@@ -122,15 +136,20 @@ export async function deployUpgradeUpdateWithProposal(
     'Upgrade proposal with multisig at:',
     runtimeConfig.upgradeDefenderMultiSigAddress
   );
-  const proposal = await defender.proposeUpgrade(contractAddress, Contract, {
-    multisig: runtimeConfig.upgradeDefenderMultiSigAddress,
-  });
+  const proposal = await hre.defender.proposeUpgrade(
+    contractAddress,
+    Contract,
+    {
+      multisig: runtimeConfig.upgradeDefenderMultiSigAddress,
+    }
+  );
   console.log('Upgrade proposal created at:', proposal.url);
 }
 
 export async function getContractFactory(
   contractName: string
 ): Promise<ContractFactory> {
+  const hre = getHre();
   return hre.ethers.getContractFactory(contractName);
 }
 
@@ -183,7 +202,8 @@ async function gameEntityGrantWriteRole(
   contract: Contract,
   grantAddress: string[]
 ) {
-  const role = ethers.utils.id('COMPONENT_WRITE_ROLE');
+  const hre = getHre();
+  const role = hre.ethers.utils.id('COMPONENT_WRITE_ROLE');
   for (const address of grantAddress) {
     //check if already grant
     const hasRole = await contract.hasRole(role, address);
@@ -198,7 +218,8 @@ async function gameSystemGrantInternalRole(
   contract: Contract,
   grantAddress: string[]
 ) {
-  const role = ethers.utils.id('SYSTEM_INTERNAL_ROLE');
+  const hre = getHre();
+  const role = hre.ethers.utils.id('SYSTEM_INTERNAL_ROLE');
   for (const address of grantAddress) {
     await contract
       .grantRole(role, address)
@@ -214,7 +235,8 @@ async function gameSystemAddress(
   gameRootContract: Contract,
   GameSystemId: string
 ): Promise<string> {
-  const systemContractId = ethers.utils.id(`${GameSystemId}`);
+  const hre = getHre();
+  const systemContractId = hre.ethers.utils.id(`${GameSystemId}`);
   const systemContractAddress = await gameRootContract.getSystemAddress(
     systemContractId
   );
@@ -231,7 +253,8 @@ async function gameSystemDeploy(
   forceImport?: boolean
 ): Promise<Contract> {
   assert(GameRootContractAddress, 'GameRoot contract address is not set');
-  const gameRootContract = await ethers.getContractAt(
+  const hre = getHre();
+  const gameRootContract = await hre.ethers.getContractAt(
     GameRootContractName,
     GameRootContractAddress
   );
@@ -246,7 +269,7 @@ async function gameSystemDeploy(
   );
 
   let contract: Contract;
-  if (systemContractAddress == ethers.constants.AddressZero) {
+  if (systemContractAddress == hre.ethers.constants.AddressZero) {
     if (!GameSystemContractArgs) {
       GameSystemContractArgs = [];
     }

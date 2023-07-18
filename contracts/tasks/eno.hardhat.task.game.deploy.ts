@@ -1,4 +1,5 @@
-import { task } from 'hardhat/config';
+import { subtask, task } from 'hardhat/config';
+import { deployUpgradeProxy } from '../scripts/utils/deploy.util';
 task(
   'game.deploy:game-root',
   'Deploys or upgrades the game-root contract'
@@ -19,3 +20,15 @@ task(
     // const { abi, devdoc, userdoc } = buildInfo.output.contracts[source][name];
   }
 });
+
+subtask('deploy-upgrade-proxy', 'Deploys or upgrades a proxy contract')
+  .addParam('contractName', 'The name of the contract to deploy or upgrade')
+  .addOptionalParam('contractAddress', 'The address of the contract to upgrade')
+  .setAction(async (taskArgs, hre) => {
+    const { contractName, contractAddress } = taskArgs;
+    if (!contractAddress) {
+      const contract = await deployUpgradeProxy(contractName);
+    } else {
+      // const contract = await deployUpgradeUpdate(contractName, contractAddress);
+    }
+  });

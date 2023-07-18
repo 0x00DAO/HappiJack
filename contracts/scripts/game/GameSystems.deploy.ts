@@ -82,7 +82,7 @@ async function deployExistRegisterSystem(
   });
   console.log('done!');
 
-  for (let i = 9; i < systems.length; i++) {
+  for (let i = 0; i < systems.length; i++) {
     const systemContractName = systems[i];
     console.log(`Deploy ${i + 1}/${systems.length}, ${systemContractName}`);
 
