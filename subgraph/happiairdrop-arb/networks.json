@@ -1,0 +1,14 @@
+{
+  "arbitrum-one": {
+    "LotteryGameSystem": {
+      "address": "0xc3888b3EEF69B6e017bcC5c0Abfbe7D11e418301",
+      "startBlock": 112405346
+    },
+    "LotteryGameSellSystem": {
+      "address": "0xa8132f62493Ee2f421922Cc766626662861bD189"
+    },
+    "LotteryGameLotteryResultVerifySystem": {
+      "address": "0x0a31bb231f16c2106E8c200b4532b324D98f3d21"
+    }
+  }
+}

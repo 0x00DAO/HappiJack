@@ -1,0 +1,145 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: LotteryGameSystem
+    network: arbitrum-one
+    source:
+      address: "0xc3888b3EEF69B6e017bcC5c0Abfbe7D11e418301"
+      abi: LotteryGameSystem
+      startBlock: 112405346
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - BeaconUpgraded
+        - Initialized
+        - LotteryGameCreated
+        - Paused
+        - RoleAdminChanged
+        - RoleGranted
+        - RoleRevoked
+        - Unpaused
+        - Upgraded
+      abis:
+        - name: LotteryGameSystem
+          file: ./abis/LotteryGameSystem.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: LotteryGameCreated(indexed uint256,indexed address,uint256,uint256)
+          handler: handleLotteryGameCreated
+        - event: Paused(address)
+          handler: handlePaused
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/lottery-game-system.ts
+  - kind: ethereum
+    name: LotteryGameSellSystem
+    network: arbitrum-one
+    source:
+      address: "0xa8132f62493Ee2f421922Cc766626662861bD189"
+      abi: LotteryGameSellSystem
+      startBlock: 112405861
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LotteryGameSellSystemAdminChanged
+        - LotteryGameSellSystemBeaconUpgraded
+        - LotteryGameSellSystemInitialized
+        - LotteryTicketBuy
+        - LotteryGameSellSystemPaused
+        - LotteryGameSellSystemRoleAdminChanged
+        - LotteryGameSellSystemRoleGranted
+        - LotteryGameSellSystemRoleRevoked
+        - LotteryGameSellSystemUnpaused
+        - LotteryGameSellSystemUpgraded
+      abis:
+        - name: LotteryGameSellSystem
+          file: ./abis/LotteryGameSellSystem.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: LotteryTicketBuy(indexed uint256,indexed address,indexed uint256,uint256)
+          handler: handleLotteryTicketBuy
+        - event: Paused(address)
+          handler: handlePaused
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/lottery-game-sell-system.ts
+  - kind: ethereum
+    name: LotteryGameLotteryResultVerifySystem
+    network: arbitrum-one
+    source:
+      address: "0x0a31bb231f16c2106E8c200b4532b324D98f3d21"
+      abi: LotteryGameLotteryResultVerifySystem
+      startBlock: 112406113
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - LotteryGameLotteryResultVerifySystemAdminChanged
+        - LotteryGameLotteryResultVerifySystemBeaconUpgraded
+        - LotteryGameLotteryResultVerifySystemInitialized
+        - LotteryGameResultVerified
+        - LotteryGameLotteryResultVerifySystemPaused
+        - LotteryGameLotteryResultVerifySystemRoleAdminChanged
+        - LotteryGameLotteryResultVerifySystemRoleGranted
+        - LotteryGameLotteryResultVerifySystemRoleRevoked
+        - LotteryGameLotteryResultVerifySystemUnpaused
+        - LotteryGameLotteryResultVerifySystemUpgraded
+      abis:
+        - name: LotteryGameLotteryResultVerifySystem
+          file: ./abis/LotteryGameLotteryResultVerifySystem.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: BeaconUpgraded(indexed address)
+          handler: handleBeaconUpgraded
+        - event: Initialized(uint8)
+          handler: handleInitialized
+        - event: LotteryGameResultVerified(indexed uint256,indexed uint256)
+          handler: handleLotteryGameResultVerified
+        - event: Paused(address)
+          handler: handlePaused
+        - event: RoleAdminChanged(indexed bytes32,indexed bytes32,indexed bytes32)
+          handler: handleRoleAdminChanged
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+        - event: Unpaused(address)
+          handler: handleUnpaused
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/lottery-game-lottery-result-verify-system.ts
