@@ -77,6 +77,22 @@ task(
         : Math.min(start + count - 1, gameDeploy.systems.length);
 
     console.log(`Deploy from:${start} to:${end} ...`);
+
+    const gameRootContractName = 'GameRoot';
+    const gameRootContract = await hre.ethers.getContractAt(
+      gameRootContractName,
+      gameRootAddress as string
+    );
+
+    //pause game root before deploy
+    process.stdout.write('Pause game root before deploy ... ');
+    await gameRootContract.paused().then(async (paused: any) => {
+      if (!paused) {
+        await gameRootContract.pause();
+      }
+    });
+    console.log('done!');
+
     const systems = gameDeploy.systems;
     // step 1. Deploy new register system
     for (let i = start; i <= end; i++) {
@@ -93,4 +109,13 @@ task(
     }
 
     console.log(`Deploy ${start} to ${end} done`);
+
+    //unpause game root after deploy
+    process.stdout.write('Unpause game root after deploy ... ');
+    await gameRootContract.paused().then(async (paused: any) => {
+      if (paused) {
+        await gameRootContract.unpause();
+      }
+    });
+    console.log('done!');
   });
