@@ -31535,7 +31535,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)8099",
             "contract": "BaseComponent",
             "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
@@ -31543,7 +31543,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)8157",
             "contract": "BaseComponent",
             "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
@@ -31599,7 +31599,7 @@
             "label": "entityToValue",
             "offset": 0,
             "slot": "450",
-            "type": "t_mapping(t_uint256,t_struct(UintSet)5106_storage)",
+            "type": "t_mapping(t_uint256,t_struct(UintSet)5743_storage)",
             "contract": "GameStoreU256Set",
             "src": "@zero-dao/eon/contracts/eon/store/GameStoreU256Set.sol:17"
           },
@@ -31661,11 +31661,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)8157": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)8099": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -31686,7 +31686,7 @@
             "label": "mapping(bytes32 => uint256)",
             "numberOfBytes": "32"
           },
-          "t_mapping(t_uint256,t_struct(UintSet)5106_storage)": {
+          "t_mapping(t_uint256,t_struct(UintSet)5743_storage)": {
             "label": "mapping(uint256 => struct EnumerableSetUpgradeable.UintSet)",
             "numberOfBytes": "32"
           },
@@ -31708,7 +31708,7 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(Set)4634_storage": {
+          "t_struct(Set)5271_storage": {
             "label": "struct EnumerableSetUpgradeable.Set",
             "members": [
               {
@@ -31726,12 +31726,12 @@
             ],
             "numberOfBytes": "64"
           },
-          "t_struct(UintSet)5106_storage": {
+          "t_struct(UintSet)5743_storage": {
             "label": "struct EnumerableSetUpgradeable.UintSet",
             "members": [
               {
                 "label": "_inner",
-                "type": "t_struct(Set)4634_storage",
+                "type": "t_struct(Set)5271_storage",
                 "offset": 0,
                 "slot": "0"
               }
@@ -31824,7 +31824,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)8099",
             "contract": "BaseComponent",
             "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
@@ -31832,7 +31832,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)8157",
             "contract": "BaseComponent",
             "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
@@ -31930,11 +31930,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)8157": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)8099": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
@@ -32055,7 +32055,7 @@
             "label": "componentType",
             "offset": 0,
             "slot": "202",
-            "type": "t_enum(ComponentType)5364",
+            "type": "t_enum(ComponentType)8099",
             "contract": "BaseComponent",
             "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:17"
           },
@@ -32063,7 +32063,7 @@
             "label": "root",
             "offset": 1,
             "slot": "202",
-            "type": "t_contract(IRoot)5422",
+            "type": "t_contract(IRoot)8157",
             "contract": "BaseComponent",
             "src": "@zero-dao/eon/contracts/eon/component/BaseComponent.sol:18"
           },
@@ -32161,11 +32161,11 @@
             "label": "bytes32",
             "numberOfBytes": "32"
           },
-          "t_contract(IRoot)5422": {
+          "t_contract(IRoot)8157": {
             "label": "contract IRoot",
             "numberOfBytes": "20"
           },
-          "t_enum(ComponentType)5364": {
+          "t_enum(ComponentType)8099": {
             "label": "enum ComponentType",
             "members": [
               "Unknown",
