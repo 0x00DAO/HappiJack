@@ -1,0 +1,14 @@
+{
+  "arbitrum-goerli": {
+    "LotteryGameSystem": {
+      "address": "0xFd5d10305E59A3e19E47A7F7B917a1E51081ebda",
+      "startBlock": 28771142
+    },
+    "LotteryGameSellSystem": {
+      "address": "0x7CE8A9DC2b7698269e06bE2F3a25a10bDA6b159F"
+    },
+    "LotteryGameLotteryResultVerifySystem": {
+      "address": "0xbF27cba0534796004493D1b9309bCbD49C6A0D15"
+    }
+  }
+}
