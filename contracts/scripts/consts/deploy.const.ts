@@ -6,6 +6,7 @@ export enum deployNetwork {
   eth_testnet = 'eth_testnet',
   eth_mainnet = 'eth_mainnet',
   hardhat = 'hardhat',
+  localhost = 'localhost',
   arbitrum_testnet = 'arbitrum_testnet',
   arbitrum_mainnet = 'arbitrum_mainnet',
   zksync_era_testnet = 'zksync_era_testnet',

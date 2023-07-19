@@ -6,7 +6,9 @@ type ContractDeployAddress = string | null;
 interface ContractDeployAddressInterface {
   GameRoot?: ContractDeployAddress;
 }
-const ContractDeployAddress_Hardhat: ContractDeployAddressInterface = {};
+const ContractDeployAddress_Hardhat: ContractDeployAddressInterface = {
+  GameRoot: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+};
 
 const ContractDeployAddress_PolygonTestNet: ContractDeployAddressInterface = {
   GameRoot: '0xa652FcC9ee53b0A85414d0c5f4F041e2D556409E',
@@ -54,6 +56,7 @@ export function getContractDeployAddress(
 
   switch (network) {
     case deployNetwork.hardhat:
+    case deployNetwork.localhost:
       _ContractDeployAddress = ContractDeployAddress_Hardhat;
       break;
     case deployNetwork.polygon_testnet:

@@ -37,6 +37,24 @@ task(
 
     console.log(`Deploy from:${start} to:${end} ...`);
 
+    const COMPONENT_WRITE_ROLE = hre.ethers.utils.id('COMPONENT_WRITE_ROLE');
+    //grant game root write if not
+    const gameRootContractName = 'GameRoot';
+    const gameRootContract = await hre.ethers.getContractAt(
+      gameRootContractName,
+      gameRootAddress as string
+    );
+    await gameRootContract
+      .hasRole(COMPONENT_WRITE_ROLE, gameRootAddress as string)
+      .then(async (hasRole: any) => {
+        if (!hasRole) {
+          await gameRootContract
+            .grantRole(COMPONENT_WRITE_ROLE, gameRootAddress as string)
+            .then((tx: any) => tx.wait());
+        }
+        console.log(`Grant game root write success`);
+      });
+
     const systems = gameDeploy.systems;
     // step 1. Deploy new register system
     for (let i = start; i <= end; i++) {
@@ -50,6 +68,18 @@ task(
       //sleep 1s
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
+
+    //revoke game root write
+    await gameRootContract
+      .hasRole(COMPONENT_WRITE_ROLE, gameRootAddress as string)
+      .then(async (hasRole: any) => {
+        if (hasRole) {
+          await gameRootContract
+            .revokeRole(COMPONENT_WRITE_ROLE, gameRootAddress as string)
+            .then((tx: any) => tx.wait());
+        }
+        console.log(`Revoke game root write success`);
+      });
   });
 
 task(
