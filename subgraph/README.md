@@ -13,8 +13,7 @@
 3. add smart contract address to subgraph.yaml
 
 ```bash
-./node_modules/.bin/graph add 0xbF27cba0534796004493D1b9309bCbD49C6A0D15 --abi ../abis/LotteryGame
-LotteryResultVerifySystem.json --contract-name LotteryGameLotteryResultVerifySystem
+./node_modules/.bin/graph add 0xbF27cba0534796004493D1b9309bCbD49C6A0D15 --abi ../abis/LotteryGameLotteryResultVerifySystem.json --contract-name LotteryGameLotteryResultVerifySystem
 ```
 
 4. generate subgraph.yaml
