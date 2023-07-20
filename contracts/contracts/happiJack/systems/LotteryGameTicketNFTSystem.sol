@@ -46,7 +46,7 @@ contract LotteryGameTicketNFTSystem is
 
     function _baseURI() internal pure override returns (string memory) {
         return
-            "https://happiairdrop.on.fleek.co/happiairdrop_ticket_meta.json?tokenid=";
+            "https://app.happiairdrop.xyz/happiairdrop_ticket_meta.json?tokenid=";
     }
 
     function pause() public onlyRole(PAUSER_ROLE) {

@@ -98,15 +98,38 @@ task(
     0,
     types.int
   )
+  .addOptionalParam(
+    'contractName',
+    'The contract name of the systems to deploy. If not set, deploy all systems',
+    '',
+    types.string
+  )
   .setAction(async (taskArgs, hre) => {
     const gameRootAddress = ContractDeployAddress()?.GameRoot;
-    const { start, count } = taskArgs;
-    const end =
-      count == 0
-        ? gameDeploy.systems.length
-        : Math.min(start + count - 1, gameDeploy.systems.length);
+    const { start, count, contractName } = taskArgs;
 
-    console.log(`Deploy from:${start} to:${end} ...`);
+    let deployStart = start;
+    let deployCount = count;
+
+    if (contractName) {
+      //find the index of the contractName
+      const index = gameDeploy.systems.findIndex(
+        (systemName) => systemName == contractName
+      );
+      if (index == -1) {
+        throw new Error(`Cannot find system contract: ${contractName}`);
+      } else {
+        deployStart = index + 1;
+        deployCount = 1;
+      }
+    }
+
+    const deployEnd =
+      deployCount == 0
+        ? gameDeploy.systems.length
+        : Math.min(deployStart + deployCount - 1, gameDeploy.systems.length);
+
+    console.log(`Deploy from:${deployStart} to:${deployEnd} ...`);
 
     const gameRootContractName = 'GameRoot';
     const gameRootContract = await hre.ethers.getContractAt(
@@ -125,7 +148,7 @@ task(
 
     const systems = gameDeploy.systems;
     // step 1. Deploy new register system
-    for (let i = start; i <= end; i++) {
+    for (let i = deployStart; i <= deployEnd; i++) {
       const systemContractName = systems[i - 1];
       console.log(`Deploy ${i}/${systems.length}, ${systemContractName}`);
       await hre.run('deploy-systems-exist-system', {
@@ -138,7 +161,7 @@ task(
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
 
-    console.log(`Deploy ${start} to ${end} done`);
+    console.log(`Deploy ${deployStart} to ${deployEnd} done`);
 
     //unpause game root after deploy
     process.stdout.write('Unpause game root after deploy ... ');
