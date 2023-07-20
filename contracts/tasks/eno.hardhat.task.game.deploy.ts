@@ -103,38 +103,42 @@ task(
     0,
     types.int
   )
-  .addOptionalParam(
-    'contractName',
-    'The contract name of the systems to deploy. If not set, deploy all systems',
-    '',
+  .addOptionalVariadicPositionalParam(
+    'contractNames',
+    'The name of the system contract to deploy',
+    [],
     types.string
   )
   .setAction(async (taskArgs, hre) => {
     const gameRootAddress = ContractDeployAddress()?.GameRoot;
-    const { start, count, contractName } = taskArgs;
-
+    const { start, count, contractNames } = taskArgs;
+    const needDeployContracts = [];
     let deployStart = start;
     let deployCount = count;
 
-    if (contractName) {
+    if (contractNames.length > 0) {
       //find the index of the contractName
-      const index = gameDeploy.systems.findIndex(
-        (systemName) => systemName == contractName
-      );
-      if (index == -1) {
-        throw new Error(`Cannot find system contract: ${contractName}`);
-      } else {
-        deployStart = index + 1;
-        deployCount = 1;
+      for (let i = 0; i < contractNames.length; i++) {
+        const contractName = contractNames[i];
+        const index = gameDeploy.systems.findIndex(
+          (systemName) => systemName == contractName
+        );
+        if (index == -1) {
+          throw new Error(`Cannot find system contract: ${contractName}`);
+        }
+        needDeployContracts.push(contractName);
+      }
+    } else {
+      const deployEnd =
+        deployCount == 0
+          ? gameDeploy.systems.length
+          : Math.min(deployStart + deployCount - 1, gameDeploy.systems.length);
+      for (let i = deployStart; i <= deployEnd; i++) {
+        needDeployContracts.push(gameDeploy.systems[i - 1]);
       }
     }
 
-    const deployEnd =
-      deployCount == 0
-        ? gameDeploy.systems.length
-        : Math.min(deployStart + deployCount - 1, gameDeploy.systems.length);
-
-    console.log(`Deploy from:${deployStart} to:${deployEnd} ...`);
+    console.log(`Deploy contract: ${needDeployContracts}`);
 
     const gameRootContractName = 'GameRoot';
     const gameRootContract = await hre.ethers.getContractAt(
@@ -151,22 +155,25 @@ task(
     });
     console.log('done!');
 
-    const systems = gameDeploy.systems;
     // step 1. Deploy new register system
-    for (let i = deployStart; i <= deployEnd; i++) {
-      const systemContractName = systems[i - 1];
-      console.log(`Deploy ${i}/${systems.length}, ${systemContractName}`);
+    for (let i = 0; i < needDeployContracts.length; i++) {
+      const systemContractName = needDeployContracts[i];
+      console.log(
+        `Deploy ${i + 1}/${needDeployContracts.length}, ${systemContractName}`
+      );
       await hre.run('game.deploy:sub-task:deploy-systems-exist-system', {
         gameRootAddress,
         systemContractName,
       });
 
-      console.log(`Deploy ${i}/${systems.length}, ${systemContractName} done`);
+      console.log(
+        `Deploy ${i + 1}/${
+          needDeployContracts.length
+        }, ${systemContractName} done`
+      );
       //sleep 1s
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-
-    console.log(`Deploy ${deployStart} to ${deployEnd} done`);
 
     //unpause game root after deploy
     process.stdout.write('Unpause game root after deploy ... ');
@@ -176,4 +183,6 @@ task(
       }
     });
     console.log('done!');
+
+    console.log(`Upgrade contract: ${needDeployContracts} done!`);
   });
