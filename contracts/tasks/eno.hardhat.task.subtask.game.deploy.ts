@@ -7,7 +7,10 @@ import {
   deployUtil,
 } from '../scripts/utils/deploy.util';
 
-subtask('deploy-upgrade-proxy', 'Deploys or upgrades a proxy contract')
+subtask(
+  'game.deploy:sub-task:deploy-upgrade-proxy',
+  'Deploys or upgrades a proxy contract'
+)
   .addParam('contractName', 'The name of the contract to deploy or upgrade')
   .addOptionalParam('contractAddress', 'The address of the contract to upgrade')
   .setAction(async (taskArgs, hre) => {
@@ -19,7 +22,10 @@ subtask('deploy-upgrade-proxy', 'Deploys or upgrades a proxy contract')
     }
   });
 
-subtask('deploy-systems-new-system', 'Deploys a new system')
+subtask(
+  'game.deploy:sub-task:deploy-systems-new-system',
+  'Deploys a new system'
+)
   .addParam('gameRootAddress', 'The address of the game-root contract')
   .addParam('systemContractName', 'The name of the system contract to deploy')
   .addOptionalParam(
@@ -57,7 +63,10 @@ subtask('deploy-systems-new-system', 'Deploys a new system')
     }
   });
 
-subtask('deploy-systems-exist-system', 'Deploys a exist system')
+subtask(
+  'game.deploy:sub-task:deploy-systems-exist-system',
+  'Deploys a exist system'
+)
   .addParam('gameRootAddress', 'The address of the game-root contract')
   .addParam('systemContractName', 'The name of the system contract to deploy')
   .addOptionalParam(

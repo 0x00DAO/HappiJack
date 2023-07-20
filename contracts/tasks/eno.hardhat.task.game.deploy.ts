@@ -1,19 +1,24 @@
 import { task, types } from 'hardhat/config';
 import { ContractDeployAddress } from '../scripts/consts/deploy.address.const';
 import { gameDeploy } from '../scripts/consts/deploy.game.const';
-task(
-  'game.deploy:game-root',
-  'Deploys or upgrades the game-root contract'
-).setAction(async (taskArgs, hre) => {
-  await hre.run('deploy-upgrade-proxy', {
-    contractName: 'GameRoot',
-    contractAddress: ContractDeployAddress()?.GameRoot,
+task('game.deploy:game-root', 'Deploys or upgrades the game-root contract')
+  .addOptionalParam('new', 'Deploys a new contract', false, types.boolean)
+  .setAction(async (taskArgs, hre) => {
+    const { new: isNew } = taskArgs;
+    let contractAddress = ContractDeployAddress()?.GameRoot;
+    if (isNew) {
+      contractAddress = undefined;
+    }
+
+    await hre.run('game.deploy:sub-task:deploy-upgrade-proxy', {
+      contractName: 'GameRoot',
+      contractAddress: contractAddress,
+    });
   });
-});
 
 task(
   'game.deploy:game-systems-deploy:new-systems',
-  'Deploys or upgrades the game-systems contracts'
+  'Deploys new game-systems contracts'
 )
   .addOptionalParam(
     'start',
@@ -60,7 +65,7 @@ task(
     for (let i = start; i <= end; i++) {
       const systemContractName = systems[i - 1];
       console.log(`Check ${i}/${systems.length}, ${systemContractName} ...`);
-      await hre.run('deploy-systems-new-system', {
+      await hre.run('game.deploy:sub-task:deploy-systems-new-system', {
         gameRootAddress,
         systemContractName,
       });
@@ -151,7 +156,7 @@ task(
     for (let i = deployStart; i <= deployEnd; i++) {
       const systemContractName = systems[i - 1];
       console.log(`Deploy ${i}/${systems.length}, ${systemContractName}`);
-      await hre.run('deploy-systems-exist-system', {
+      await hre.run('game.deploy:sub-task:deploy-systems-exist-system', {
         gameRootAddress,
         systemContractName,
       });
