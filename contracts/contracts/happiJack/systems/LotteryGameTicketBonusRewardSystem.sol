@@ -21,6 +21,7 @@ import {LotteryGameBonusPoolSystem, ID as LotteryGameBonusPoolSystemID} from "./
 import {LotteryGameBonusPoolWithdrawSystem, ID as LotteryGameBonusPoolWithdrawSystemID} from "./LotteryGameBonusPoolWithdrawSystem.sol";
 // import {LotteryGameLotteryWalletSafeBoxSystem, ID as LotteryGameLotteryWalletSafeBoxSystemID} from "./LotteryGameLotteryWalletSafeBoxSystem.sol";
 import {LotteryGameConstantVariableSystem, ID as LotteryGameConstantVariableSystemID} from "./LotteryGameConstantVariableSystem.sol";
+import {ILotteryGameTicketBonusRewardSystem} from "../interface/ILotteryGameTicketBonusRewardSystem.sol";
 
 uint256 constant ID = uint256(
     keccak256("happiJack.systems.LotteryGameTicketBonusRewardSystem")
@@ -32,7 +33,8 @@ contract LotteryGameTicketBonusRewardSystem is
     UUPSUpgradeable,
     System,
     ReentrancyGuardUpgradeable,
-    VersionUpgradeable
+    VersionUpgradeable,
+    ILotteryGameTicketBonusRewardSystem
 {
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -75,35 +77,54 @@ contract LotteryGameTicketBonusRewardSystem is
         return 3;
     }
 
-    function claimTicketReward(
-        uint256 ticketId
+    function claimTicketRewardTo(
+        uint256 ticketId_,
+        address ticketOwner_
     ) external nonReentrant whenNotPaused {
+        _claimTicketReward(ticketId_, ticketOwner_);
+    }
+
+    function claimTicketReward(
+        uint256 ticketId_
+    ) external nonReentrant whenNotPaused {
+        _claimTicketReward(ticketId_, _msgSender());
+    }
+
+    function _claimTicketReward(
+        uint256 ticketId_,
+        address ticketOwner_
+    ) internal {
         require(
-            LotteryTicketTable.hasRecord(ticketId),
+            LotteryTicketTable.hasRecord(ticketId_),
             "LotteryGameTicketBonusRewardSystem: ticket does not exist"
         );
 
         require(
-            GameSystems.getLotteryGameTicketNFTSystem().ownerOf(ticketId) ==
+            GameSystems.getLotteryGameTicketNFTSystem().ownerOf(ticketId_) ==
                 _msgSender(),
             "LotteryGameTicketBonusRewardSystem: caller is not the owner of the ticket"
         );
 
         require(
-            LotteryTicketBonusRewardTable.hasRecord(ticketId) == false,
+            LotteryTicketBonusRewardTable.hasRecord(ticketId_) == false,
             "LotteryGameTicketBonusRewardSystem: ticket already claimed"
         );
 
         //check lotter game status
-        uint256 lotteryGameId = LotteryTicketTable.getLotteryGameId(ticketId);
+        uint256 lotteryGameId = LotteryTicketTable.getLotteryGameId(ticketId_);
         require(
             LotteryGameTable.getStatus(lotteryGameId) ==
                 uint256(LotteryGameStatus.Ended),
             "LotteryGameTicketBonusRewardSystem: lottery game is not completed"
         );
 
+        require(
+            ticketOwner_ != address(0),
+            "LotteryGameTicketBonusRewardSystem: ticket owner is zero address"
+        );
+
         //0:1,1:2,2:3,3:4 prize
-        _claimReward(lotteryGameId, ticketId, _msgSender());
+        _claimReward(lotteryGameId, ticketId_, ticketOwner_);
     }
 
     /// @dev claim reward
