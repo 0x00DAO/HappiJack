@@ -1,36 +1,13 @@
 import { task, types } from 'hardhat/config';
 import { ContractDeployAddress } from '../scripts/consts/deploy.address.const';
 import { gameDeploy } from '../scripts/consts/deploy.game.const';
-import {
-  getContractDeployDataWithHre,
-  saveContractDeployDataWithHre,
-} from '../scripts/deploy/utils/deploy-data';
+import { deployUpgradeContract } from '../scripts/deploy/deploy';
 task('game.deploy:game-root', 'Deploys or upgrades the game-root contract')
   .addOptionalParam('new', 'Deploys a new contract', false, types.boolean)
   .setAction(async (taskArgs, hre) => {
     const { new: isNew } = taskArgs;
-
     const contractName = 'GameRoot';
-    const deployData = await getContractDeployDataWithHre(hre, contractName);
-    let contractAddress = deployData.address;
-    if (isNew) {
-      contractAddress = undefined;
-    }
-
-    const deployedContract = await hre.run(
-      'game.deploy:sub-task:deploy-upgrade-proxy',
-      {
-        contractName: contractName,
-        contractAddress: contractAddress,
-      }
-    );
-
-    //save deploy data
-    await saveContractDeployDataWithHre(
-      hre,
-      contractName,
-      deployedContract.address
-    );
+    await deployUpgradeContract(hre, contractName, undefined, undefined, isNew);
   });
 
 task(
