@@ -2,6 +2,7 @@ import { task, types } from 'hardhat/config';
 import { ContractDeployAddress } from '../scripts/consts/deploy.address.const';
 import { gameDeploy } from '../scripts/consts/deploy.game.const';
 import { deployUpgradeContract } from '../scripts/deploy/deploy';
+import { getContractDeployDataWithHre } from '../scripts/deploy/deploy-data';
 task('game.deploy:game-root', 'Deploys or upgrades the game-root contract')
   .addOptionalParam('new', 'Deploys a new contract', false, types.boolean)
   .setAction(async (taskArgs, hre) => {
@@ -27,7 +28,12 @@ task(
     types.int
   )
   .setAction(async (taskArgs, hre) => {
-    const gameRootAddress = ContractDeployAddress()?.GameRoot;
+    const gameRootAddress = await getContractDeployDataWithHre(
+      hre,
+      'GameRoot'
+    ).then((deployData: any) => {
+      return deployData.address;
+    });
     const { start, count } = taskArgs;
     const end =
       count == 0

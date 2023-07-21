@@ -90,14 +90,6 @@ async function getChainId(hre: HardhatRuntimeEnvironment): Promise<number> {
   return id as number;
 }
 
-export async function getContractDeployDataWithHre(
-  hre: HardhatRuntimeEnvironment,
-  contractName: string
-): Promise<any> {
-  const id = await getChainId(hre);
-  return getContractDeployData(hre.network.name, id, contractName);
-}
-
 async function saveContractDeployData(
   chainName: string,
   chainId: number,
@@ -112,6 +104,14 @@ async function saveContractDeployData(
   deployData[contractName] = makeContractDeployData(contractName, address);
 
   saveDeployData(chainName, chainId, deployData);
+}
+
+export async function getContractDeployDataWithHre(
+  hre: HardhatRuntimeEnvironment,
+  contractName: string
+): Promise<any> {
+  const id = await getChainId(hre);
+  return getContractDeployData(hre.network.name, id, contractName);
 }
 
 export async function saveContractDeployDataWithHre(
