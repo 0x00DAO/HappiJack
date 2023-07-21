@@ -5,10 +5,7 @@ import { ethers } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
-import {
-  testHelperDeployGameRootContract,
-  testHelperDeployGameSystems,
-} from '../../testHelper';
+import { testHelperDeployGameRootContractAndSystems } from '../../testHelper';
 
 describe('LotteryGameTicketBonusRewardSystem', function () {
   let gameRootContract: Contract;
@@ -23,9 +20,7 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
 
   beforeEach(async function () {
     //deploy GameRoot
-    gameRootContract = await testHelperDeployGameRootContract();
-    //deploy systems
-    await testHelperDeployGameSystems(gameRootContract);
+    gameRootContract = await testHelperDeployGameRootContractAndSystems();
 
     lotteryGameLotteryResultVerifySystem = await eonTestUtil.getSystem(
       gameRootContract,
@@ -385,6 +380,103 @@ describe('LotteryGameTicketBonusRewardSystem', function () {
         await lotteryGameTicketBonusRewardSystem
           .connect(addresses[addressIndex])
           .claimTicketReward(ticketId);
+
+        addressIndex++;
+      }
+
+      // check ticket safe box balance
+      await checkSafeBoxBalance();
+    });
+
+    it('success, only claim ticket reward with claimTicketRewardTo', async function () {
+      //register owner as system, so that owner can call system functions
+      const [owner] = await ethers.getSigners();
+      await gameRootContract.registerSystem(
+        ethers.utils.id(owner.address),
+        owner.address
+      );
+
+      const balance = ethers.utils.parseEther('0.005');
+      // buy ticket
+      const addresses = await ethers.getSigners();
+      const ticketIds: Map<string, BigNumber> = new Map();
+      const addressCount = 1;
+      const addressStart = 1;
+      for (
+        let i = addressStart;
+        i < addresses.length, i < addressStart + addressCount;
+        i++
+      ) {
+        const [ticketId, luckNumber] = await buyTicket(
+          lotteryGameId,
+          addresses[i]
+        );
+        ticketIds.set(ticketId.toString(), luckNumber);
+
+        //transfer balance to other
+        await lotteryGameLotteryWalletSafeBoxSystem
+          .connect(owner)
+          .depositETH(addresses[i].address, {
+            value: balance,
+          });
+      }
+
+      const checkSafeBoxBalance = async () => {
+        for (
+          let i = addressStart;
+          i < addresses.length, i < addressStart + addressCount;
+          i++
+        ) {
+          await getTableRecord
+            .LotteryGameWalletSafeBoxTable(
+              gameRootContract,
+              addresses[i].address,
+              BigNumber.from(0),
+              ethers.constants.AddressZero
+            )
+            .then((x) => {
+              expect(x.Amount).to.equal(balance);
+              return x;
+            });
+        }
+      };
+
+      // check ticket safe box balance
+      await checkSafeBoxBalance();
+
+      // console.log(ticketIds);
+
+      // skip to end time
+      const during = 60 * 60 * 24 * 1 + 1; // 1 days
+      await ethers.provider.send('evm_increaseTime', [during]);
+
+      // verify
+      await expect(lotteryGameLotteryResultVerifySystem.verify(lotteryGameId))
+        .to.be.emit(
+          lotteryGameLotteryResultVerifySystem,
+          'LotteryGameResultVerified'
+        )
+        .withArgs(
+          lotteryGameId,
+          (x: any) => {
+            // console.log('luckyNumber:', x);
+            return true;
+          },
+          owner.address
+        );
+
+      // check ticket safe box balance
+      await checkSafeBoxBalance();
+
+      // claim reward for all ticket
+      let addressIndex = addressStart;
+      //ticketRewardTimestamp is block.timestamp
+
+      for (let [ticketId, luckyNumber] of ticketIds) {
+        await lotteryGameTicketBonusRewardSystem.claimTicketRewardTo(
+          ticketId,
+          addresses[addressIndex].address
+        );
 
         addressIndex++;
       }

@@ -35,3 +35,23 @@ export async function testHelperDeployGameSystems(
   }
   return deployedSystems;
 }
+
+export async function testHelperDeployGameRootContractAndSystems(): Promise<Contract> {
+  //deploy GameRoot
+  const GameRoot = await ethers.getContractFactory('GameRoot');
+  const gameRootContract = await upgrades.deployProxy(GameRoot, []);
+  await gameRootContract.deployed();
+
+  const COMPONENT_WRITE_ROLE = ethers.utils.id('COMPONENT_WRITE_ROLE');
+
+  //grant game root contract role write access
+  await gameRootContract.grantRole(
+    COMPONENT_WRITE_ROLE,
+    gameRootContract.address
+  );
+
+  //deploy systems
+  await testHelperDeployGameSystems(gameRootContract);
+
+  return gameRootContract;
+}

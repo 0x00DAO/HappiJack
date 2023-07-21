@@ -101,7 +101,7 @@ contract LotteryGameTicketBonusRewardSystem is
 
         require(
             GameSystems.getLotteryGameTicketNFTSystem().ownerOf(ticketId_) ==
-                _msgSender(),
+                ticketOwner_,
             "LotteryGameTicketBonusRewardSystem: caller is not the owner of the ticket"
         );
 

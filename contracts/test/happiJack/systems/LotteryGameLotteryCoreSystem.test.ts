@@ -1,8 +1,9 @@
 import { expect } from 'chai';
 import { BigNumber, Contract } from 'ethers';
-import { ethers, upgrades } from 'hardhat';
+import { ethers } from 'hardhat';
 import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { testHelperDeployGameRootContractAndSystems } from '../../testHelper';
 
 describe('LotteryGameLotteryCoreSystem', function () {
   let gameRootContract: Contract;
@@ -11,15 +12,7 @@ describe('LotteryGameLotteryCoreSystem', function () {
 
   beforeEach(async function () {
     //deploy GameRoot
-    const GameRoot = await ethers.getContractFactory('GameRoot');
-    gameRootContract = await upgrades.deployProxy(GameRoot, []);
-    await gameRootContract.deployed();
-
-    //deploy
-    const systems = gameDeploy.systems;
-    for (let i = 0; i < systems.length; i++) {
-      await eonTestUtil.deploySystem(gameRootContract, systems[i]);
-    }
+    gameRootContract = await testHelperDeployGameRootContractAndSystems();
 
     lotteryGameLotteryCoreSystem = await eonTestUtil.getSystem(
       gameRootContract,

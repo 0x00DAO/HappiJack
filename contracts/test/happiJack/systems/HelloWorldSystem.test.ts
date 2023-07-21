@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { Contract } from 'ethers';
-import { ethers, upgrades } from 'hardhat';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
+import { testHelperDeployGameRootContract } from '../../testHelper';
 
 describe('HelloWorldSystem', function () {
   let gameRootContract: Contract;
@@ -9,9 +9,8 @@ describe('HelloWorldSystem', function () {
 
   beforeEach(async function () {
     //deploy GameRoot
-    const GameRoot = await ethers.getContractFactory('GameRoot');
-    gameRootContract = await upgrades.deployProxy(GameRoot, []);
-    await gameRootContract.deployed();
+    //deploy GameRoot
+    gameRootContract = await testHelperDeployGameRootContract();
 
     //deploy HelloWorldSystem
     helloWorldSystem = await eonTestUtil.deploySystem(

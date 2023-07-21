@@ -6,7 +6,7 @@ import { gameDeploy } from '../../../scripts/consts/deploy.game.const';
 import { eonTestUtil } from '../../../scripts/eno/eonTest.util';
 import { GameCollectionTable } from '../../../scripts/game/GameCollectionRecord';
 import { getTableRecord } from '../../../scripts/game/GameTableRecord';
-import { testHelperDeployGameRootContract } from '../../testHelper';
+import { testHelperDeployGameRootContractAndSystems } from '../../testHelper';
 
 describe('LotteryGameLotteryResultVerifySystem', function () {
   let gameRootContract: Contract;
@@ -20,12 +20,7 @@ describe('LotteryGameLotteryResultVerifySystem', function () {
 
   this.beforeAll(async function () {
     //deploy GameRoot
-    gameRootContract = await testHelperDeployGameRootContract();
-    //deploy
-    const systems = gameDeploy.systems;
-    for (let i = 0; i < systems.length; i++) {
-      await eonTestUtil.deploySystem(gameRootContract, systems[i]);
-    }
+    gameRootContract = await testHelperDeployGameRootContractAndSystems();
 
     lotteryGameLotteryResultVerifySystem = await eonTestUtil.getSystem(
       gameRootContract,
