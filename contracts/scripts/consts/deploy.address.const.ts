@@ -7,15 +7,15 @@ interface ContractDeployAddressInterface {
   GameRoot?: ContractDeployAddress;
 }
 const ContractDeployAddress_Hardhat: ContractDeployAddressInterface = {
-  GameRoot: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+  // GameRoot: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
 };
 
 const ContractDeployAddress_PolygonTestNet: ContractDeployAddressInterface = {
-  GameRoot: '0xa652FcC9ee53b0A85414d0c5f4F041e2D556409E',
+  // GameRoot: '0xa652FcC9ee53b0A85414d0c5f4F041e2D556409E',
 };
 
 const ContractDeployAddress_PolygonMainNet: ContractDeployAddressInterface = {
-  GameRoot: '0x9F732Bf84D2D29fDFbCA1de66A49812207F5a8De',
+  // GameRoot: '0x9F732Bf84D2D29fDFbCA1de66A49812207F5a8De',
 };
 
 const ContractDeployAddress_EthTestNet: ContractDeployAddressInterface = {};
@@ -27,23 +27,22 @@ const ContractDeployAddress_BscTestNet: ContractDeployAddressInterface = {};
 const ContractDeployAddress_BscMainNet: ContractDeployAddressInterface = {};
 
 const ContractDeployAddress_ArbitrumTestNet: ContractDeployAddressInterface = {
-  GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
+  // GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
 };
 
 const ContractDeployAddress_ArbitrumMainNet: ContractDeployAddressInterface = {
-  GameRoot: '0xC1A53a055eF0662b96D9F65FA8bC72b57daa24D5',
+  // GameRoot: '0xC1A53a055eF0662b96D9F65FA8bC72b57daa24D5',
 };
 
-const ContractDeployAddress_ZkSyncEraTestNet: ContractDeployAddressInterface = {
-  GameRoot: null,
-};
+const ContractDeployAddress_ZkSyncEraTestNet: ContractDeployAddressInterface =
+  {};
 
 const ContractDeployAddress_ZkSyncEraMainNet: ContractDeployAddressInterface =
   {};
 
 const ContractDeployAddress_PolygonZkEvmTestNet: ContractDeployAddressInterface =
   {
-    GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
+    // GameRoot: '0xD6854CB80D600cD27FEC3f37f6AE560CADEA8244',
   };
 
 const ContractDeployAddress_PolygonZkEvmMainNet: ContractDeployAddressInterface =
