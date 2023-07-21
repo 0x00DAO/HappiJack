@@ -15,11 +15,13 @@ subtask(
   .addOptionalParam('contractAddress', 'The address of the contract to upgrade')
   .setAction(async (taskArgs, hre) => {
     const { contractName, contractAddress } = taskArgs;
+    let contract;
     if (!contractAddress) {
-      const contract = await deployUpgradeProxy(contractName);
+      contract = await deployUpgradeProxy(contractName);
     } else {
-      const contract = await deployUpgradeUpdate(contractName, contractAddress);
+      contract = await deployUpgradeUpdate(contractName, contractAddress);
     }
+    return contract;
   });
 
 subtask(

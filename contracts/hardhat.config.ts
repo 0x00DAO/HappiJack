@@ -6,6 +6,7 @@ import { HardhatUserConfig, task } from 'hardhat/config';
 import '@nomiclabs/hardhat-solhint';
 import '@openzeppelin/hardhat-defender';
 import '@openzeppelin/hardhat-upgrades';
+import '@zero-dao/eno-hardhat-plugin-deploy';
 import 'hardhat-abi-exporter';
 
 require('./tasks/eno.hardhat.task');

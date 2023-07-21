@@ -121,3 +121,7 @@ creator*
 npm-debug.log
 node_modules/
 package-lock.json
+
+
+# Eon
+.eon/deploy-localhost-*.json
