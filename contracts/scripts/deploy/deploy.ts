@@ -7,6 +7,7 @@ import {
 } from './deploy-data';
 import { deployUpgradeProxy, deployUpgradeUpdate } from './deploy.util';
 
+//deploy or upgrade contract
 export async function deployUpgradeContract(
   hre: HardhatRuntimeEnvironment,
   contractName: string,
