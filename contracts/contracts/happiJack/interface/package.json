@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "files": [
     "/*.sol",
-    "!IGameRoot.sol"
+    "!/IGameRoot.sol"
   ],
   "description": "Happi Airdrop Protocol Interface",
   "author": "0x00DAO",

@@ -1,5 +1,5 @@
 {
-  "name": "happiAirDrop-contracts",
+  "name": "happi-airdrop-protocol",
   "scripts": {
     "test": "npx hardhat test",
     "compile": "rm -rf ./abi && npx hardhat export-abi && find ./abi/contracts -name '*.json'|xargs -I file npx abi-types-generator file --provider=ethers_v5"
