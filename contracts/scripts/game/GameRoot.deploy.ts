@@ -4,24 +4,20 @@
 // When running the script with `npx hardhat run <script>` you'll find the Hardhat
 // Runtime Environment's members available in the global scope.
 // const hre = require("hardhat");
-import { ContractDeployAddress } from '../consts/deploy.address.const';
-import {
-  deployUpgradeProxy,
-  deployUpgradeUpdate,
-} from '../eno/deploy-game.util';
+import { deployUpgradeContract } from '../deploy/deploy';
 
-const DeployContractName = 'GameRoot';
-const contractAddress = ContractDeployAddress()?.GameRoot;
+const contractName = 'GameRoot';
 
 async function main() {
-  if (contractAddress) {
-    const contract = await deployUpgradeUpdate(
-      DeployContractName,
-      contractAddress
-    );
-  } else {
-    const contract = await deployUpgradeProxy(DeployContractName);
-  }
+  const hre = require('hardhat');
+  const isNew = true;
+  const contract = await deployUpgradeContract(
+    hre,
+    contractName,
+    undefined,
+    undefined,
+    isNew
+  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere

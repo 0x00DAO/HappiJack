@@ -8,7 +8,8 @@ import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
 import { ContractDeployAddress } from '../consts/deploy.address.const';
 import { gameDeploy } from '../consts/deploy.game.const';
-import { deployUpgradeProxy, deployUtil } from '../eno/deploy-game.util';
+import { deployUpgradeProxy } from '../deploy/deploy.util';
+import { deployUtil } from '../eno/deploy-game.util';
 
 const GameRootContractName = 'GameRoot';
 const contractGameRootAddress = ContractDeployAddress()?.GameRoot;
