@@ -1,11 +1,11 @@
 import { DeployProxyOptions } from '@openzeppelin/hardhat-upgrades/dist/utils';
 import { Contract } from 'ethers';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
-import { deployUpgradeProxy, deployUpgradeUpdate } from '../utils/deploy.util';
 import {
   getContractDeployDataWithHre,
   saveContractDeployDataWithHre,
 } from './deploy-data';
+import { deployUpgradeProxy, deployUpgradeUpdate } from './deploy.util';
 
 export async function deployUpgradeContract(
   hre: HardhatRuntimeEnvironment,

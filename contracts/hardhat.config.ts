@@ -9,7 +9,7 @@ import '@openzeppelin/hardhat-upgrades';
 import '@zero-dao/eno-hardhat-plugin-deploy';
 import 'hardhat-abi-exporter';
 
-require('./tasks/eno.hardhat.task');
+require('./tasks/eon.hardhat.task');
 
 const {
   POLYGON_TESTNET_URL,
