@@ -1,0 +1,27 @@
+{
+  "name": "@zero-dao/happi-airdrop-protocol-interface",
+  "version": "0.0.1",
+  "files": [
+    "/*.sol",
+    "!IGameRoot.sol"
+  ],
+  "description": "Happi Airdrop Protocol Interface",
+  "author": "0x00DAO",
+  "license": "MIT",
+  "homepage": "https://github.com/0x00DAO/HappiJack/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0x00DAO/HappiJack/tree/a6a00d3dfca5d9914a4a500f135c7f3be87c4280/contracts/contracts/happiJack/interface"
+  },
+  "keywords": [
+    "fully-on-chain",
+    "game",
+    "block-chain",
+    "web3",
+    "framework",
+    "ethereum",
+    "happi-airdrop-protocol"
+  ],
+  "scripts": {},
+  "devDependencies": {}
+}
