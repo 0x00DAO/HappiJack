@@ -7,7 +7,7 @@
 import { assert } from 'console';
 import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
-import { ContractDeployAddress } from '../consts/deploy.address.const';
+import { ContractDeployAddress } from '../consts/deploy-.address.const';
 import { deployUtil } from '../eno/deploy-game.util';
 import { getRuntimeConfig } from './config.util';
 

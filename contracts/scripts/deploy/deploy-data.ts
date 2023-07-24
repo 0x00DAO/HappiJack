@@ -109,7 +109,7 @@ async function saveContractDeployData(
 export async function getContractDeployDataWithHre(
   hre: HardhatRuntimeEnvironment,
   contractName: string
-): Promise<any> {
+): Promise<ContractDeployData> {
   const id = await getChainId(hre);
   return getContractDeployData(hre.network.name, id, contractName);
 }

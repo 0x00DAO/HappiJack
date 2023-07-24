@@ -6,16 +6,20 @@
 // const hre = require("hardhat");
 import { Contract } from 'ethers';
 import { ethers } from 'hardhat';
-import { ContractDeployAddress } from '../consts/deploy.address.const';
 import { gameDeploy } from '../consts/deploy.game.const';
+import { getContractDeployDataWithHre } from '../deploy/deploy-data';
 import { deployUpgradeProxy } from '../deploy/deploy.util';
 import { deployUtil } from '../eno/deploy-game.util';
 
 const GameRootContractName = 'GameRoot';
-const contractGameRootAddress = ContractDeployAddress()?.GameRoot;
 
 async function getGameRootAddress(): Promise<string> {
-  const GameRootContractAddress = contractGameRootAddress;
+  const hre = require('hardhat');
+  const deployData = await getContractDeployDataWithHre(
+    hre,
+    GameRootContractName
+  );
+  const GameRootContractAddress = deployData.address;
   if (GameRootContractAddress) {
     return GameRootContractAddress;
   }

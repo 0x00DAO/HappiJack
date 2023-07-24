@@ -1,16 +1,14 @@
 import { Contract } from 'ethers';
 import { task } from 'hardhat/config';
-import { ContractDeployAddress } from '../scripts/consts/deploy.address.const';
 import { gameDeploy } from '../scripts/consts/deploy.game.const';
+import { getContractDeployDataWithHre } from '../scripts/deploy/deploy-data';
 task(
   'game.systems',
   'Prints the list of game-system',
   async (taskArgs, hre) => {
     const systems = gameDeploy.systems;
-
-    const contractGameRootAddress = ContractDeployAddress(
-      hre.hardhatArguments
-    )?.GameRoot;
+    const deployData = await getContractDeployDataWithHre(hre, 'GameRoot');
+    const contractGameRootAddress = deployData.address;
 
     let gameRootContract: Contract | undefined = undefined;
     if (contractGameRootAddress) {
