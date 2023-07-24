@@ -4,8 +4,8 @@ import { gameDeploy } from '../scripts/consts/deploy.game.const';
 import {
   deployUpgradeProxy,
   deployUpgradeUpdate,
-  deployUtil,
-} from '../scripts/eno/deploy-game.util';
+} from '../scripts/deploy/deploy.util';
+import { deployUtil } from '../scripts/eno/deploy-game.util';
 
 subtask(
   'game.deploy:sub-task:deploy-upgrade-proxy',
