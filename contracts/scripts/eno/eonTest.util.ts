@@ -1,6 +1,6 @@
 import { Contract } from 'ethers';
 import { ethers, upgrades } from 'hardhat';
-import { deployUtil } from '../utils/deploy.util';
+import { deployUtil } from './deploy-game.util';
 
 async function deploySystem(
   gameRoot: Contract,

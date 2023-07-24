@@ -5,7 +5,10 @@
 // Runtime Environment's members available in the global scope.
 // const hre = require("hardhat");
 import { ContractDeployAddress } from '../consts/deploy.address.const';
-import { deployUpgradeProxy, deployUpgradeUpdate } from '../utils/deploy.util';
+import {
+  deployUpgradeProxy,
+  deployUpgradeUpdate,
+} from '../eno/deploy-game.util';
 
 const DeployContractName = 'GameRoot';
 const contractAddress = ContractDeployAddress()?.GameRoot;
