@@ -62,6 +62,10 @@ contract LotteryGameSystemConfig is
 
     /// custom logic here
 
+    function _version() internal pure override returns (uint256) {
+        return 2;
+    }
+
     function configGame(
         uint256 lotteryGameId_,
         address owner_,
@@ -77,7 +81,8 @@ contract LotteryGameSystemConfig is
         require(
             during_ >=
                 LotteryGameSystemConfigSetting.CreateGameDurationMinSeconds() &&
-                during_ <= 1 days,
+                during_ <=
+                LotteryGameSystemConfigSetting.CreateGameDurationMaxSeconds(),
             "during is too short"
         );
         require(endTime_ > block.timestamp, "end time is in the past");

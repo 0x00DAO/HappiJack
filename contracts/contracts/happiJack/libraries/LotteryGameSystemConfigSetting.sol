@@ -30,6 +30,11 @@ uint256 constant IdConfigCreateGameDurationMinSeconds = uint256(
     keccak256("happiJack.systems.config.CreateGameDurationMinSeconds")
 );
 
+/// @dev This is a setting for the duration of the create game process. default is 24 hours(86400 seconds)
+uint256 constant IdConfigCreateGameDurationMaxSeconds = uint256(
+    keccak256("happiJack.systems.config.CreateGameDurationMaxSeconds")
+);
+
 /// @dev This is a setting for the lucky number min value. default is 1
 uint256 constant IdConfigLuckyNumberMinValue = uint256(
     keccak256("happiJack.systems.config.LuckyNumberMinValue")
@@ -73,6 +78,14 @@ library LotteryGameSystemConfigSetting {
             ContractUint256VariableTable.get(
                 IdConfigCreateGameDurationMinSeconds,
                 43200
+            );
+    }
+
+    function CreateGameDurationMaxSeconds() internal view returns (uint256) {
+        return
+            ContractUint256VariableTable.get(
+                IdConfigCreateGameDurationMaxSeconds,
+                86400
             );
     }
 
